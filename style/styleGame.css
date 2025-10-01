@@ -1,0 +1,341 @@
+/* --- Style ogólne --- */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    background-color: #f0f2f5;
+    color: #1c1e21;
+    margin: 0;
+    padding: 20px;
+}
+
+.main-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px 30px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+hr {
+    border: none;
+    height: 1px;
+    background-color: #ddd;
+    margin: 40px 0;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* --- Nagłówki i wiadomości --- */
+.game-header, .form-header {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.game-header h1, .form-header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+.error-message {
+    color: #d93025;
+    background-color: #fbe9e7;
+    padding: 10px;
+    border: 1px solid #d93025;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.success-message, .review-message {
+    color: #1e8e3e;
+    background-color: #e6f4ea;
+    padding: 10px;
+    border: 1px solid #1e8e3e;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+/* --- Style formularzy (addgames.php i gamedit.php) --- */
+.game-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.game-form label {
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.game-form input[type="text"],
+.game-form input[type="number"],
+.game-form input[type="date"],
+.game-form textarea,
+.game-form select {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.submit-button, .delete-button {
+    padding: 12px 20px;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    background-color: #007bff;
+    transition: background-color 0.2s;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
+.delete-button {
+    background-color: #d93025;
+}
+
+.delete-button:hover {
+    background-color: #a52714;
+}
+
+/* --- Kontener producenta/wydawcy --- */
+.dev-pub-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.selector-container {
+    flex-grow: 1;
+}
+.add-new-link {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.9em;
+}
+.logo-preview-box {
+    width: 120px;
+    height: 120px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex-shrink: 0;
+}
+
+/* --- Tagi i platformy --- */
+.tags-container, .platforms-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.tag-item {
+    padding: 8px 12px;
+    border: 1px solid #000;
+    border-radius: 15px;
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    user-select: none;
+    transition: background-color 0.2s, color 0.2s;
+}
+.tag-item:hover {
+    background-color: #f0f0f0;
+}
+.tag-item.selected {
+    background-color: black;
+    color: white;
+}
+
+.platform-item {
+    padding: 5px;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    line-height: 0;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+.platform-item.selected {
+    border-color: black;
+    background-color: #eee;
+}
+/* === ZMIANA PONIŻEJ === */
+.platform-item svg {
+    width: 40px;
+    height: 40px;
+    display: block;
+}
+
+
+/* --- Screenshoty --- */
+.screenshots-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Pola do uploadu w formularzu */
+.screenshot-upload-box {
+    width: 150px;
+    height: 150px;
+    border: 2px dashed #ccc;
+    border-radius: 4px;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+}
+.screenshot-upload-box input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+.screenshot-upload-box label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: #888;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+/* Wyświetlanie screenshotów na stronie gry */
+.screenshot-item {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+
+/* --- Strona gry (game.php) --- */
+.game-description {
+    line-height: 1.6;
+}
+.game-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 20px 0;
+}
+.detail-item {
+    text-align: center;
+}
+.logo-image {
+    max-width: 100px;
+    height: auto;
+    margin-top: 10px;
+}
+.game-meta {
+    margin: 20px 0;
+}
+.game-price {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+/* --- Sekcja opinii --- */
+.review-section, .management-section {
+    margin-top: 30px;
+}
+.reviews-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+.review-item, .review-item-admin {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+.review-item-admin {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    color: #606770;
+    margin-bottom: 5px;
+}
+.review-author {
+    font-weight: bold;
+}
+.review-rating, .stars-display {
+    color: #fdd835;
+    font-size: 1.2em;
+}
+.review-comment {
+    margin: 10px 0 0 0;
+    line-height: 1.5;
+}
+
+/* Formularz opinii */
+.review-form-container {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+.review-form {
+    gap: 15px;
+}
+.review-form textarea {
+    width: 100%;
+    min-height: 80px;
+    resize: vertical;
+}
+.rating-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.rating-stars {
+    display: inline-block;
+    direction: rtl;
+}
+.rating-stars input[type="radio"] {
+    display: none;
+}
+.rating-stars label {
+    font-size: 2em;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.rating-stars input[type="radio"]:checked ~ label,
+.rating-stars label:hover,
+.rating-stars label:hover ~ label {
+    color: #fdd835;
+}
