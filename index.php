@@ -7,9 +7,13 @@ require_once('auth.php');
 <head>
     <meta charset="UTF-8">
     <title>Testowy panel</title>
+    <link rel="stylesheet" href="style/styleCommon.css">
 </head>
 <body>
-    <h1>Testowy panel aplikacji Steam</h1>
+    <?php include('header.php'); ?>
+
+
+    <h1 style="margin-top: 100px">Testowy panel aplikacji Steam</h1>
 
     <?php if ($currentUser): ?>
         <p>Zalogowany jako: <?php echo htmlspecialchars($currentUser['username']); ?> (<?php echo $currentUser['role'] ? 'Admin' : 'Użytkownik'; ?>)</p>
@@ -19,8 +23,10 @@ require_once('auth.php');
         <a href="login.php">Logowanie</a><br><br>
     <?php endif; ?>
 
-    <h2>Dodawanie developerów/wydawców</h2>
+    <h2 style="margin-top: 1000px;">Dodawanie developerów/wydawców</h2>
     <a href="addgames.php">Dodaj grę</a><br>
     <a href="game.php?game=Dark+Souls">Wyświetl gre</a>
+
+    <?php include('footer.php'); ?>
 </body>
 </html>

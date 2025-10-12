@@ -66,13 +66,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="style/styleCommon.css">
 </head>
 <body>
+    <?php include('header.php'); ?>
     <div id="container">
         <div>
             <h1>Sign In</h1>
             <br>
             <br>
             <div id="content">
-                <form method="post">
+                <form class="form-login" method="post">
                     <label>SIGN IN WITH ACCOUNT NAME OR EMAIL</label>
                     <input type="text" name="login" value="<?php echo htmlspecialchars($savedLogin); ?>">
                     <label>PASSWORD</label>

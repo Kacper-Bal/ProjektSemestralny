@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_GET['action'] ?? '') !== 'save_s
 </head>
 <body>
 
-    <div class="main-container">
+    <div class="container">
         <header class="form-header">
             <h1>Dodaj nową grę</h1>
         </header>

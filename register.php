@@ -76,13 +76,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
+    <?php include('header.php'); ?>
     <div id="container">
         <div>
             <h1>Create Account</h1>
             <br>
             <br>
             <div id="content">
-                <form method="post">
+                <form class="form-login" method="post">
                     <label>ACCOUNT NAME</label>
                     <input type="text" name="username" value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>">
 

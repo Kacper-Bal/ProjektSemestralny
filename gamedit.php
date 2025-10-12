@@ -125,7 +125,7 @@ function find_logo_path($name, $role) {
 </head>
 <body>
 
-<div class="main-container">
+<div class="container">
     <header class="form-header">
         <h1>Edytuj grę: <?= htmlspecialchars($game['name']) ?></h1>
         <a href="game.php?game=<?= urlencode($game['name']) ?>" class="back-link">Wróć do podglądu gry</a>
@@ -241,10 +241,7 @@ function find_logo_path($name, $role) {
         <button type="submit" class="submit-button">Zapisz zmiany</button>
     </form>
 </div>
-
-<hr>
-
-<div class="main-container">
+<div class="container">
     <section class="management-section">
         <h2>Zarządzaj komentarzami</h2>
         <div class="reviews-list">

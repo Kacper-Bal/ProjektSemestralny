@@ -1,4 +1,4 @@
-\<?php
+<?php
 require_once 'conn.php';
 require_once 'auth.php';
 
@@ -80,7 +80,7 @@ $resultReviews = $conn->query($queryReviews);
 </head>
 <body>
 
-    <div class="main-container">
+    <div class="container">
         <header class="game-header">
             <h1><?= htmlspecialchars($gameData["name"]) ?></h1>
         </header>
@@ -129,9 +129,6 @@ $resultReviews = $conn->query($queryReviews);
                 Cena: <?= htmlspecialchars($gameData["price"]) ?> PLN
             </div>
         </section>
-
-        <hr>
-
         <section class="review-section">
             <h2>Opinie</h2>
 

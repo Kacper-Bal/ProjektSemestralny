@@ -2,10 +2,6 @@
 $current_year = date('Y');
 ?>
 
-<style>
-    
-</style>
-
 <footer>
     <div class="footer-container">
 
