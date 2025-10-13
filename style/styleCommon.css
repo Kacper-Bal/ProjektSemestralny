@@ -92,7 +92,9 @@ footer {
 
 header{
     width: 100%;
-    position: relative;
+    position: sticky; 
+    top: 0;
+    z-index: 1000; 
 }
 
 #header-top{
@@ -104,8 +106,9 @@ header{
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    position: relative; 
-    z-index: 300; 
+    position: relative;
+    z-index: 300;
+    border-bottom: 1px solid #2c313a;
 }
 
 #header-left{
@@ -143,7 +146,7 @@ a:hover{
     width: auto;
     border: 2px solid #2c313a;
     border-radius: 20px;
-    overflow: hidden; 
+    overflow: hidden;
     height: 7vh;
 }
 
@@ -167,7 +170,7 @@ a:hover{
 }
 
 .login-element:hover a {
-    color: #171d25; 
+    color: #171d25;
 }
 
 #header-bottom {
@@ -230,7 +233,7 @@ a:hover{
     #header-left {
         flex-grow: 1;
         display: flex;
-        justify-content: center; 
+        justify-content: center;
     }
 
     #header-bottom {
@@ -246,7 +249,7 @@ a:hover{
     }
     #searchForm input[type="text"] {
         flex-grow: 1;
-        font-size: 16px; 
+        font-size: 16px;
     }
 
     #hamburger-menu {
@@ -271,7 +274,7 @@ a:hover{
         top: 12vh;
         left: 0;
         width: 100%;
-        z-index: 200;  
+        z-index: 200;
         display: flex;
         flex-direction: column;
         background-color: #171d25;

@@ -3,14 +3,231 @@ body{
 }
 
 #container{
-    border: 1px solid red;
-    min-width: 800px; 
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    min-width: 800px;
+    margin: 20px auto;
     height: auto;
     background-color: #1B2838;
+    color: white;
+    padding: 20px 2%;
+    gap: 4%;
 }
 
 h1{
-    color: white;
+    width: 100%;
     font-size: 2rem;
     margin-bottom: 1rem;
+    padding-left: 0;
+}
+
+.images {
+    width: 63%;
+}
+
+.content {
+    width: 33%;
+}
+
+.main-image-container {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    background-color: #1B2838;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  background-color: rgba(0,0,0,0.3);
+  z-index: 2;
+}
+
+.next { 
+    right: 0; 
+    border-radius: 3px 0 0 3px; 
+}
+
+.prev:hover, .next:hover {
+     background-color: rgba(0,0,0,0.8); 
+}
+
+.thumbnail-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.thumbnail {
+    width: 24%;
+    height: 80px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity .2s ease-in-out;
+    object-fit: cover;
+    border: 2px solid transparent;
+}
+
+.thumbnail.active, .thumbnail:hover { 
+    opacity: 1; 
+}
+
+.thumbnail.active { 
+    border-color: #fff; 
+}
+
+.description {
+    color: #76808c;
+    text-align: justify;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.content hr {
+    border: none;
+    height: 1px;
+    background-color: #2c313a;
+    margin: 15px 0;
+}
+
+.release-date {
+    color: #76808c;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.details-container {
+    display: flex;  
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.detail-item {
+    flex: 1 1 120px;
+}
+
+.detail-item a {
+    text-decoration: none;
+    color: white;
+    display: block;
+}
+
+.detail-item a:hover .company-name {
+    color: #38b6ff;
+}
+
+.detail-title {
+    color: #38b6ff;
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.logo-container {
+    width: 100%;
+    height: 60px; 
+    background-color: #171a21;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    margin-bottom: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.detail-item a:hover .logo-container {
+    border-color: #38b6ff;
+    box-shadow: 0 0 10px rgba(56, 182, 255, 0.4);
+}
+
+.logo-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.company-name {
+    font-size: 13px;
+    text-align: center;
+    display: block;
+    transition: color 0.2s;
+}
+
+.platforms-container {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.platform-item {
+    width: 49px;
+    height: 49px;
+    padding: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    background-color: #171a21;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.platform-item:hover {
+    border-color: #ffffff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+.platform-item svg {
+    width: 100%;
+    height: 100%;
+    fill: #76808c;
+}
+
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag-item {
+    background-color: rgba(103, 193, 245, 0.2);
+    color: #67c1f5;
+    padding: 5px 10px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 13px;
+    transition: background-color 0.2s;
+}
+
+.tag-item:hover {
+    background-color: rgba(103, 193, 245, 0.4);
+    color: #fff;
+    text-decoration: none;
 }
