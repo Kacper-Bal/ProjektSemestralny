@@ -513,3 +513,94 @@ h1{
     color: #67c1f5;
     font-size: 0.9rem;
 }
+
+@media (max-width: 1000px) {
+    #container {
+        width: 90%;
+        min-width: auto;
+        margin: 20px auto;
+        padding: 20px 5%;
+    }
+
+    .images,
+    .content {
+        width: 100%;
+    }
+
+    .images {
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 1000px) {
+        /* ... inne style ... */
+    
+        /* --- POWIĘKSZENIE LOGO I IKON --- */
+        .details-container {
+            display: flex;
+            flex-direction: row; /* Zmieniono z 'column' na 'row' */
+            gap: 15px; /* Można dostosować odstęp */
+        }
+    
+        .detail-item {
+            flex: 1; /* Pozwoli elementom równo dzielić przestrzeń */
+            min-width: 150px; /* Zapobiega zbytnim ściskaniu się logo */
+        }
+        
+        .logo-container {
+            height: 80px; /* Zmniejszono trochę dla lepszego dopasowania w rzędzie */
+        }
+    
+        .platform-item {
+            width: 48px;
+            height: 48px;
+        }
+        /* ... reszta stylów ... */
+    }
+    .buy-box {
+        width: 100%;
+        float: none;
+    }
+
+    .purchase-box {
+        position: static;
+        transform: none;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .review-item,
+    .review-form {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .review-user-info {
+        width: 100%;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #2c313a;
+    }
+    
+    .review-user-info::after{
+        display: none;
+    }
+
+    .review-main-content,
+    .review-item .review-main-content,
+    .review-form .review-main-content {
+        width: 100%;
+        padding: 0;
+    }
+    
+    .review-main-content::after{
+        display: none;
+    }
+
+    .review-voting {
+        width: 100%;
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 15px;
+        margin-top: 10px;
+    }
+}
