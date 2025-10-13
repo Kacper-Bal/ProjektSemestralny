@@ -374,7 +374,7 @@ h1 a:hover svg {
 }
 
 .username {
-    color: #c7d5e0;
+    color: #8f98a2;
     font-weight: bold;
     font-size: 1.1rem;
 }
@@ -571,6 +571,19 @@ h1 a:hover svg {
 .review-message {
     color: #67c1f5;
     font-size: 0.9rem;
+}
+
+.user-profile-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-decoration: none;
+    color: inherit; 
+}
+
+.user-profile-link:hover .username {
+    color: #38b6ff; 
+    text-decoration: underline;
 }
 
 @media (max-width: 1000px) {
