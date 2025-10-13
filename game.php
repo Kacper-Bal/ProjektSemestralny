@@ -9,7 +9,6 @@ if ($gameName == null) {
     exit;
 }
 
-// Pobieranie danych gry, w tym daty wydania
 $queryGame = "SELECT games.id, games.name, description, publishers.name as publisher, developers.name AS developer, price, date FROM games LEFT JOIN developers ON games.developer_id=developers.id LEFT JOIN publishers ON games.publisher_id=publishers.id WHERE games.name='$gameName'";
 $resultGame = $conn->query($queryGame);
 $gameData = $resultGame->fetch_assoc();
@@ -22,7 +21,6 @@ if (!$gameData) {
 $gameId = $gameData['id'];
 $reviewMessage = null;
 
-// --- LOGIKA DODAWANIA DO KOSZYKA ---
 if (isset($_GET['add_to_cart'])) {
     if ($currentUser) {
         $userId = $currentUser['user_id'];
@@ -37,7 +35,6 @@ if (isset($_GET['add_to_cart'])) {
     }
 }
 
-// Logika głosowania
 if (isset($_GET['vote']) && isset($_GET['review_id'])) {
     if ($currentUser) {
         $reviewId = (int)$_GET['review_id'];
@@ -56,7 +53,6 @@ if (isset($_GET['vote']) && isset($_GET['review_id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $currentUser) {
-    // --- LOGIKA DODAWANIA NOWEJ RECENZJI ---
     if (isset($_POST['submit_review'])) {
         $userId = $currentUser['user_id'];
         $rating = isset($_POST['rating']) ? intval($_POST['rating']) : 0;
@@ -65,7 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $currentUser) {
         if ($rating >= 1 && $rating <= 5 && !empty($comment)) {
             $insertQuery = "INSERT INTO reviews (user_id, game_id, rating, comment) VALUES ('$userId', '$gameId', '$rating', '$comment')";
             if ($conn->query($insertQuery)) {
-                // Przekierowanie po pomyślnym dodaniu komentarza
                 header('Location: game.php?game=' . urlencode($gameName) . '&status=review_added#reviews');
                 exit;
             } else {
@@ -76,7 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $currentUser) {
         }
     }
 
-    // --- LOGIKA EDYCJI RECENZJI ---
     if (isset($_POST['edit_review'])) {
         $userId = $currentUser['user_id'];
         $reviewId = (int)$_POST['review_id'];
@@ -89,7 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $currentUser) {
             if ($ownerResult && $ownerResult->num_rows > 0) {
                 $updateQuery = "UPDATE reviews SET rating = '$rating', comment = '$comment' WHERE id = $reviewId";
                 if ($conn->query($updateQuery)) {
-                    // Przekierowanie po pomyślnej edycji
                     header('Location: game.php?game=' . urlencode($gameName) . '#review-' . $reviewId);
                     exit;
                 } else {
@@ -100,11 +93,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $currentUser) {
     }
 }
 
-// Komunikat o statusie (np. po dodaniu recenzji)
 if (isset($_GET['status']) && $_GET['status'] === 'review_added') {
     $reviewMessage = "Recenzja została dodana!";
 }
-
 
 $safeGameName = preg_replace('/[^a-z0-9_-]/', '_', strtolower($gameName));
 
@@ -149,7 +140,14 @@ $resultReviews = $conn->query($queryReviews);
 <?php include 'header.php'; ?>
 
     <div id="container">
-        <h1><?= htmlspecialchars($gameName) ?></h1>
+        <h1>
+            <?= htmlspecialchars($gameName) ?>
+            <?php if ($currentUser && $currentUser['role'] == 1): ?>
+                <a href="gamedit.php?game=<?= urlencode($gameName) ?>" title="Edytuj grę">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024"><path fill="currentColor" d="M880 836H144c-17.7 0-32 14.3-32 32v36c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-36c0-17.7-14.3-32-32-32m-622.3-84c2 0 4-.2 6-.5L431.9 722c2-.4 3.9-1.3 5.3-2.8l423.9-423.9a9.96 9.96 0 0 0 0-14.1L694.9 114.9c-1.9-1.9-4.4-2.9-7.1-2.9s-5.2 1-7.1 2.9L256.8 538.8c-1.5 1.5-2.4 3.3-2.8 5.3l-29.5 168.2a33.5 33.5 0 0 0 9.4 29.8c6.6 6.4 14.9 9.9 23.8 9.9"/></svg>
+                </a>
+            <?php endif; ?>
+        </h1>
         <div class="images">
              <div class="main-image-container">
                  <div class="slide fade">
@@ -214,9 +212,9 @@ $resultReviews = $conn->query($queryReviews);
             </div>
         </div>
 
-        <hr class="buy-section-divider">
+        <hr class="divider">
         
-        <div class="buy-section-container">
+        <div class="buy-container">
             <div class="buy-box">
                 <h2>Kup <?= htmlspecialchars($gameName) ?></h2>
                 <div class="purchase-box">
@@ -227,6 +225,8 @@ $resultReviews = $conn->query($queryReviews);
                 </div>
             </div>
         </div>
+
+        <hr class="divider">
 
         <div id="reviews" class="reviews-section">
             <h2>Recenzje użytkowników</h2>

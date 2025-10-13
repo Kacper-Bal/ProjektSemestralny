@@ -1,26 +1,40 @@
-body{
-    background-color: #171a21;
+body {
+    background-color: #1b2838
 }
 
-#container{
+#container {
     display: flex;
     flex-wrap: wrap;
     max-width: 1000px;
     min-width: 800px;
     margin: 20px auto;
-    height: auto;
-    background-color: #1B2838;
+    background-color: #141E2A;
     color: white;
     padding: 20px 2%;
     gap: 4%;
-    position: relative; 
+    position: relative;
 }
 
-h1{
+h1 {
     width: 100%;
     font-size: 2rem;
     margin-bottom: 1rem;
     padding-left: 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+h1 svg {
+    width: 2rem;
+    height: 2rem;
+    color: white;
+    transition: fill 0.2s;
+    display: block; 
+}
+
+h1 a:hover svg {
+    color:#38b6ff
 }
 
 .images {
@@ -32,7 +46,6 @@ h1{
     align-self: flex-start;
 }
 
-/* --- Sekcja Galerii --- */
 .main-image-container {
     position: relative;
     width: 100%;
@@ -57,24 +70,30 @@ h1{
 }
 
 .prev, .next {
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  width: auto;
-  padding: 16px;
-  margin-top: -22px;
-  color: white;
-  font-weight: bold;
-  font-size: 20px;
-  transition: 0.6s ease;
-  border-radius: 0 3px 3px 0;
-  user-select: none;
-  background-color: rgba(0,0,0,0.3);
-  z-index: 2;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 2;
 }
 
-.next { right: 0; border-radius: 3px 0 0 3px; }
-.prev:hover, .next:hover { background-color: rgba(0,0,0,0.8); }
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
 
 .thumbnail-container {
     display: flex;
@@ -92,14 +111,18 @@ h1{
     border: 2px solid transparent;
 }
 
-.thumbnail.active, .thumbnail:hover { opacity: 1; }
-.thumbnail.active { border-color: #fff; }
+.thumbnail.active, .thumbnail:hover {
+    opacity: 1;
+}
 
-/* --- Sekcja Content --- */
+.thumbnail.active {
+    border-color: #fff;
+}
+
 .description {
     color: #76808c;
     text-align: justify;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.6;
 }
 
@@ -147,7 +170,7 @@ h1{
 
 .logo-container {
     width: 100%;
-    height: 60px;
+    height: 80px;
     background-color: #171a21;
     border-radius: 5px;
     display: flex;
@@ -157,6 +180,7 @@ h1{
     margin-bottom: 8px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: border-color 0.2s, box-shadow 0.2s;
+    
 }
 
 .detail-item a:hover .logo-container {
@@ -184,8 +208,8 @@ h1{
 }
 
 .platform-item {
-    width: 34px;
-    height: 34px;
+    width: 50px;
+    height: 50px;
     padding: 5px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 5px;
@@ -226,38 +250,38 @@ h1{
     text-decoration: none;
 }
 
-.buy-section-divider {
+.divider {
     width: 100%;
     border: none;
-    height: 1px;
+    height: 3px;
     background-color: #2c313a;
     margin: 20px 0;
 }
 
-.buy-section-container {
+.buy-container {
     width: 100%;
     position: relative;
-    height: 80px; 
+    height: 80px;
 }
 
 .buy-box {
-    width: 60%;
+    width: 70%;
     float: right;
     background: #171a21;
-    padding: 12px;
+    padding: 20px;
     border-radius: 5px;
 }
 
 .buy-box h2 {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: normal;
     color: #fff;
 }
 
 .purchase-box {
     position: absolute;
-    top: 50%;
-    left: 70%; 
+    top: 80%;
+    left: 68%;
     transform: translateY(-50%);
     width: 30%;
     background-color: #0e1218;
@@ -302,11 +326,10 @@ h1{
     text-decoration: none;
 }
 
-/* --- SEKCJA RECENZJI --- */
 .reviews-section {
     width: 100%;
     margin-top: 20px;
-    padding: 20px 0;
+    padding: 0;
 }
 
 .reviews-section h2 {
@@ -320,9 +343,9 @@ h1{
     background-color: #171a21;
     padding: 15px;
     border-radius: 5px;
-    margin-bottom: 15px;
+    margin-top: 25px;
     gap: 1%;
-    align-items: center; /* Wyrównuje wszystko w pionie */
+    align-items: center;
 }
 
 .review-user-info {
@@ -331,7 +354,6 @@ h1{
     align-items: center;
     gap: 15px;
     position: relative;
-    /* Usunięto padding-top, bo align-items: center robi robotę */
 }
 
 .avatar-placeholder {
@@ -344,10 +366,11 @@ h1{
     align-items: center;
     justify-content: center;
 }
+
 .avatar-placeholder svg {
-    width: 32px;
-    height: 32px;
-    fill: #c7d5e0; 
+    width: 45px;
+    height: 45px;
+    fill: #c7d5e0;
 }
 
 .username {
@@ -357,15 +380,22 @@ h1{
 }
 
 .review-main-content {
-    width: 74%;
     display: flex;
     flex-direction: column;
     position: relative;
     padding: 0 15px;
 }
 
-.review-user-info::after,
-.review-main-content::after {
+.review-item .review-main-content {
+    width: 74%;
+}
+
+.review-form .review-main-content {
+    width: 79%;
+}
+
+
+.review-user-info::after,.review-main-content::after {
     content: '';
     position: absolute;
     right: 0;
@@ -374,18 +404,10 @@ h1{
     width: 1px;
     background-color: #2c313a;
 }
+
 .review-form .review-main-content::after {
     display: none;
 }
-
-
-.review-item .review-main-content {
-    width: 74%;
-}
-.review-form .review-main-content {
-    width: 79%;
-}
-
 
 .review-top, .review-form-top {
     display: flex;
@@ -393,11 +415,13 @@ h1{
     align-items: center;
     margin-bottom: 10px;
 }
+
 .review-top-right {
     display: flex;
     align-items: center;
     gap: 15px;
 }
+
 .review-date {
     font-size: 0.8rem;
     color: #76808c;
@@ -409,39 +433,49 @@ h1{
     cursor: pointer;
     padding: 0;
     line-height: 0;
+    color: #76808c;
 }
+
 .edit-review-btn svg {
     width: 18px;
     height: 18px;
-    fill: #76808c;
     transition: fill 0.2s;
 }
+
 .edit-review-btn:hover svg {
-    fill: #fff;
+    color: #fff;
 }
 
+.review-stars, .stars-display {
+    font-size: 1.2rem;
+    color: #67c1f5;
+}
 
-.review-stars { font-size: 1.2rem; color: #67c1f5; }
-.stars-display { color: #67c1f5; }
+.rating-input {
+    display: flex;
+    flex-direction: row-reverse;
+}
 
-.rating-input { display: flex; flex-direction: row-reverse; }
-.rating-input input { display: none; }
+.rating-input input {
+    display: none;
+}
+
 .rating-input label {
     color: #434953;
     cursor: pointer;
     font-size: 1.5rem;
     transition: color 0.2s;
 }
-.rating-input input:checked ~ label,
-.rating-input label:hover,
-.rating-input label:hover ~ label {
+
+.rating-input input:checked ~ label,.rating-input label:hover,.rating-input label:hover ~ label {
     color: #67c1f5;
 }
 
-.review-comment-field, .review-edit-form form { 
-    display: flex; 
-    flex-direction: column; 
+.review-comment-field, .review-edit-form form {
+    display: flex;
+    flex-direction: column;
 }
+
 .review-comment-field textarea, .edit-textarea {
     width: 100%;
     background-color: #0e1218;
@@ -452,8 +486,14 @@ h1{
     resize: vertical;
     margin-bottom: 10px;
 }
-.review-comment-field textarea { height: 80px; }
-.edit-textarea { height: 120px; }
+
+.review-comment-field textarea {
+    height: 80px;
+}
+
+.edit-textarea {
+    height: 120px;
+}
 
 .form-footer {
     display: flex;
@@ -461,8 +501,8 @@ h1{
     align-items: center;
     gap: 15px;
 }
-.review-comment-field button,
-.review-edit-form button {
+
+.review-comment-field button,.review-edit-form button {
     padding: 8px 15px;
     color: white;
     border: none;
@@ -470,23 +510,28 @@ h1{
     cursor: pointer;
     transition: background-color 0.2s;
 }
-.review-comment-field button,
-.review-edit-form button[type="submit"] {
-     background-color: #4b619b;
+
+.review-comment-field button,.review-edit-form button[type="submit"] {
+    background-color: #4b619b;
 }
-.review-comment-field button:hover,
-.review-edit-form button[type="submit"]:hover {
+
+.review-comment-field button:hover,.review-edit-form button[type="submit"]:hover {
     background-color: #5c72ad;
 }
 
 .review-edit-form .cancel-btn {
     background-color: #76808c;
 }
+
 .review-edit-form .cancel-btn:hover {
     background-color: #8f98a2;
 }
 
-.review-comment-content { color: #acb2b8; line-height: 1.5; padding-top: 5px; }
+.review-comment-content {
+    color: #acb2b8;
+    line-height: 1.5;
+    padding-top: 5px;
+}
 
 .review-voting {
     width: 5%;
@@ -495,20 +540,34 @@ h1{
     align-items: center;
     justify-content: center;
 }
+
 .vote-arrow {
     color: #76808c;
     text-decoration: none;
     font-size: 1.5rem;
     transition: color 0.2s;
 }
-.vote-arrow:hover { color: #fff; }
-.vote-arrow.disabled { pointer-events: none; opacity: 0.5; }
-.vote-arrow.voted { color: #38b6ff; }
+
+.vote-arrow:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+.vote-arrow.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.vote-arrow.voted {
+    color: #38b6ff;
+}
+
 .vote-count {
     color: #fff;
     font-size: 1.1rem;
     margin: 5px 0;
 }
+
 .review-message {
     color: #67c1f5;
     font-size: 0.9rem;
@@ -522,8 +581,7 @@ h1{
         padding: 20px 5%;
     }
 
-    .images,
-    .content {
+    .images,.content {
         width: 100%;
     }
 
@@ -531,45 +589,42 @@ h1{
         margin-bottom: 20px;
     }
 
-    @media (max-width: 1000px) {
-        /* ... inne style ... */
-    
-        /* --- POWIĘKSZENIE LOGO I IKON --- */
-        .details-container {
-            display: flex;
-            flex-direction: row; /* Zmieniono z 'column' na 'row' */
-            gap: 15px; /* Można dostosować odstęp */
-        }
-    
-        .detail-item {
-            flex: 1; /* Pozwoli elementom równo dzielić przestrzeń */
-            min-width: 150px; /* Zapobiega zbytnim ściskaniu się logo */
-        }
-        
-        .logo-container {
-            height: 80px; /* Zmniejszono trochę dla lepszego dopasowania w rzędzie */
-        }
-    
-        .platform-item {
-            width: 48px;
-            height: 48px;
-        }
-        /* ... reszta stylów ... */
+    .details-container {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+    }
+
+    .detail-item {
+        flex: 1;
+        min-width: 150px;
+    }
+
+    .logo-container {
+        height: 100px;
+    }
+
+    .platform-item {
+        width: 48px;
+        height: 48px;
+    }
+
+    .buy-container{
+        height: 100px;
     }
     .buy-box {
         width: 100%;
         float: none;
+        padding: 25px;
     }
 
     .purchase-box {
-        position: static;
-        transform: none;
-        width: 100%;
-        margin-top: 10px;
+        width: 45%;
+        left: 53%;
+        top: 80%;
     }
 
-    .review-item,
-    .review-form {
+    .review-item,.review-form {
         flex-direction: column;
         align-items: flex-start;
     }
@@ -580,20 +635,14 @@ h1{
         margin-bottom: 15px;
         border-bottom: 1px solid #2c313a;
     }
-    
-    .review-user-info::after{
+
+    .review-user-info::after,.review-main-content::after {
         display: none;
     }
 
-    .review-main-content,
-    .review-item .review-main-content,
-    .review-form .review-main-content {
+    .review-main-content,.review-item .review-main-content,.review-form .review-main-content {
         width: 100%;
         padding: 0;
-    }
-    
-    .review-main-content::after{
-        display: none;
     }
 
     .review-voting {
