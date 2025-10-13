@@ -39,7 +39,7 @@ require_once('auth.php');
     if (!in_array($currentPage, $pagesToHideOn)):
     ?>
     <div id="header-bottom">
-        <form id="searchForm">
+        <form id="searchForm" action="search.php" method="GET">
             <input type="text" name="game_name" placeholder="Wyszukaj gre">
             <input type="submit" value="Szukaj">
         </form>

@@ -70,6 +70,7 @@ $queryReviews = "SELECT r.rating, r.comment, r.created_at, u.username
 $resultReviews = $conn->query($queryReviews);
 
 ?>
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -77,114 +78,15 @@ $resultReviews = $conn->query($queryReviews);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($gameData["name"]) ?></title>
     <link rel="stylesheet" href="style/styleGame.css">
+    <link rel="stylesheet" href="style/styleCommon.css">
 </head>
 <body>
+<?php include 'header.php'; ?>
 
-    <div class="container">
-        <header class="game-header">
-            <h1><?= htmlspecialchars($gameData["name"]) ?></h1>
-        </header>
-
-        <section class="game-content">
-            <p class="game-description"><?= htmlspecialchars($gameData["description"]) ?></p>
-
-            <div class="screenshots-container">
-                <?php 
-                $safeGameName = preg_replace('/[^a-zA-Z0-9_-]/', '_', $gameData["name"]);
-                for ($i = 1; $i <= 4; $i++): ?>
-                    <img class="screenshot-item" src="/steam/img/games/<?= htmlspecialchars($safeGameName) ?>_<?= $i ?>.jpg" alt="Screenshot <?= $i ?>">
-                <?php endfor; ?>
-            </div>
-
-            <div class="game-details">
-                <div class="detail-item">
-                    <h3>Wydawca</h3>
-                    <p><?= htmlspecialchars($gameData["publisher"]) ?></p>
-                    <img class="logo-image" src="/steam/img/publisher/<?= preg_replace('/[^a-zA-Z0-9_-]/', '_', $gameData["publisher"]) ?>.jpg" alt="Logo <?= htmlspecialchars($gameData["publisher"]) ?>">
-                </div>
-                <div class="detail-item">
-                    <h3>Producent</h3>
-                    <p><?= htmlspecialchars($gameData["developer"]) ?></p>
-                    <img class="logo-image" src="/steam/img/developer/<?= preg_replace('/[^a-zA-Z0-9_-]/', '_', $gameData["developer"]) ?>.jpg" alt="Logo <?= htmlspecialchars($gameData["developer"]) ?>">
-                </div>
-            </div>
-
-            <div class="game-meta">
-                <div class="tags-container">
-                    <?php while ($row = $resultTag->fetch_assoc()): ?>
-                        <span class="tag-item"><?= htmlspecialchars($row["name"]) ?></span>
-                    <?php endwhile; ?>
-                </div>
-                <div class="platforms-container">
-                    <?php while ($row = $resultPlat->fetch_assoc()): ?>
-                        <span class="platform-item" 
-                              data-platform-name="<?= htmlspecialchars($row['name']) ?>" 
-                              title="<?= htmlspecialchars($row['name']) ?>">
-                            </span>
-                    <?php endwhile; ?>
-                </div>
-            </div>
-
-            <div class="game-price">
-                Cena: <?= htmlspecialchars($gameData["price"]) ?> PLN
-            </div>
-        </section>
-        <section class="review-section">
-            <h2>Opinie</h2>
-
-            <?php if ($currentUser): ?>
-                <div class="review-form-container">
-                    <h3>Dodaj swoją opinię:</h3>
-                    <form method="post" class="review-form">
-                        <div class="form-group rating-group">
-                            <label>Ocena:</label>
-                            <div class="rating-stars">
-                                <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 gwiazdek">★</label>
-                                <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 gwiazdki">★</label>
-                                <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 gwiazdki">★</label>
-                                <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 gwiazdki">★</label>
-                                <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 gwiazdka">★</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="comment">Komentarz:</label>
-                            <textarea name="comment" id="comment" rows="4"></textarea>
-                        </div>
-                        <button type="submit" name="submit_review">Wyślij opinię</button>
-                    </form>
-                </div>
-            <?php endif; ?>
-
-            <?php if ($reviewMessage): ?>
-                <p class="review-message"><?= htmlspecialchars($reviewMessage); ?></p>
-            <?php endif; ?>
-
-            <div class="reviews-list">
-                <?php if ($resultReviews && $resultReviews->num_rows > 0): ?>
-                    <ul>
-                        <?php while($row = $resultReviews->fetch_assoc()): ?>
-                            <li class="review-item">
-                                <div class="review-header">
-                                    <span class="review-author"><?= htmlspecialchars($row['username']); ?></span>
-                                    <span class="review-date"><?= date('d.m.Y H:i', strtotime($row['created_at'])); ?></span>
-                                </div>
-                                <div class="review-rating">
-                                    <span class="stars-display"><?= str_repeat('★', $row['rating']); ?><?= str_repeat('☆', 5 - $row['rating']); ?></span>
-                                </div>
-                                <p class="review-comment">
-                                    <?= nl2br(htmlspecialchars($row['comment'])); ?>
-                                </p>
-                            </li>
-                        <?php endwhile; ?>
-                    </ul>
-                <?php else: ?>
-                    <p>Brak opinii dla tej gry. Bądź pierwszy!</p>
-                <?php endif; ?>
-            </div>
-        </section>
-
+    <div id="container">
+        <?php echo"<h1>$gameName</h1>"; ?>
     </div>
-    
-    <script src="skrypty.js"></script>
+<?php include 'footer.php'; ?>
+<script src="skrypty.js"></script>
 </body>
 </html>

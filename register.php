@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header("Location: register.php");
             exit;
         } else {
-            $hashedPassword = hash('sha266', $password . PASSWORD_SALT);
+            $hashedPassword = hash('sha256', $password . PASSWORD_SALT);
 
             $query = "INSERT INTO users (username, email, password) 
                       VALUES ('$username', '$email', '$hashedPassword')";
