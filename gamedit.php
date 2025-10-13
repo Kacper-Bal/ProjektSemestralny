@@ -3,25 +3,20 @@ session_start();
 require_once 'conn.php';
 require_once 'auth.php';
 
-// --- CORE PHP LOGIC ---
-
-// 1. Authorization Check
 if (!$currentUser || $currentUser['role'] != 1) {
     header('Location: index.php');
     exit;
 }
 
-// 2. Get Game Data
 $gameName = $_GET['game'] ?? null;
 if (!$gameName) {
     header('Location: index.php');
     exit;
 }
 
-$stmt = $conn->prepare("SELECT * FROM games WHERE name = ?");
-$stmt->bind_param("s", $gameName);
-$stmt->execute();
-$gameResult = $stmt->get_result();
+$gameNameEsc = $conn->real_escape_string($gameName);
+$gameResult = $conn->query("SELECT * FROM games WHERE name = '$gameNameEsc'");
+
 
 if ($gameResult->num_rows === 0) {
     header('Location: index.php');
@@ -29,27 +24,20 @@ if ($gameResult->num_rows === 0) {
 }
 $game = $gameResult->fetch_assoc();
 $game_id = (int)$game['id'];
-$stmt->close();
 
 $error = null;
 $success = null;
 
-// 3. Handle POST Requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Handle Review Deletion
     if (isset($_POST['delete_review'])) {
         $review_id = (int)($_POST['review_id'] ?? 0);
         if ($review_id) {
-            $deleteStmt = $conn->prepare("DELETE FROM reviews WHERE id = ? AND game_id = ?");
-            $deleteStmt->bind_param("ii", $review_id, $game_id);
-            $deleteStmt->execute();
-            if ($deleteStmt->affected_rows > 0) {
+            $conn->query("DELETE FROM reviews WHERE id = $review_id AND game_id = $game_id");
+            if ($conn->affected_rows > 0) {
                 $success = 'Komentarz został pomyślnie usunięty.';
             }
-            $deleteStmt->close();
         }
     }
-    // Handle Game Save
     elseif (isset($_POST['save_game'])) {
         $newName = trim($_POST['name'] ?? '');
         $description = trim($_POST['description'] ?? '');
@@ -68,35 +56,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $conn->begin_transaction();
             try {
-                $updateStmt = $conn->prepare("UPDATE games SET name = ?, description = ?, date = ?, developer_id = ?, publisher_id = ?, price = ? WHERE id = ?");
-                $updateStmt->bind_param("sssiidi", $newName, $description, $date, $developer_id, $publisher_id, $price, $game_id);
-                $updateStmt->execute();
+                $newNameEsc = $conn->real_escape_string($newName);
+                $descriptionEsc = $conn->real_escape_string($description);
 
-                // Update platforms
-                $deletePltStmt = $conn->prepare("DELETE FROM game_platforms WHERE game_id = ?");
-                $deletePltStmt->bind_param("i", $game_id);
-                $deletePltStmt->execute();
+                $updateQuery = "UPDATE games SET name = '$newNameEsc', description = '$descriptionEsc', date = '$date', developer_id = $developer_id, publisher_id = $publisher_id, price = '$price' WHERE id = $game_id";
+                $conn->query($updateQuery);
 
-                $insertPltStmt = $conn->prepare("INSERT INTO game_platforms (game_id, platform_id) VALUES (?, ?)");
+                $conn->query("DELETE FROM game_platforms WHERE game_id = $game_id");
                 foreach ($selectedPlatforms as $platformId) {
                     $pId = (int)$platformId;
-                    $insertPltStmt->bind_param("ii", $game_id, $pId);
-                    $insertPltStmt->execute();
+                    $conn->query("INSERT INTO game_platforms (game_id, platform_id) VALUES ($game_id, $pId)");
                 }
 
-                // Update tags
-                $deleteTagStmt = $conn->prepare("DELETE FROM game_tags WHERE game_id = ?");
-                $deleteTagStmt->bind_param("i", $game_id);
-                $deleteTagStmt->execute();
-
-                $insertTagStmt = $conn->prepare("INSERT INTO game_tags (game_id, tag_id) VALUES (?, ?)");
+                $conn->query("DELETE FROM game_tags WHERE game_id = $game_id");
                 foreach ($selectedTags as $tagId) {
                     $tId = (int)$tagId;
-                    $insertTagStmt->bind_param("ii", $game_id, $tId);
-                    $insertTagStmt->execute();
+                    $conn->query("INSERT INTO game_tags (game_id, tag_id) VALUES ($game_id, $tId)");
                 }
 
-                // Handle screenshot uploads
                 $safeGameName = preg_replace('/[^a-z0-9_-]/', '_', strtolower($newName));
                 for ($i = 0; $i < 4; $i++) {
                     if (isset($screenshots['error'][$i]) && $screenshots['error'][$i] === UPLOAD_ERR_OK) {
@@ -119,30 +96,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Check for a success message after redirecting
 if(isset($_GET['status']) && $_GET['status'] === 'success') {
     $success = 'Zmiany zostały pomyślnie zapisane.';
 }
 
-// 4. Fetch Data for Form
 $devResult = $conn->query("SELECT id, name FROM developers ORDER BY name ASC");
 $pubResult = $conn->query("SELECT id, name FROM publishers ORDER BY name ASC");
 $pltResult = $conn->query("SELECT id, name FROM platforms ORDER BY name ASC");
 $tagResult = $conn->query("SELECT id, name FROM tags ORDER BY name ASC");
 $reviewsResult = $conn->query("SELECT reviews.id, comment, created_at, rating, users.username FROM reviews LEFT JOIN users ON reviews.user_id = users.id WHERE game_id = $game_id ORDER BY created_at DESC");
 
-// Get current platforms for the game
 $currentPltsResult = $conn->query("SELECT platform_id FROM game_platforms WHERE game_id = $game_id");
 $currentPlatforms = [];
 while ($row = $currentPltsResult->fetch_assoc()) $currentPlatforms[] = $row['platform_id'];
 
-// Get current tags for the game
 $currentTagsResult = $conn->query("SELECT tag_id FROM game_tags WHERE game_id = $game_id");
 $currentTags = [];
 while ($row = $currentTagsResult->fetch_assoc()) $currentTags[] = $row['tag_id'];
 
-
-// 5. Helper function for finding logos
 function find_logo_path($name, $role) {
     $safeName = preg_replace('/[^a-zA-Z0-9_-]/', '_', strtolower($name));
     foreach (['png','jpg'] as $ext) {
@@ -151,7 +122,6 @@ function find_logo_path($name, $role) {
     }
     return null;
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -160,57 +130,6 @@ function find_logo_path($name, $role) {
     <title>Edytuj grę: <?= htmlspecialchars($game['name']) ?></title>
     <link rel="stylesheet" href="style/styleGame.css">
     <link rel="stylesheet" href="style/styleCommon.css">
-    <style>
-        /* Custom styles ONLY for the uploader and selection elements */
-        .uploader-container {
-            border: 2px dashed #434953;
-            cursor: pointer;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-            display: flex; /* To center the label */
-            align-items: center;
-            justify-content: center;
-        }
-
-        .uploader-label {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-            color: #76808c;
-            background-color: rgba(0,0,0,0.5);
-            opacity: 0;
-            transition: opacity 0.2s;
-            text-align: center;
-        }
-
-        .uploader-container:hover .uploader-label {
-            opacity: 1;
-        }
-
-        .uploader-label.visible {
-            opacity: 1;
-            background-color: transparent;
-        }
-
-        .uploader-input {
-            display: none;
-        }
-
-        .platform-item.selected, .tag-item.selected {
-            border-color: #ffffff;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
-        }
-        .tag-item.selected {
-            background-color: rgba(103, 193, 245, 0.4);
-            color: #fff;
-        }
-        .tag-item {
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body>
 <?php include 'header.php'; ?>
@@ -240,7 +159,6 @@ function find_logo_path($name, $role) {
             <p style="width: 100%; margin-bottom: 10px;">Kliknij na obrazek, aby go podmienić</p>
 
             <?php
-            // --- Main Screenshot Uploader (index 0) ---
             $i = 0;
             $safeGameName = preg_replace('/[^a-zA-Z0-9_-]/', '_', strtolower($game['name']));
             $imagePath = null;
@@ -370,7 +288,6 @@ function find_logo_path($name, $role) {
 <?php include 'footer.php'; ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // JS for screenshot previews
     document.querySelectorAll('.uploader-input').forEach(input => {
         input.addEventListener('change', function() {
             const previewBox = document.getElementById(this.dataset.previewTarget);
@@ -387,7 +304,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // JS for developer and publisher logo previews
     function setupLogoPreview(selectId, previewId) {
         const select = document.getElementById(selectId);
         const preview = document.getElementById(previewId);
@@ -401,7 +317,6 @@ document.addEventListener('DOMContentLoaded', function() {
     setupLogoPreview('developer_select', 'developer_logo_preview');
     setupLogoPreview('publisher_select', 'publisher_logo_preview');
 
-    // JS for platform selection
     const platformSvgs = {
         'windows': `<svg viewBox="0 0 56.693 56.693" xmlns="http://www.w3.org/2000/svg"><g><path d="M3.765,46.362l19.836,2.873V30.257H3.765V46.362z M3.765,27.546h19.836V8.566L3.765,11.439V27.546z M26.312,49.628 l26.616,3.855V30.257H26.312V49.628z M26.312,8.172v19.374h26.616V4.319L26.312,8.172z"/></g></svg>`,
         'playstation': `<svg fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M15.858 11.451c-.313.395-1.079.676-1.079.676l-5.696 2.046v-1.509l4.192-1.493c.476-.17.549-.412.162-.538-.386-.127-1.085-.09-1.56.08l-2.794.984v-1.566l.161-.054s.807-.286 1.942-.412c1.135-.125 2.525.017 3.616.43 1.23.39 1.368.962 1.056 1.356ZM9.625 8.883v-3.86c0-.453-.083-.87-.508-.988-.326-.105-.528.198-.528.65v9.664l-2.606-.827V2c1.108.206 2.722.692 3.59.985 2.207.757 2.955 1.7 2.955 3.825 0 2.071-1.278 2.856-2.903 2.072Zm-8.424 3.625C-.061 12.15-.271 11.41.304 10.984c.532-.394 1.436-.69 1.436-.69l3.737-1.33v1.515l-2.69.963c-.474.17-.547.411-.161.538.386.126 1.085.09 1.56-.08l1.29-.469v1.356l-.257.043a8.454 8.454 0 0 1-4.018-.323Z"/></svg>`,

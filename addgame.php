@@ -3,21 +3,16 @@ session_start();
 require_once 'conn.php';
 require_once 'auth.php';
 
-// --- CORE PHP LOGIC ---
-
-// 1. Authorization Check
 if (!$currentUser || $currentUser['role'] != 1) {
     header('Location: index.php');
     exit;
 }
 
-// 2. Load form data from session if available (e.g., after adding a new developer)
 $formData = $_SESSION['addgame_form_data'] ?? [];
 if (isset($_SESSION['addgame_form_data'])) {
     unset($_SESSION['addgame_form_data']);
 }
 
-// Pre-select newly added developer/publisher
 if (isset($_SESSION["new_developer_id"])) {
     $formData['developer'] = $_SESSION["new_developer_id"];
     unset($_SESSION["new_developer_id"], $_SESSION["new_developer_name"]);
@@ -27,20 +22,16 @@ if (isset($_SESSION["new_publisher_id"])) {
     unset($_SESSION["new_publisher_id"], $_SESSION["new_publisher_name"]);
 }
 
-
 $error = null;
 $success = null;
 
-// 3. Handle POST Requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Save form state in session before redirecting to add publisher/developer
     if (isset($_POST['save_state_and_redirect'])) {
         $_SESSION['addgame_form_data'] = $_POST;
         $redirect_url = $_POST['redirect_url'];
         header("Location: $redirect_url");
         exit;
     }
-
 
     if (isset($_POST['add_game'])) {
         $name = trim($_POST['name'] ?? '');
@@ -58,41 +49,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif (!is_numeric($price) || $price < 0) {
             $error = 'Cena musi być liczbą większą lub równą 0.';
         } else {
-             // Check if all 4 screenshots are uploaded
             $uploaded_files = 0;
             for ($i = 0; $i < 4; $i++) {
                 if (isset($screenshots['error'][$i]) && $screenshots['error'][$i] === UPLOAD_ERR_OK) {
                     $uploaded_files++;
                 }
             }
-            if($uploaded_files < 4){
+            if ($uploaded_files < 4) {
                 $error = 'Wymagane są 4 screenshoty.';
-            }
-            else {
+            } else {
                 $conn->begin_transaction();
                 try {
-                    $insertStmt = $conn->prepare("INSERT INTO games (name, description, date, developer_id, publisher_id, price) VALUES (?, ?, ?, ?, ?, ?)");
-                    $insertStmt->bind_param("sssiid", $name, $description, $date, $developer_id, $publisher_id, $price);
-                    $insertStmt->execute();
+                    $nameEsc = $conn->real_escape_string($name);
+                    $descriptionEsc = $conn->real_escape_string($description);
+
+                    $insertQuery = "INSERT INTO games (name, description, date, developer_id, publisher_id, price) VALUES ('$nameEsc', '$descriptionEsc', '$date', $developer_id, $publisher_id, '$price')";
+                    $conn->query($insertQuery);
                     $newGameId = $conn->insert_id;
 
-                    // Insert platforms
-                    $insertPltStmt = $conn->prepare("INSERT INTO game_platforms (game_id, platform_id) VALUES (?, ?)");
                     foreach ($selectedPlatforms as $platformId) {
                         $pId = (int)$platformId;
-                        $insertPltStmt->bind_param("ii", $newGameId, $pId);
-                        $insertPltStmt->execute();
+                        $conn->query("INSERT INTO game_platforms (game_id, platform_id) VALUES ($newGameId, $pId)");
                     }
 
-                    // Insert tags
-                    $insertTagStmt = $conn->prepare("INSERT INTO game_tags (game_id, tag_id) VALUES (?, ?)");
                     foreach ($selectedTags as $tagId) {
                         $tId = (int)$tagId;
-                        $insertTagStmt->bind_param("ii", $newGameId, $tId);
-                        $insertTagStmt->execute();
+                        $conn->query("INSERT INTO game_tags (game_id, tag_id) VALUES ($newGameId, $tId)");
                     }
 
-                    // Handle screenshot uploads
                     $safeGameName = preg_replace('/[^a-z0-9_-]/', '_', strtolower($name));
                     for ($i = 0; $i < 4; $i++) {
                         if (isset($screenshots['error'][$i]) && $screenshots['error'][$i] === UPLOAD_ERR_OK) {
@@ -114,14 +98,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-
-// 4. Fetch Data for Form
 $devResult = $conn->query("SELECT id, name FROM developers ORDER BY name ASC");
 $pubResult = $conn->query("SELECT id, name FROM publishers ORDER BY name ASC");
 $pltResult = $conn->query("SELECT id, name FROM platforms ORDER BY name ASC");
 $tagResult = $conn->query("SELECT id, name FROM tags ORDER BY name ASC");
 
-// 5. Helper function for finding logos
 function find_logo_path($name, $role) {
     $safeName = preg_replace('/[^a-zA-Z0-9_-]/', '_', strtolower($name));
     foreach (['png','jpg'] as $ext) {
@@ -130,7 +111,6 @@ function find_logo_path($name, $role) {
     }
     return null;
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -139,57 +119,6 @@ function find_logo_path($name, $role) {
     <title>Dodaj nową grę</title>
     <link rel="stylesheet" href="style/styleGame.css">
     <link rel="stylesheet" href="style/styleCommon.css">
-    <style>
-        /* Custom styles ONLY for the uploader and selection elements */
-        .uploader-container {
-            border: 2px dashed #434953;
-            cursor: pointer;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-            display: flex; /* To center the label */
-            align-items: center;
-            justify-content: center;
-        }
-
-        .uploader-label {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-            color: #76808c;
-            background-color: rgba(0,0,0,0.5);
-            opacity: 0;
-            transition: opacity 0.2s;
-            text-align: center;
-        }
-
-        .uploader-container:hover .uploader-label {
-            opacity: 1;
-        }
-
-        .uploader-label.visible {
-            opacity: 1;
-            background-color: transparent;
-        }
-
-        .uploader-input {
-            display: none;
-        }
-
-        .platform-item.selected, .tag-item.selected {
-            border-color: #ffffff;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
-        }
-        .tag-item.selected {
-            background-color: rgba(103, 193, 245, 0.4);
-            color: #fff;
-        }
-        .tag-item {
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body>
 <?php include 'header.php'; ?>
@@ -301,7 +230,6 @@ function find_logo_path($name, $role) {
 <?php include 'footer.php'; ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // JS for screenshot previews
     document.querySelectorAll('.uploader-input').forEach(input => {
         input.addEventListener('change', function() {
             const previewBox = document.getElementById(this.dataset.previewTarget);
@@ -318,7 +246,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // JS for developer and publisher logo previews
     function setupLogoPreview(selectId, previewId) {
         const select = document.getElementById(selectId);
         const preview = document.getElementById(previewId);
@@ -332,7 +259,6 @@ document.addEventListener('DOMContentLoaded', function() {
     setupLogoPreview('developer_select', 'developer_logo_preview');
     setupLogoPreview('publisher_select', 'publisher_logo_preview');
 
-    // JS for platform selection
     const platformSvgs = {
         'windows': `<svg viewBox="0 0 56.693 56.693" xmlns="http://www.w3.org/2000/svg"><g><path d="M3.765,46.362l19.836,2.873V30.257H3.765V46.362z M3.765,27.546h19.836V8.566L3.765,11.439V27.546z M26.312,49.628 l26.616,3.855V30.257H26.312V49.628z M26.312,8.172v19.374h26.616V4.319L26.312,8.172z"/></g></svg>`,
         'playstation': `<svg fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M15.858 11.451c-.313.395-1.079.676-1.079.676l-5.696 2.046v-1.509l4.192-1.493c.476-.17.549-.412.162-.538-.386-.127-1.085-.09-1.56.08l-2.794.984v-1.566l.161-.054s.807-.286 1.942-.412c1.135-.125 2.525.017 3.616.43 1.23.39 1.368.962 1.056 1.356ZM9.625 8.883v-3.86c0-.453-.083-.87-.508-.988-.326-.105-.528.198-.528.65v9.664l-2.606-.827V2c1.108.206 2.722.692 3.59.985 2.207.757 2.955 1.7 2.955 3.825 0 2.071-1.278 2.856-2.903 2.072Zm-8.424 3.625C-.061 12.15-.271 11.41.304 10.984c.532-.394 1.436-.69 1.436-.69l3.737-1.33v1.515l-2.69.963c-.474.17-.547.411-.161.538.386.126 1.085.09 1.56-.08l1.29-.469v1.356l-.257.043a8.454 8.454 0 0 1-4.018-.323Z"/></svg>`,

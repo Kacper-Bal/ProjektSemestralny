@@ -24,7 +24,7 @@ require_once('auth.php');
     <?php endif; ?>
 
     <h2 style="margin-top: 1000px;">Dodawanie developerów/wydawców</h2>
-    <a href="addgames.php">Dodaj grę</a><br>
+    <a href="addgame.php">Dodaj grę</a><br>
     <a href="game.php?game=Dark+Souls">Wyświetl gre</a>
 
     <?php include('footer.php'); ?>

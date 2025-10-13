@@ -35,7 +35,7 @@ require_once('auth.php');
 
     <?php
     $currentPage = basename($_SERVER['PHP_SELF']);
-    $pagesToHideOn = ['login.php', 'register.php', 'addgames.php', 'addpubdev.php', 'gamedit.php'];
+    $pagesToHideOn = ['login.php', 'register.php', 'addgame.php', 'addpubdev.php', 'gamedit.php'];
     if (!in_array($currentPage, $pagesToHideOn)):
     ?>
     <div id="header-bottom">
