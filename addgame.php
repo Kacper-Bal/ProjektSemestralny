@@ -1,6 +1,14 @@
 <?php
 session_start();
 
+if (($_GET['action'] ?? '') === 'cancel') {
+    if (isset($_SESSION['addgame_form_data'])) {
+        unset($_SESSION['addgame_form_data']);
+    }
+    header('Location: index.php');
+    exit;
+}
+
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
@@ -141,13 +149,9 @@ function find_logo_path($name, $role) {
 
         <h1>
             Dodaj nową grę: 
-            <input type="text" class="h1-input" name="name" value="<?= htmlspecialchars($formData['name'] ?? '') ?>" required style="font-size: 1em; width: 60%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 5px;">
+            <input type="text" class="h1-input" name="name" value="<?= htmlspecialchars($formData['name'] ?? '') ?>" style="font-size: 1em; width: 60%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 5px;">
         </h1>
         
-
-        <?php if ($error): ?>
-            <p style="color: red; width: 100%;"><?= htmlspecialchars($error) ?></p>
-        <?php endif; ?>
         <?php if ($success): ?>
             <p style="color: lightgreen; width: 100%;"><?= htmlspecialchars($success) ?></p>
         <?php endif; ?>
@@ -157,14 +161,14 @@ function find_logo_path($name, $role) {
 
             <label for="screenshot_input_0" class="main-image-container uploader-container" id="preview_0">
                 <span class="uploader-label visible">Kliknij, aby wybrać główny screenshot</span>
-                <input type="file" name="screenshots[]" class="uploader-input" id="screenshot_input_0" data-preview-target="preview_0" accept="image/png,image/jpeg" required>
+                <input type="file" name="screenshots[]" class="uploader-input" id="screenshot_input_0" data-preview-target="preview_0" accept="image/png,image/jpeg">
             </label>
 
             <div class="thumbnail-container">
                 <?php for($i = 1; $i < 4; $i++): ?>
                     <label for="screenshot_input_<?= $i ?>" class="thumbnail uploader-container" id="preview_<?= $i ?>">
                         <span class="uploader-label visible">Wybierz plik</span>
-                        <input type="file" name="screenshots[]" class="uploader-input" id="screenshot_input_<?= $i ?>" data-preview-target="preview_<?= $i ?>" accept="image/png,image/jpeg" required>
+                        <input type="file" name="screenshots[]" class="uploader-input" id="screenshot_input_<?= $i ?>" data-preview-target="preview_<?= $i ?>" accept="image/png,image/jpeg">
                     </label>
                 <?php endfor; ?>
             </div>
@@ -181,15 +185,15 @@ function find_logo_path($name, $role) {
 
         <div class="content">
             <span class="detail-title">OPIS GRY:</span>
-            <textarea name="description" required class="edit-textarea" style="height: 120px; margin-bottom: 15px;"><?= htmlspecialchars($formData['description'] ?? '') ?></textarea>
+            <textarea name="description" class="edit-textarea" style="height: 120px; margin-bottom: 15px;"><?= htmlspecialchars($formData['description'] ?? '') ?></textarea>
 
             <span class="detail-title">DATA WYDANIA:</span>
-            <input type="date" name="date" value="<?= htmlspecialchars($formData['date'] ?? '') ?>" required style="width: 100%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 10px; border-radius: 3px; color-scheme: dark; margin-bottom: 15px;">
+            <input type="date" name="date" value="<?= htmlspecialchars($formData['date'] ?? '') ?>" style="width: 100%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 10px; border-radius: 3px; color-scheme: dark; margin-bottom: 15px;">
 
             <div class="details-container">
                 <div class="detail-item">
                     <span class="detail-title">DEWELOPER:</span>
-                    <select name="developer" id="developer_select" required style="width: 100%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 10px; border-radius: 3px; margin-bottom: 8px;">
+                    <select name="developer" id="developer_select" style="width: 100%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 10px; border-radius: 3px; margin-bottom: 8px;">
                         <option value="">-- Wybierz dewelopera --</option>
                         <?php while($row = $devResult->fetch_assoc()): ?>
                             <option value="<?= $row['id'] ?>" data-logo="<?= htmlspecialchars(find_logo_path($row['name'], 'developer') ?? '') ?>" <?= (($formData['developer'] ?? 0) == $row['id']) ? 'selected' : '' ?>>
@@ -202,7 +206,7 @@ function find_logo_path($name, $role) {
                 </div>
                 <div class="detail-item">
                     <span class="detail-title">WYDAWCA:</span>
-                    <select name="publisher" id="publisher_select" required style="width: 100%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 10px; border-radius: 3px; margin-bottom: 8px;">
+                    <select name="publisher" id="publisher_select" style="width: 100%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 10px; border-radius: 3px; margin-bottom: 8px;">
                         <option value="">-- Wybierz wydawcę --</option>
                         <?php while($row = $pubResult->fetch_assoc()): ?>
                             <option value="<?= $row['id'] ?>" data-logo="<?= htmlspecialchars(find_logo_path($row['name'], 'publisher') ?? '') ?>" <?= (($formData['publisher'] ?? 0) == $row['id']) ? 'selected' : '' ?>>
@@ -230,10 +234,16 @@ function find_logo_path($name, $role) {
             </div>
             
             <span class="detail-title">CENA (PLN):</span>
-            <input type="number" name="price" step="0.01" min="0" value="<?= htmlspecialchars($formData['price'] ?? '0.00') ?>" required style="width: 100%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 10px; border-radius: 3px;">
+            <input type="number" name="price" step="0.01" min="0" value="<?= htmlspecialchars($formData['price'] ?? '0.00') ?>" style="width: 100%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 10px; border-radius: 3px;">
         </div>
-
-        <button type="submit" class="cart-button" style="width: 30%; margin-top: 20px; margin-bottom: 20px; margin-left: auto; margin-right: auto;">Dodaj Grę</button>
+        
+        <?php if ($error): ?>
+            <p style="color: red; width: 100%; text-align: center; margin-bottom: 10px;"><?= htmlspecialchars($error) ?></p>
+        <?php endif; ?>
+        <div class="form-button-container">
+            <a href="addgame.php?action=cancel" class="cart-button cancel-btn-red">Anuluj</a>
+            <button type="submit" class="cart-button">Dodaj Grę</button>
+        </div>
     </form>
     
 </div>

@@ -2,6 +2,11 @@
 require_once 'conn.php';
 require_once 'auth.php';
 
+// Start sesji, jeśli jeszcze nie jest aktywna
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 $gameName = $_GET["game"] ?? null;
 
 if ($gameName == null) {
@@ -19,8 +24,21 @@ if (!$gameData) {
 }
 
 $gameId = $gameData['id'];
-$reviewMessage = null;
 $userId = $currentUser['user_id'] ?? null;
+
+// Przeniesienie logiki obsługi wiadomości na początek
+$reviewMessage = null;
+$messageType = 'error'; // Domyślnie błąd
+
+if (isset($_SESSION['review_message'])) {
+    $reviewMessage = $_SESSION['review_message'];
+    $messageType = $_SESSION['message_type'] ?? 'error';
+    unset($_SESSION['review_message'], $_SESSION['message_type']);
+} elseif (isset($_GET['status']) && $_GET['status'] === 'review_added') {
+    $reviewMessage = "Recenzja została dodana!";
+    $messageType = 'success';
+}
+
 
 if (isset($_GET['add_to_cart'])) {
     if ($currentUser) {
@@ -45,16 +63,13 @@ if (isset($_GET['vote'], $_GET['review_id']) && $currentUser) {
 
     if ($existingVote) {
         if ((int)$existingVote['vote_type'] === $voteType) {
-            // Użytkownik cofa swój głos
             $conn->query("DELETE FROM review_votes WHERE user_id = $userId AND review_id = $reviewId");
             $conn->query("UPDATE reviews SET votes = votes - $voteType WHERE id = $reviewId");
         } else {
-            // Użytkownik zmienia swój głos
             $conn->query("UPDATE review_votes SET vote_type = $voteType WHERE user_id = $userId AND review_id = $reviewId");
             $conn->query("UPDATE reviews SET votes = votes + (2 * $voteType) WHERE id = $reviewId");
         }
     } else {
-        // Nowy głos
         $conn->query("INSERT INTO review_votes (user_id, review_id, vote_type) VALUES ($userId, $reviewId, $voteType)");
         $conn->query("UPDATE reviews SET votes = votes + $voteType WHERE id = $reviewId");
     }
@@ -75,11 +90,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $currentUser) {
                 header('Location: game.php?game=' . urlencode($gameName) . '&status=review_added#reviews');
                 exit;
             } else {
-                $reviewMessage = "Błąd: " . $conn->error;
+                $_SESSION['review_message'] = "Błąd: " . $conn->error;
+                $_SESSION['message_type'] = 'error';
             }
         } else {
-            $reviewMessage = "Ocena i komentarz są wymagane.";
+            $_SESSION['review_message'] = "Ocena i komentarz są wymagane.";
+            $_SESSION['message_type'] = 'error';
         }
+        header('Location: game.php?game=' . urlencode($gameName) . '#reviews');
+        exit;
     }
 
     if (isset($_POST['edit_review'])) {
@@ -92,20 +111,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $currentUser) {
             $ownerResult = $conn->query($checkOwnerQuery);
             if ($ownerResult && $ownerResult->num_rows > 0) {
                 $updateQuery = "UPDATE reviews SET rating = '$rating', comment = '$comment' WHERE id = $reviewId";
-                if ($conn->query($updateQuery)) {
-                    header('Location: game.php?game=' . urlencode($gameName) . '#review-' . $reviewId);
-                    exit;
-                } else {
-                     $reviewMessage = "Błąd podczas aktualizacji: " . $conn->error;
-                }
+                $conn->query($updateQuery);
             }
         }
+        header('Location: game.php?game=' . urlencode($gameName) . '#review-' . $reviewId);
+        exit;
     }
 }
 
-if (isset($_GET['status']) && $_GET['status'] === 'review_added') {
-    $reviewMessage = "Recenzja została dodana!";
-}
 
 $safeGameName = preg_replace('/[^a-z0-9_-]/', '_', strtolower($gameName));
 
@@ -270,7 +283,9 @@ if ($currentUser) {
                         <div class="review-comment-field">
                             <textarea name="comment" placeholder="Napisz swoją recenzję..."></textarea>
                             <div class="form-footer">
-                                <?php if ($reviewMessage): ?><span class="review-message"><?= htmlspecialchars($reviewMessage); ?></span><?php endif; ?>
+                                <?php if ($reviewMessage): ?>
+                                    <p style="color: <?= $messageType === 'success' ? 'lightgreen' : 'red' ?>; margin-right: auto;"><?= htmlspecialchars($reviewMessage); ?></p>
+                                <?php endif; ?>
                                 <button type="submit" name="submit_review">Opublikuj</button>
                             </div>
                         </div>

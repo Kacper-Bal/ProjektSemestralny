@@ -1,6 +1,24 @@
-
 //Zmienna globalna przechowująca indeks aktualnie wyświetlanego slajdu w galerii
 let slideIndex = 1;
+
+//Główna funkcja obsługująca galerie obrazów na stronie gry.
+function showSlides(n) {
+    let slides = document.getElementsByClassName("slide");
+    let thumbnails = document.getElementsByClassName("thumbnail");
+    if (slides.length === 0) return;
+
+    if (n > slides.length) { slideIndex = 1; }
+    if (n < 1) { slideIndex = slides.length; }
+
+    for (let i = 0; i < slides.length; i++) {
+        slides[i].style.opacity = "0";
+    }
+    for (let i = 0; i < thumbnails.length; i++) {
+        thumbnails[i].className = thumbnails[i].className.replace(" active", "");
+    }
+    slides[slideIndex - 1].style.opacity = "1";
+    thumbnails[slideIndex - 1].className += " active";
+}
 
 //Przesuwa galerię obrazów do przodu lub do tyłu.
 function plusSlides(n) {
@@ -24,25 +42,6 @@ function toggleEditForm(reviewId) {
 
 
 document.addEventListener('DOMContentLoaded', function () {
-
-    //Główna funkcja obsługująca galerie obrazów na stronie gry.
-    function showSlides(n) {
-        let slides = document.getElementsByClassName("slide");
-        let thumbnails = document.getElementsByClassName("thumbnail");
-        if (slides.length === 0) return;
-
-        if (n > slides.length) { slideIndex = 1; }
-        if (n < 1) { slideIndex = slides.length; }
-
-        for (let i = 0; i < slides.length; i++) {
-            slides[i].style.opacity = "0";
-        }
-        for (let i = 0; i < thumbnails.length; i++) {
-            thumbnails[i].className = thumbnails[i].className.replace(" active", "");
-        }
-        slides[slideIndex - 1].style.opacity = "1";
-        thumbnails[slideIndex - 1].className += " active";
-    }
 
     // Inicjalizacja galerii obrazów, jeśli istnieje na stronie.
     if (document.querySelector('.main-image-container')) {

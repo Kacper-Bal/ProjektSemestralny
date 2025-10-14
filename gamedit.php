@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $selectedTags = $_POST['tags'] ?? [];
         $screenshots = $_FILES['screenshots'] ?? [];
 
-        if (empty($newName) || empty($description) || empty($date) || !$developer_id || !$publisher_id || $price === '') {
+        if (empty($newName) || empty($description) || empty($date) || !$developer_id || !$publisher_id || $price === '' || empty($selectedTags) || empty($selectedPlatforms)) {
             $error = "Wszystkie pola są wymagane.";
         } elseif (!is_numeric($price) || $price < 0) {
             $error = 'Cena musi być liczbą większą lub równą 0.';
@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 
                 $conn->commit();
-                header('Location: gamedit.php?game=' . urlencode($newName) . '&status=success');
+                header('Location: game.php?game=' . urlencode($newName));
                 exit;
             } catch (mysqli_sql_exception $exception) {
                 $conn->rollback();
@@ -94,10 +94,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     }
-}
-
-if(isset($_GET['status']) && $_GET['status'] === 'success') {
-    $success = 'Zmiany zostały pomyślnie zapisane.';
 }
 
 $devResult = $conn->query("SELECT id, name FROM developers ORDER BY name ASC");
@@ -141,16 +137,9 @@ function find_logo_path($name, $role) {
 
         <h1>
             Edytuj grę: 
-            <input type="text" name="name" value="<?= htmlspecialchars($game['name']) ?>" required style="font-size: 1em; width: 60%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 5px;">
+            <input type="text" name="name" value="<?= htmlspecialchars($game['name']) ?>" style="font-size: 1em; width: 60%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 5px;">
         </h1>
         
-        <a href="game.php?game=<?= urlencode($game['name']) ?>" class="back-link">
-            Wróć do podglądu gry
-        </a>
-
-        <?php if ($error): ?>
-            <p style="color: red; width: 100%;"><?= htmlspecialchars($error) ?></p>
-        <?php endif; ?>
         <?php if ($success): ?>
             <p style="color: lightgreen; width: 100%;"><?= htmlspecialchars($success) ?></p>
         <?php endif; ?>
@@ -198,15 +187,15 @@ function find_logo_path($name, $role) {
 
         <div class="content">
             <span class="detail-title">OPIS GRY:</span>
-            <textarea name="description" required class="edit-textarea" style="height: 120px; margin-bottom: 15px;"><?= htmlspecialchars($game['description']) ?></textarea>
+            <textarea name="description" class="edit-textarea" style="height: 120px; margin-bottom: 15px;"><?= htmlspecialchars($game['description']) ?></textarea>
 
             <span class="detail-title">DATA WYDANIA:</span>
-            <input type="date" name="date" value="<?= htmlspecialchars($game['date']) ?>" required style="width: 100%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 10px; border-radius: 3px; color-scheme: dark; margin-bottom: 15px;">
+            <input type="date" name="date" value="<?= htmlspecialchars($game['date']) ?>" style="width: 100%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 10px; border-radius: 3px; color-scheme: dark; margin-bottom: 15px;">
 
             <div class="details-container">
                 <div class="detail-item">
                     <span class="detail-title">DEWELOPER:</span>
-                    <select name="developer" id="developer_select" required style="width: 100%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 10px; border-radius: 3px; margin-bottom: 8px;">
+                    <select name="developer" id="developer_select" style="width: 100%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 10px; border-radius: 3px; margin-bottom: 8px;">
                         <?php while($row = $devResult->fetch_assoc()): ?>
                             <option value="<?= $row['id'] ?>" data-logo="<?= htmlspecialchars(find_logo_path($row['name'], 'developer') ?? '') ?>" <?= ($game['developer_id'] == $row['id']) ? 'selected' : '' ?>>
                                 <?= htmlspecialchars($row['name']) ?>
@@ -218,7 +207,7 @@ function find_logo_path($name, $role) {
                 </div>
                 <div class="detail-item">
                     <span class="detail-title">WYDAWCA:</span>
-                    <select name="publisher" id="publisher_select" required style="width: 100%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 10px; border-radius: 3px; margin-bottom: 8px;">
+                    <select name="publisher" id="publisher_select" style="width: 100%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 10px; border-radius: 3px; margin-bottom: 8px;">
                         <?php while($row = $pubResult->fetch_assoc()): ?>
                             <option value="<?= $row['id'] ?>" data-logo="<?= htmlspecialchars(find_logo_path($row['name'], 'publisher') ?? '') ?>" <?= ($game['publisher_id'] == $row['id']) ? 'selected' : '' ?>>
                                 <?= htmlspecialchars($row['name']) ?>
@@ -245,10 +234,16 @@ function find_logo_path($name, $role) {
             </div>
             
             <span class="detail-title">CENA (PLN):</span>
-            <input type="number" name="price" step="0.01" min="0" value="<?= htmlspecialchars($game['price']) ?>" required style="width: 100%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 10px; border-radius: 3px;">
+            <input type="number" name="price" step="0.01" min="0" value="<?= htmlspecialchars($game['price']) ?>" style="width: 100%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 10px; border-radius: 3px;">
         </div>
-
-        <button type="submit" class="cart-button" style="width: 30%; margin-top: 20px; margin-bottom: 20px; margin-left: auto; margin-right: auto;">Zapisz Zmiany</button>
+        
+        <?php if ($error): ?>
+            <p style="color: red; width: 100%; text-align: center; margin-bottom: 10px;"><?= htmlspecialchars($error) ?></p>
+        <?php endif; ?>
+        <div class="form-button-container">
+            <a href="game.php?game=<?= urlencode($game['name']) ?>" class="cart-button cancel-btn-red">Anuluj</a>
+            <button type="submit" class="cart-button">Zapisz Zmiany</button>
+        </div>
     </form>
     
     <hr class="divider">
