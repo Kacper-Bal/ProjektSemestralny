@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 require_once 'conn.php';
 require_once 'auth.php';
 
@@ -9,9 +14,6 @@ if (!$currentUser || $currentUser['role'] != 1) {
 }
 
 $formData = $_SESSION['addgame_form_data'] ?? [];
-if (isset($_SESSION['addgame_form_data'])) {
-    unset($_SESSION['addgame_form_data']);
-}
 
 if (isset($_SESSION["new_developer_id"])) {
     $formData['developer'] = $_SESSION["new_developer_id"];
@@ -43,6 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $selectedPlatforms = $_POST['platforms'] ?? [];
         $selectedTags = $_POST['tags'] ?? [];
         $screenshots = $_FILES['screenshots'] ?? [];
+        
+        $_SESSION['addgame_form_data'] = $_POST;
+
 
         if (empty($name) || empty($description) || empty($date) || !$developer_id || !$publisher_id || $price === '' || empty($selectedTags) || empty($selectedPlatforms)) {
             $error = "Wszystkie pola są wymagane.";
@@ -87,6 +92,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                     
                     $conn->commit();
+                    
+                    if (isset($_SESSION['addgame_form_data'])) {
+                        unset($_SESSION['addgame_form_data']);
+                    }
+                    
                     header('Location: game.php?game=' . urlencode($name) . '&status=success_added');
                     exit;
                 } catch (mysqli_sql_exception $exception) {
@@ -95,6 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
         }
+        $formData = $_POST;
     }
 }
 
@@ -130,7 +141,7 @@ function find_logo_path($name, $role) {
 
         <h1>
             Dodaj nową grę: 
-            <input type="text" name="name" value="<?= htmlspecialchars($formData['name'] ?? '') ?>" required style="font-size: 1em; width: 60%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 5px;">
+            <input type="text" class="h1-input" name="name" value="<?= htmlspecialchars($formData['name'] ?? '') ?>" required style="font-size: 1em; width: 60%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 5px;">
         </h1>
         
 

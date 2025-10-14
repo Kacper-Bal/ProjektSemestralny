@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION["new_{$role}_name"] = $name;
 
                     // Powrót do addgames.php
-                    header('Location: addgames.php');
+                    header('Location: addgame.php');
                     exit;
                 } else {
                     $error = 'Błąd bazy danych: ' . $conn->error;

@@ -144,7 +144,7 @@ function find_logo_path($name, $role) {
             <input type="text" name="name" value="<?= htmlspecialchars($game['name']) ?>" required style="font-size: 1em; width: 60%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 5px;">
         </h1>
         
-        <a href="game.php?game=<?= urlencode($game['name']) ?>" class="back-link" style="color: white; text-decoration: none; margin-bottom: 20px; display: block; width: 100%;">
+        <a href="game.php?game=<?= urlencode($game['name']) ?>" class="back-link">
             Wróć do podglądu gry
         </a>
 

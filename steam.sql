@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Wrz 26, 2025 at 07:33 AM
+-- Generation Time: Paź 14, 2025 at 10:38 AM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -33,6 +33,13 @@ CREATE TABLE `cart` (
   `game_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `cart`
+--
+
+INSERT INTO `cart` (`id`, `user_id`, `game_id`) VALUES
+(1, 1, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -51,14 +58,21 @@ CREATE TABLE `developers` (
 INSERT INTO `developers` (`id`, `name`) VALUES
 (10, 'Arrowhead Game Studios'),
 (12, 'Battlestate Games'),
+(22, 'Behaviour Interactive'),
 (3, 'CD Projekt Red'),
+(21, 'Clever Endeavour Studio'),
 (6, 'Electronics Arts'),
 (4, 'FromSoftware Inc'),
+(20, 'Quantic Dream'),
 (7, 'Rockstar Games'),
 (13, 'Sandfall Interactive'),
 (5, 'Santa Monica'),
+(14, 'SMG Fiction'),
 (9, 'Starbreeze Studio'),
+(18, 'Supergiant Games'),
+(19, 'Team Cherry'),
 (11, 'Team17 Digital'),
+(17, 'Traveller\'s Tales'),
 (8, 'VOID Interactive');
 
 -- --------------------------------------------------------
@@ -101,7 +115,18 @@ INSERT INTO `games` (`id`, `name`, `description`, `publisher_id`, `developer_id`
 (17, 'Helldivers 2', 'Ostatnia linia galaktycznej ofensywy. Wstąp w szeregi Helldiversów i zmierz się z wrogą galaktyką w walce o wolność w tej szybkiej i zaciekłej trzecioosobowej strzelance.', 5, 10, 169.00, '2023-09-21'),
 (18, 'Hell Let Loose', 'Hell Let Loose to ostra strzelanina FPS osadzona w realiach II wojny światowej. W niesamowitych bitwach bierze udział po 100 graczy kierujących piechurami, czołgami i artylerią. Linia frontu wciąż się zmienia, a całość oparta jest na zasobach w sposób znany z gier RTS.', 10, 11, 109.99, '2025-07-27'),
 (19, 'Escape from Tarkov', 'Escape from Tarkov to oryginalny FPS typu extraction, gdzie każdy rajd to ryzyko życia. Przygotuj się, wytrwaj i walcz z bezlitosnymi PMC i Scavami, zdobądź przewagę taktyczną i chroń łup — tylko ekstrakcja zdecyduje, czy przeżyjesz, czy stracisz wszystko.', 11, 12, 149.99, '2017-07-27'),
-(20, 'Clair Obscur: Expedition 33', 'Poprowadź Ekspedycję 33, by pokonać Malarkę i uniemożliwić jej dalsze kreślenie śmierci. Odkryj cudowny świat zainspirowany Francją okresu belle époque i staw czoła wyjątkowym wrogom w tej turowej grze RPG z mechanikami w czasie rzeczywistym.', 12, 13, 179.00, '2025-04-24');
+(20, 'Clair Obscur: Expedition 33', 'Poprowadź Ekspedycję 33, by pokonać Malarkę i uniemożliwić jej dalsze kreślenie śmierci. Odkryj cudowny świat zainspirowany Francją okresu belle époque i staw czoła wyjątkowym wrogom w tej turowej grze RPG z mechanikami w czasie rzeczywistym.', 12, 13, 179.00, '2025-04-24'),
+(21, 'LEGO® Party!', 'Rywalizuj ze znajomymi w zwariowanych strefach wyzwań i 60 przezabawnych minigrach ze swoich ulubionych zestawów LEGO, takich jak Pirates, Space, NINJAGO® i nie tylko. Graj po swojemu! Dołącz do znajomych bez względu na platformę, z której korzystają – lokalnie lub online!', 13, 14, 149.99, '2025-09-30'),
+(22, 'LEGO® Star Wars™ - The Complete Saga', 'Kick Some Brick in I through VI! Play through all six Star Wars movies in one videogame! Adding new characters, new levels, new features and for the first time ever, the chance to build and battle your way through a fun Star Wars galaxy on your PC!', 13, 17, 91.99, '2009-11-13'),
+(23, 'LEGO ® Gwiezdne Wojny™: Saga Skywalkerów', 'Przeżyj przygody ze wszystkich dziewięciu filmów z sagi w nowej, innej niż wszystkie grze wideo. Ponad 300 grywalnych postaci, 100 pojazdów i 23 planety do odkrycia sprawiają, że odległa galaktyka nigdy dotąd nie zapewniała tyle zabawy! *W zestawie grywalna postać klasycznego Obi-Wana Kenobiego.', 14, 17, 229.00, '2022-04-05'),
+(24, 'Hades', 'Defy the god of the dead as you hack and slash out of the Underworld in this rogue-like dungeon crawler from the creators of Bastion, Transistor, and Pyre.', 15, 18, 114.99, '2020-09-17'),
+(25, 'Hades 2', 'Przedrzyj się przez Podziemia (i nie tylko), korzystając z mrocznej magii, i staw czoła Tytanowi Czasu w czarującej kontynuacji obsypanego nagrodami dungeon crawlera typu roguelike.', 15, 18, 117.00, '2025-09-25'),
+(26, 'Hollow Knight', 'Forge your own path in Hollow Knight! An epic action adventure through a vast ruined kingdom of insects and heroes. Explore twisting caverns, battle tainted creatures and befriend bizarre bugs, all in a classic, hand-drawn 2D style.', 16, 19, 67.99, '2017-07-24'),
+(27, 'Hollow Knight: Silksong', 'Discover a vast, haunted kingdom in Hollow Knight: Silksong! Explore, fight and survive as you ascend to the peak of a land ruled by silk and song.', 16, 19, 74.99, '2025-12-04'),
+(28, 'Detroit: Become Human', 'Detroit: Become Human składa los ludzkości i androidów w Twoje ręce, przenosząc Cię do bliskiej przyszłości, kiedy to maszyny staną się bardziej inteligentne od ludzi. Każdy Twój wybór wpłynie na wynik gry, oferującej przy okazji jedną z najbardziej misternie złożonych historii.', 17, 20, 36.99, '2020-06-18'),
+(29, 'Ultimate Chicken Horse', 'Ultimate Chicken Horse to platformówka, w której tworzysz kolejne poziomy trudności, knujesz i zastawiasz pułapki na współgraczy. Tylko musisz uważać, żeby nie wpaść we własne sidła.', 18, 21, 17.49, '2016-03-04'),
+(30, 'Battlefield 6', 'Oto prawdziwe oblicze wojny totalnej. W wojnie czołgów, odrzutowców i nieprzebranych arsenałów twoja drużyna jest najgroźniejszą bronią.', 6, 6, 299.00, '2025-10-10'),
+(31, 'Dead by Daylight', 'Trapped forever in a realm of eldritch evil where even death is not an escape, four determined Survivors face a bloodthirsty Killer in a vicious game of nerve and wits. Pick a side and step into a world of tension and terror with horror gaming\'s best asymmetrical multiplayer.', 19, 22, 71.99, '2016-06-14');
 
 -- --------------------------------------------------------
 
@@ -128,9 +153,9 @@ INSERT INTO `game_platforms` (`id`, `game_id`, `platform_id`) VALUES
 (8, 2, 2),
 (6, 2, 3),
 (5, 2, 4),
-(10, 3, 1),
-(11, 3, 2),
-(9, 3, 3),
+(57, 3, 1),
+(58, 3, 2),
+(56, 3, 3),
 (13, 5, 1),
 (14, 5, 2),
 (12, 5, 3),
@@ -169,7 +194,46 @@ INSERT INTO `game_platforms` (`id`, `game_id`, `platform_id`) VALUES
 (47, 19, 1),
 (49, 20, 1),
 (50, 20, 2),
-(48, 20, 3);
+(48, 20, 3),
+(61, 21, 1),
+(62, 21, 2),
+(60, 21, 3),
+(59, 21, 4),
+(65, 22, 1),
+(66, 22, 2),
+(64, 22, 3),
+(63, 22, 4),
+(69, 23, 1),
+(70, 23, 2),
+(68, 23, 3),
+(67, 23, 4),
+(73, 24, 1),
+(74, 24, 2),
+(72, 24, 3),
+(71, 24, 4),
+(76, 25, 1),
+(75, 25, 4),
+(79, 26, 1),
+(80, 26, 2),
+(78, 26, 3),
+(77, 26, 4),
+(83, 27, 1),
+(84, 27, 2),
+(82, 27, 3),
+(81, 27, 4),
+(86, 28, 1),
+(85, 28, 3),
+(89, 29, 1),
+(90, 29, 2),
+(88, 29, 3),
+(87, 29, 4),
+(92, 30, 1),
+(93, 30, 2),
+(91, 30, 3),
+(96, 31, 1),
+(97, 31, 2),
+(95, 31, 3),
+(94, 31, 4);
 
 -- --------------------------------------------------------
 
@@ -195,9 +259,9 @@ INSERT INTO `game_tags` (`id`, `game_id`, `tag_id`) VALUES
 (5, 2, 2),
 (6, 2, 3),
 (7, 2, 9),
-(8, 3, 1),
-(9, 3, 2),
-(10, 3, 3),
+(84, 3, 1),
+(85, 3, 2),
+(86, 3, 3),
 (11, 4, 1),
 (12, 4, 2),
 (13, 4, 3),
@@ -264,7 +328,41 @@ INSERT INTO `game_tags` (`id`, `game_id`, `tag_id`) VALUES
 (74, 20, 2),
 (76, 20, 3),
 (77, 20, 5),
-(75, 20, 6);
+(75, 20, 6),
+(88, 21, 6),
+(87, 21, 7),
+(89, 21, 8),
+(90, 21, 10),
+(92, 22, 6),
+(91, 22, 7),
+(93, 22, 10),
+(95, 23, 6),
+(94, 23, 7),
+(96, 23, 10),
+(97, 24, 1),
+(98, 24, 2),
+(100, 24, 3),
+(99, 24, 6),
+(101, 25, 1),
+(104, 25, 3),
+(103, 25, 6),
+(102, 25, 7),
+(105, 26, 1),
+(107, 26, 3),
+(106, 26, 6),
+(108, 27, 1),
+(109, 27, 2),
+(111, 27, 3),
+(110, 27, 6),
+(113, 28, 3),
+(112, 28, 7),
+(115, 29, 6),
+(114, 29, 7),
+(116, 29, 8),
+(117, 29, 10),
+(118, 30, 8),
+(119, 30, 9),
+(120, 31, 8);
 
 -- --------------------------------------------------------
 
@@ -306,13 +404,20 @@ INSERT INTO `publishers` (`id`, `name`) VALUES
 (4, 'Activision'),
 (3, 'Bandai Namco Entertainment'),
 (11, 'Battlestate Games'),
+(19, 'Behaviour Interactive'),
 (1, 'CD Projekt Red'),
+(18, 'Clever Endeavour Studio'),
+(14, 'Disney Interactive'),
 (6, 'Electronic Arts'),
+(13, 'Fictions'),
 (2, 'FromSoftware Inc'),
 (12, 'Kepler Interactive'),
 (5, 'PlayStation Studios'),
+(17, 'Quantic Dream'),
 (7, 'Rockstar Games'),
 (9, 'Starbreeze Studio'),
+(15, 'Supergiant Games'),
+(16, 'Team Cherry'),
 (10, 'Team17 Digital'),
 (8, 'VOID Interactive');
 
@@ -328,8 +433,16 @@ CREATE TABLE `reviews` (
   `game_id` int(11) NOT NULL,
   `rating` tinyint(4) NOT NULL CHECK (`rating` between 1 and 5),
   `comment` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `votes` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reviews`
+--
+
+INSERT INTO `reviews` (`id`, `user_id`, `game_id`, `rating`, `comment`, `created_at`, `votes`) VALUES
+(2, 1, 3, 5, 'chuj i \r\nnie chuj', '2025-10-14 06:04:54', 1);
 
 -- --------------------------------------------------------
 
@@ -351,7 +464,11 @@ CREATE TABLE `sessions` (
 
 INSERT INTO `sessions` (`id`, `user_id`, `session_token`, `created_at`, `expires_at`) VALUES
 (3, 1, '631b489f51639f4f439ed976c23badb0', '2025-09-23 05:58:09', '2025-09-23 08:58:09'),
-(5, 1, '77f59d74854b07d6776bcd73de787444', '2025-09-23 07:54:38', '2025-09-23 10:54:38');
+(5, 1, '77f59d74854b07d6776bcd73de787444', '2025-09-23 07:54:38', '2025-09-23 10:54:38'),
+(9, 1, 'd070a7d8c21def8dae7975c3d45d55fd', '2025-10-07 06:27:57', '2025-10-07 09:27:57'),
+(10, 1, '412ace821d562d2319934ce767965754', '2025-10-14 05:37:24', '2025-10-14 08:37:24'),
+(11, 1, '4fe343578b0b63ad6082c3658257fb72', '2025-10-14 06:37:32', '2025-10-14 09:37:32'),
+(12, 1, '91d33eddaf51e54dfbc1c96e4d5a1186', '2025-10-14 08:25:46', '2025-10-14 11:25:46');
 
 -- --------------------------------------------------------
 
@@ -517,31 +634,31 @@ ALTER TABLE `user_games`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `developers`
 --
 ALTER TABLE `developers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `games`
 --
 ALTER TABLE `games`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `game_platforms`
 --
 ALTER TABLE `game_platforms`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- AUTO_INCREMENT for table `game_tags`
 --
 ALTER TABLE `game_tags`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 
 --
 -- AUTO_INCREMENT for table `platforms`
@@ -553,19 +670,19 @@ ALTER TABLE `platforms`
 -- AUTO_INCREMENT for table `publishers`
 --
 ALTER TABLE `publishers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `sessions`
 --
 ALTER TABLE `sessions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tags`
