@@ -6,11 +6,11 @@ $currentUser = null;
 if (isset($_COOKIE['session_token'])) {
     $sessionToken = $_COOKIE['session_token'];
 
-    $query = "SELECT sessions.user_id, users.username, users.email, users.role
-              FROM sessions
-              JOIN users ON sessions.user_id = users.id
-              WHERE sessions.session_token = '$sessionToken'
-              AND sessions.expires_at > NOW()";
+    $query = "SELECT sessions.user_id, users.username, users.email, users.role, users.avatar_filename, users.balance
+          FROM sessions
+          JOIN users ON sessions.user_id = users.id
+          WHERE sessions.session_token = '$sessionToken'
+          AND sessions.expires_at > NOW()";
 
     $result = $conn->query($query);
 

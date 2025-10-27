@@ -1,20 +1,20 @@
 <?php
-require_once 'conn.php'; 
-require_once 'auth.php'; 
+require_once 'conn.php';
+require_once 'auth.php';
 
-$userId = $currentUser['user_id'] ?? null; 
+$userId = $currentUser['user_id'] ?? null;
 
 if (isset($_GET['action']) && $_GET['action'] == 'vote' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json');
 
-    if (!$userId) { 
+    if (!$userId) {
         echo json_encode(['success' => false, 'error' => 'not_logged_in']);
         exit;
     }
 
     $input = json_decode(file_get_contents('php://input'), true);
     $reviewId = isset($input['reviewId']) ? (int)$input['reviewId'] : 0;
-    $voteTypeParam = isset($input['voteType']) ? $input['voteType'] : null; 
+    $voteTypeParam = isset($input['voteType']) ? $input['voteType'] : null;
 
     if ($reviewId <= 0 || !in_array($voteTypeParam, ['up', 'down'])) {
         echo json_encode(['success' => false, 'error' => 'invalid_input']);
@@ -23,7 +23,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'vote' && $_SERVER['REQUEST_MET
 
     $voteType = ($voteTypeParam === 'up') ? 1 : -1;
     $newVoteCount = 0;
-    $newUserVoteStatus = 0; 
+    $newUserVoteStatus = 0;
 
     $conn->begin_transaction();
     try {
@@ -37,12 +37,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'vote' && $_SERVER['REQUEST_MET
                 $conn->query("DELETE FROM review_votes WHERE user_id = $userId AND review_id = $reviewId");
                 $conn->query("UPDATE reviews SET votes = votes - $voteType WHERE id = $reviewId");
                 $newUserVoteStatus = 0;
-            } else { 
+            } else {
                 $conn->query("UPDATE review_votes SET vote_type = $voteType WHERE user_id = $userId AND review_id = $reviewId");
-                $conn->query("UPDATE reviews SET votes = votes + (2 * $voteType) WHERE id = $reviewId"); // +1 za nowy, +1 za usunięcie przeciwnego
+                $conn->query("UPDATE reviews SET votes = votes + (2 * $voteType) WHERE id = $reviewId");
                 $newUserVoteStatus = $voteType;
             }
-        } else { 
+        } else {
             $conn->query("INSERT INTO review_votes (user_id, review_id, vote_type) VALUES ($userId, $reviewId, $voteType)");
             $conn->query("UPDATE reviews SET votes = votes + $voteType WHERE id = $reviewId");
             $newUserVoteStatus = $voteType;
@@ -61,13 +61,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'vote' && $_SERVER['REQUEST_MET
         error_log("Błąd głosowania AJAX: " . $exception->getMessage());
         echo json_encode(['success' => false, 'error' => 'database_error']);
     }
-    exit; 
+    exit;
 
 }
 elseif (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     header('Content-Type: application/json');
 
-    $itemsPerPage = 30; 
+    $itemsPerPage = 30;
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     if ($page < 1) $page = 1;
 
@@ -109,7 +109,7 @@ elseif (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     }
 
     $reviews = [];
-    $query = "SELECT r.id, r.rating, r.comment, r.created_at, r.votes, u.username, g.name AS game_name, g.id as game_id
+    $query = "SELECT r.id, r.rating, r.comment, r.created_at, r.votes, u.username, u.avatar_filename, g.name AS game_name, g.id as game_id
               FROM reviews r
               JOIN users u ON r.user_id = u.id
               JOIN games g ON r.game_id = g.id
@@ -127,27 +127,13 @@ elseif (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             $randomRoll = rand(1, 10);
 
             switch ($randomRoll) {
-                case 1:
-                    $tileClass = 'review-tile--m';
-                    break;
-                case 2:
-                    $tileClass = 'review-tile--m';
-                    break;
-                case 3:
-                    $tileClass = 'review-tile--l'; 
-                    break;
-                case 4:
-                    $tileClass = 'review-tile--tall-s'; 
-                    break;
-                case 5:
-                    $tileClass = 'review-tile--tall-s'; 
-                    break;
-                case 6:
-                    $tileClass = 'review-tile--tall-m'; 
-                    break;
-                default:
-                    $tileClass = 'review-tile--s';
-                    break;
+                case 1: $tileClass = 'review-tile--m'; break;
+                case 2: $tileClass = 'review-tile--m'; break;
+                case 3: $tileClass = 'review-tile--l'; break;
+                case 4: $tileClass = 'review-tile--tall-s'; break;
+                case 5: $tileClass = 'review-tile--tall-s'; break;
+                case 6: $tileClass = 'review-tile--tall-m'; break;
+                default: $tileClass = 'review-tile--s'; break;
             }
 
 
@@ -166,7 +152,10 @@ elseif (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
             $commentText = nl2br(htmlspecialchars($review['comment']));
             $gameUrl = 'game.php?game=' . urlencode($review['game_name']);
             $userUrl = 'user.php?user=' . urlencode($review['username']);
-            $avatarSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M6 22h13a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2zm6-17.001c1.647 0 3 1.351 3 3C15 9.647 13.647 11 12 11S9 9.647 9 7.999c0-1.649 1.353-3 3-3M6 17.25c0-2.219 2.705-4.5 6-4.5s6 2.281 6 4.5V18H6z"/></svg>';
+            $avatarFilename = htmlspecialchars($review['avatar_filename'] ?? 'default_avatar.png');
+            $avatarAlt = "Awatar " . htmlspecialchars($review['username']);
+            $avatarImgTag = "<img src='img/avatars/{$avatarFilename}' alt='{$avatarAlt}' style='width: 30px; height: 30px; border-radius: 3px; object-fit: cover;'>";
+
 
             $html .= <<<HTML
             <div class="review-tile {$tileClass}">
@@ -176,7 +165,7 @@ elseif (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
                 </a>
                 <div class="review-tile-content"> <div class="review-tile-header">
                         <a href="{$userUrl}" class="review-user-link">
-                            <div class="avatar-placeholder">{$avatarSvg}</div>
+                           {$avatarImgTag}
                             <span class="review-username">{$review['username']}</span>
                         </a>
                         <span class="review-rating">{$ratingStars}</span>
@@ -203,7 +192,7 @@ HTML;
     echo json_encode([ 'html' => $html, 'totalPages' => $totalPages, 'currentPage' => $page ]);
     exit;
 
-} 
+}
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -213,6 +202,9 @@ HTML;
     <title>Społeczność - Recenzje</title>
     <link rel="stylesheet" href="style/styleCommon.css">
     <link rel="stylesheet" href="style/styleCommunity.css">
+    <style>
+        .review-user-link img { vertical-align: middle; } /* Dodatkowy styl dla lepszego wyrównania */
+    </style>
 </head>
 <body>
     <?php include('header.php'); ?>
@@ -318,6 +310,7 @@ HTML;
                 if (target && !isLoading) {
                     event.preventDefault();
                      <?php if (!$currentUser): ?> window.location.href = 'login.php'; return; <?php endif; ?>
+                     let isVotingInternal = false;
                     const voteType = target.dataset.vote;
                     const reviewItem = target.closest('.review-voting');
                     const reviewId = reviewItem.dataset.reviewId;
@@ -325,6 +318,7 @@ HTML;
                     const upvoteArrow = reviewItem.querySelector('.upvote');
                     const downvoteArrow = reviewItem.querySelector('.downvote');
                     upvoteArrow.style.pointerEvents = 'none'; downvoteArrow.style.pointerEvents = 'none';
+
 
                     fetch('community.php?action=vote', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ reviewId: reviewId, voteType: voteType }) })
                     .then(response => response.ok ? response.json() : Promise.reject(`HTTP error! status: ${response.status}`))
@@ -337,7 +331,12 @@ HTML;
                         } else { console.error('Błąd głosowania:', data.error || 'Nieznany błąd'); }
                     })
                     .catch(error => { console.error('Błąd sieci podczas głosowania:', error); })
-                    .finally(() => { upvoteArrow.style.pointerEvents = 'auto'; downvoteArrow.style.pointerEvents = 'auto'; });
+                    .finally(() => {
+                         setTimeout(() => {
+                              upvoteArrow.style.pointerEvents = 'auto';
+                              downvoteArrow.style.pointerEvents = 'auto';
+                         }, 200);
+                    });
                 }
             });
         });

@@ -3,7 +3,7 @@
     require_once 'auth.php'; 
 
     
-$query="SELECT name FROM games order by RAND() LIMIT 13";
+$query="SELECT name FROM games order by RAND() LIMIT 12";
 $result=$conn->query($query);
 
 $queryUser="SELECT count(*) from users";

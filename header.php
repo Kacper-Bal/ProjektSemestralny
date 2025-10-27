@@ -1,5 +1,17 @@
 <?php
-require_once('auth.php'); 
+require_once('auth.php');
+
+$currentPage = basename($_SERVER['PHP_SELF']);
+
+function isNavLinkActive($pageName, $currentPage) {
+    $specificNavPages = ['community.php', 'information.php', 'helpdesk.php'];
+
+    if (in_array($currentPage, $specificNavPages)) {
+        return $pageName === $currentPage;
+    } else {
+        return $pageName === 'store.php';
+    }
+}
 
 ?>
 
@@ -7,23 +19,23 @@ require_once('auth.php');
     <input id="menu-toggle" type="checkbox" />
 
     <div id="header-top">
-        
+
         <label for="menu-toggle" id="hamburger-menu">
             <span></span>
             <span></span>
             <span></span>
         </label>
-        
+
         <div id="header-left">
-            <a href="index.php"><img class="logo" style="height: 8vh" src="img\others\logo_steam.svg"></a>
+            <a href="index.php"><img class="logo" style="height: 8vh" src="img/others/logo_steam.svg"></a>
             <div id="links">
-                <div class="header-element active"><a href="store.php">SKLEP</a></div>
-                <div class="header-element"><a href="community.php">SPOŁECZNOŚĆ</a></div>
-                <div class="header-element"><a href="information.php">INFORMACJE</a></div>
-                <div class="header-element"><a href="helpdesk.php">POMOC TECHNICZNA</a></div>
+                <div class="header-element <?= isNavLinkActive('store.php', $currentPage) ? 'active' : '' ?>"><a href="store.php">SKLEP</a></div>
+                <div class="header-element <?= isNavLinkActive('community.php', $currentPage) ? 'active' : '' ?>"><a href="community.php">SPOŁECZNOŚĆ</a></div>
+                <div class="header-element <?= isNavLinkActive('information.php', $currentPage) ? 'active' : '' ?>"><a href="information.php">INFORMACJE</a></div>
+                <div class="header-element <?= isNavLinkActive('helpdesk.php', $currentPage) ? 'active' : '' ?>"><a href="helpdesk.php">POMOC TECHNICZNA</a></div>
             </div>
         </div>
-        
+
         <div class="login-panel">
             <?php if ($currentUser): ?>
                 <div class="login-element"><a href="profile.php"><?php echo htmlspecialchars($currentUser['username']); ?></a></div><div class="login-element"><a href="logout.php">Wyloguj się</a></div>
@@ -35,13 +47,12 @@ require_once('auth.php');
     </div>
 
     <?php
-    $currentPage = basename($_SERVER['PHP_SELF']);
-    $pagesToHideOn = ['login.php', 'register.php', 'addgame.php', 'addpubdev.php', 'gamedit.php'];
-    if (!in_array($currentPage, $pagesToHideOn)):
+    $pagesToHideSearchOn = ['login.php', 'register.php', 'addgame.php', 'addpubdev.php', 'gamedit.php'];
+    if (!in_array($currentPage, $pagesToHideSearchOn)):
     ?>
     <div id="header-bottom">
         <form id="searchForm" action="search.php" method="GET">
-            <input type="text" name="game_name" placeholder="Wyszukaj gre">
+            <input type="text" name="query" placeholder="Wyszukaj...">
             <input type="submit" value="Szukaj">
         </form>
     </div>
