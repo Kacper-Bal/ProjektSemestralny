@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Paź 14, 2025 at 10:38 AM
+-- Generation Time: Paź 27, 2025 at 06:54 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -153,9 +153,9 @@ INSERT INTO `game_platforms` (`id`, `game_id`, `platform_id`) VALUES
 (8, 2, 2),
 (6, 2, 3),
 (5, 2, 4),
-(57, 3, 1),
-(58, 3, 2),
-(56, 3, 3),
+(99, 3, 1),
+(100, 3, 2),
+(98, 3, 3),
 (13, 5, 1),
 (14, 5, 2),
 (12, 5, 3),
@@ -259,9 +259,9 @@ INSERT INTO `game_tags` (`id`, `game_id`, `tag_id`) VALUES
 (5, 2, 2),
 (6, 2, 3),
 (7, 2, 9),
-(84, 3, 1),
-(85, 3, 2),
-(86, 3, 3),
+(121, 3, 1),
+(122, 3, 2),
+(123, 3, 3),
 (11, 4, 1),
 (12, 4, 2),
 (13, 4, 3),
@@ -388,6 +388,27 @@ INSERT INTO `platforms` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `promotions`
+--
+
+CREATE TABLE `promotions` (
+  `id` int(11) NOT NULL,
+  `game_id` int(11) NOT NULL,
+  `discount_percent` tinyint(3) UNSIGNED NOT NULL CHECK (`discount_percent` between 1 and 100),
+  `start_date` datetime NOT NULL,
+  `end_date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `promotions`
+--
+
+INSERT INTO `promotions` (`id`, `game_id`, `discount_percent`, `start_date`, `end_date`) VALUES
+(1, 3, 20, '2025-10-01 18:14:30', '2025-10-31 18:14:30');
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `publishers`
 --
 
@@ -442,7 +463,43 @@ CREATE TABLE `reviews` (
 --
 
 INSERT INTO `reviews` (`id`, `user_id`, `game_id`, `rating`, `comment`, `created_at`, `votes`) VALUES
-(2, 1, 3, 5, 'chuj i \r\nnie chuj', '2025-10-14 06:04:54', 1);
+(2, 1, 3, 5, 'chuj i \r\nnie chuj', '2025-10-14 06:04:54', 3),
+(4, 2, 3, 4, 'ale dluga nazwa', '2025-10-14 16:17:53', 2),
+(5, 1, 3, 5, '1', '2025-10-20 17:18:17', 0),
+(6, 1, 3, 4, '2', '2025-10-20 17:18:21', 0),
+(7, 1, 3, 4, '3', '2025-10-20 17:18:24', 0),
+(8, 1, 3, 3, '4', '2025-10-20 17:18:27', 0),
+(9, 1, 3, 5, '5', '2025-10-20 17:18:31', -1),
+(10, 1, 3, 3, '6', '2025-10-20 17:18:34', 0),
+(11, 1, 3, 1, '7', '2025-10-20 17:18:38', -1),
+(12, 1, 3, 5, '8', '2025-10-20 17:18:41', -1),
+(13, 1, 3, 3, '8', '2025-10-20 17:18:48', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `review_votes`
+--
+
+CREATE TABLE `review_votes` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `review_id` int(11) NOT NULL,
+  `vote_type` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `review_votes`
+--
+
+INSERT INTO `review_votes` (`id`, `user_id`, `review_id`, `vote_type`) VALUES
+(1, 2, 4, 1),
+(2, 2, 2, 1),
+(3, 1, 4, 1),
+(4, 1, 2, 1),
+(5, 1, 9, -1),
+(6, 1, 12, -1),
+(7, 1, 11, -1);
 
 -- --------------------------------------------------------
 
@@ -468,7 +525,13 @@ INSERT INTO `sessions` (`id`, `user_id`, `session_token`, `created_at`, `expires
 (9, 1, 'd070a7d8c21def8dae7975c3d45d55fd', '2025-10-07 06:27:57', '2025-10-07 09:27:57'),
 (10, 1, '412ace821d562d2319934ce767965754', '2025-10-14 05:37:24', '2025-10-14 08:37:24'),
 (11, 1, '4fe343578b0b63ad6082c3658257fb72', '2025-10-14 06:37:32', '2025-10-14 09:37:32'),
-(12, 1, '91d33eddaf51e54dfbc1c96e4d5a1186', '2025-10-14 08:25:46', '2025-10-14 11:25:46');
+(12, 1, '91d33eddaf51e54dfbc1c96e4d5a1186', '2025-10-14 08:25:46', '2025-10-14 11:25:46'),
+(15, 1, '1ebdf5fec3873395f99d816c84b5be9c', '2025-10-14 17:27:57', '2025-10-14 20:27:57'),
+(16, 1, 'f5b8449aff38fa8912d4c25abdc8dd08', '2025-10-14 17:53:06', '2025-10-14 20:53:06'),
+(17, 1, '998e08339a06209fac4ac78c02e34c6f', '2025-10-20 15:52:30', '2025-10-20 18:52:30'),
+(18, 1, 'ece71700e0c574490751d0467c9987ac', '2025-10-20 16:57:39', '2025-10-20 19:57:39'),
+(20, 1, 'f409a774b43a1e1b0c4d4e1706bc3082', '2025-10-27 16:10:10', '2025-10-27 18:10:10'),
+(21, 1, 'c743bc272b0fcbc20d20709a0c7625ac', '2025-10-27 17:25:39', '2025-10-27 19:25:39');
 
 -- --------------------------------------------------------
 
@@ -500,6 +563,33 @@ INSERT INTO `tags` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `transactions`
+--
+
+CREATE TABLE `transactions` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `transaction_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `total_amount` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `transaction_items`
+--
+
+CREATE TABLE `transaction_items` (
+  `id` int(11) NOT NULL,
+  `transaction_id` int(11) NOT NULL,
+  `game_id` int(11) NOT NULL,
+  `purchase_price` decimal(10,2) NOT NULL,
+  `discount_percent_applied` tinyint(3) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `users`
 --
 
@@ -508,15 +598,18 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` tinyint(1) NOT NULL DEFAULT 0
+  `role` tinyint(1) NOT NULL DEFAULT 0,
+  `avatar_filename` varchar(255) DEFAULT 'default_avatar.png',
+  `balance` decimal(10,2) NOT NULL DEFAULT 0.00
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `username`, `password`, `role`) VALUES
-(1, 'jann@example.com', 'jann', '543360c1ecea52aa7620ccbb32357b72634348350be51c8577da1cf3f7175342', 1);
+INSERT INTO `users` (`id`, `email`, `username`, `password`, `role`, `avatar_filename`, `balance`) VALUES
+(1, 'jann@example.com', 'jann', '543360c1ecea52aa7620ccbb32357b72634348350be51c8577da1cf3f7175342', 1, 'default_avatar.png', 0.00),
+(2, 'aledlugiuzytkownikkkk@example.com', 'aledlugiuzytkownikkkkkkk', '543360c1ecea52aa7620ccbb32357b72634348350be51c8577da1cf3f7175342', 0, 'default_avatar.png', 0.00);
 
 -- --------------------------------------------------------
 
@@ -581,6 +674,14 @@ ALTER TABLE `platforms`
   ADD UNIQUE KEY `name` (`name`);
 
 --
+-- Indeksy dla tabeli `promotions`
+--
+ALTER TABLE `promotions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_game_id` (`game_id`),
+  ADD KEY `idx_active_promo` (`game_id`,`start_date`,`end_date`);
+
+--
 -- Indeksy dla tabeli `publishers`
 --
 ALTER TABLE `publishers`
@@ -596,6 +697,14 @@ ALTER TABLE `reviews`
   ADD KEY `game_id` (`game_id`);
 
 --
+-- Indeksy dla tabeli `review_votes`
+--
+ALTER TABLE `review_votes`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_review_vote` (`user_id`,`review_id`),
+  ADD KEY `review_id` (`review_id`);
+
+--
 -- Indeksy dla tabeli `sessions`
 --
 ALTER TABLE `sessions`
@@ -609,6 +718,21 @@ ALTER TABLE `sessions`
 ALTER TABLE `tags`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `name` (`name`);
+
+--
+-- Indeksy dla tabeli `transactions`
+--
+ALTER TABLE `transactions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_user_id` (`user_id`);
+
+--
+-- Indeksy dla tabeli `transaction_items`
+--
+ALTER TABLE `transaction_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_transaction_id` (`transaction_id`),
+  ADD KEY `idx_game_id` (`game_id`);
 
 --
 -- Indeksy dla tabeli `users`
@@ -652,19 +776,25 @@ ALTER TABLE `games`
 -- AUTO_INCREMENT for table `game_platforms`
 --
 ALTER TABLE `game_platforms`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT for table `game_tags`
 --
 ALTER TABLE `game_tags`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
 
 --
 -- AUTO_INCREMENT for table `platforms`
 --
 ALTER TABLE `platforms`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `promotions`
+--
+ALTER TABLE `promotions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `publishers`
@@ -676,13 +806,19 @@ ALTER TABLE `publishers`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `review_votes`
+--
+ALTER TABLE `review_votes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `sessions`
 --
 ALTER TABLE `sessions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `tags`
@@ -691,10 +827,22 @@ ALTER TABLE `tags`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT for table `transactions`
+--
+ALTER TABLE `transactions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `transaction_items`
+--
+ALTER TABLE `transaction_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user_games`
@@ -735,6 +883,12 @@ ALTER TABLE `game_tags`
   ADD CONSTRAINT `game_tags_ibfk_2` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE;
 
 --
+-- Constraints for table `promotions`
+--
+ALTER TABLE `promotions`
+  ADD CONSTRAINT `promotions_ibfk_1` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `reviews`
 --
 ALTER TABLE `reviews`
@@ -742,10 +896,30 @@ ALTER TABLE `reviews`
   ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`) ON DELETE CASCADE;
 
 --
+-- Constraints for table `review_votes`
+--
+ALTER TABLE `review_votes`
+  ADD CONSTRAINT `review_votes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `review_votes_ibfk_2` FOREIGN KEY (`review_id`) REFERENCES `reviews` (`id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `sessions`
 --
 ALTER TABLE `sessions`
   ADD CONSTRAINT `sessions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `transaction_items`
+--
+ALTER TABLE `transaction_items`
+  ADD CONSTRAINT `transaction_items_ibfk_1` FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `transaction_items_ibfk_2` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`);
 
 --
 -- Constraints for table `user_games`

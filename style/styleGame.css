@@ -379,12 +379,6 @@ h1 a:hover svg {
     justify-content: center;
 }
 
-.avatar-placeholder svg {
-    width: 45px;
-    height: 45px;
-    fill: #c7d5e0;
-}
-
 .username {
     color: #8f98a2;
     font-weight: bold;

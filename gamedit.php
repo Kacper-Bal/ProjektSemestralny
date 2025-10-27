@@ -74,17 +74,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $conn->query("INSERT INTO game_tags (game_id, tag_id) VALUES ($game_id, $tId)");
                 }
 
-                $safeGameName = preg_replace('/[^a-z0-9_-]/', '_', strtolower($newName));
-                for ($i = 0; $i < 4; $i++) {
+                $safeOldGameName = preg_replace('/[^a-z0-9_-]/', '_', strtolower($game['name']));
+                $safeNewGameName = preg_replace('/[^a-z0-9_-]/', '_', strtolower($newName));
+
+                for ($i = 0; $i < 4; $i++) {    
                     if (isset($screenshots['error'][$i]) && $screenshots['error'][$i] === UPLOAD_ERR_OK) {
-                        $oldFiles = glob("img/games/{$safeGameName}_" . ($i + 1) . ".*");
-                        foreach ($oldFiles as $oldFile) if (file_exists($oldFile)) unlink($oldFile);
+                        $oldFilesPattern = "img/games/{$safeOldGameName}_" . ($i + 1) . ".*";
+                        $oldFiles = glob($oldFilesPattern);
+                        foreach ($oldFiles as $oldFile) {
+                            if (file_exists($oldFile)) {
+                                unlink($oldFile);
+                            }
+                        }
+
                         $ext = strtolower(pathinfo($screenshots['name'][$i], PATHINFO_EXTENSION));
-                        $fileName = "{$safeGameName}_" . ($i + 1) . ".{$ext}";
-                        move_uploaded_file($screenshots['tmp_name'][$i], "img/games/{$fileName}");
+                        $newFileName = "{$safeNewGameName}_" . ($i + 1) . ".{$ext}";
+                        move_uploaded_file($screenshots['tmp_name'][$i], "img/games/{$newFileName}");
+                    } elseif ($safeOldGameName !== $safeNewGameName) {
+                        $oldFilesPattern = "img/games/{$safeOldGameName}_" . ($i + 1) . ".*";
+                        $oldFiles = glob($oldFilesPattern);
+                        if (!empty($oldFiles)) {
+                             $oldFile = $oldFiles[0];
+                             $ext = strtolower(pathinfo($oldFile, PATHINFO_EXTENSION));
+                             $newFileName = "{$safeNewGameName}_" . ($i + 1) . ".{$ext}";
+                             if (file_exists($oldFile)) {
+                                 rename($oldFile, "img/games/{$newFileName}");
+                             }
+                        }
                     }
                 }
-                
+
+
                 $conn->commit();
                 header('Location: game.php?game=' . urlencode($newName));
                 exit;
@@ -100,7 +120,8 @@ $devResult = $conn->query("SELECT id, name FROM developers ORDER BY name ASC");
 $pubResult = $conn->query("SELECT id, name FROM publishers ORDER BY name ASC");
 $pltResult = $conn->query("SELECT id, name FROM platforms ORDER BY name ASC");
 $tagResult = $conn->query("SELECT id, name FROM tags ORDER BY name ASC");
-$reviewsResult = $conn->query("SELECT reviews.id, comment, created_at, rating, users.username FROM reviews LEFT JOIN users ON reviews.user_id = users.id WHERE game_id = $game_id ORDER BY created_at DESC");
+$reviewsResult = $conn->query("SELECT reviews.id, comment, created_at, rating, users.username, users.avatar_filename FROM reviews LEFT JOIN users ON reviews.user_id = users.id WHERE game_id = $game_id ORDER BY created_at DESC");
+
 
 $currentPltsResult = $conn->query("SELECT platform_id FROM game_platforms WHERE game_id = $game_id");
 $currentPlatforms = [];
@@ -136,10 +157,10 @@ function find_logo_path($name, $role) {
         <input type="hidden" name="save_game" value="1">
 
         <h1>
-            Edytuj grę: 
+            Edytuj grę:
             <input type="text" name="name" value="<?= htmlspecialchars($game['name']) ?>" style="font-size: 1em; width: 60%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 5px;">
         </h1>
-        
+
         <?php if ($success): ?>
             <p style="color: lightgreen; width: 100%;"><?= htmlspecialchars($success) ?></p>
         <?php endif; ?>
@@ -149,11 +170,11 @@ function find_logo_path($name, $role) {
 
             <?php
             $i = 0;
-            $safeGameName = preg_replace('/[^a-zA-Z0-9_-]/', '_', strtolower($game['name']));
+            $safeGameNameForDisplay = preg_replace('/[^a-zA-Z0-9_-]/', '_', strtolower($game['name']));
             $imagePath = null;
-            $files = glob("img/games/{$safeGameName}_" . ($i + 1) . ".*");
+            $files = glob("img/games/{$safeGameNameForDisplay}_" . ($i + 1) . ".*");
             if (!empty($files)) $imagePath = $files[0];
-            $style = $imagePath ? "style='background-image: url(\"{$imagePath}\");'" : '';
+            $style = $imagePath ? "style='background-image: url(\"{$imagePath}?" . filemtime($imagePath) . "\");'" : ''; // Dodano filemtime
             ?>
             <label for="screenshot_input_<?= $i ?>" class="main-image-container uploader-container" id="preview_<?= $i ?>" <?= $style ?>>
                 <span class="uploader-label <?= !$imagePath ? 'visible' : '' ?>">Kliknij, aby wybrać główny screenshot</span>
@@ -164,9 +185,9 @@ function find_logo_path($name, $role) {
                 <?php
                 for($i = 1; $i < 4; $i++):
                     $imagePath = null;
-                    $files = glob("img/games/{$safeGameName}_" . ($i + 1) . ".*");
+                    $files = glob("img/games/{$safeGameNameForDisplay}_" . ($i + 1) . ".*");
                     if (!empty($files)) $imagePath = $files[0];
-                    $style = $imagePath ? "style='background-image: url(\"{$imagePath}\");'" : '';
+                    $style = $imagePath ? "style='background-image: url(\"{$imagePath}?" . filemtime($imagePath) . "\");'" : ''; // Dodano filemtime
                 ?>
                     <label for="screenshot_input_<?= $i ?>" class="thumbnail uploader-container" id="preview_<?= $i ?>" <?= $style ?>>
                         <span class="uploader-label <?= !$imagePath ? 'visible' : '' ?>">Wybierz plik</span>
@@ -232,11 +253,11 @@ function find_logo_path($name, $role) {
                     <input type="checkbox" name="platforms[]" value="<?= $row['id'] ?>" <?= $isSelected ? 'checked' : '' ?> style="display:none;">
                 <?php endwhile; ?>
             </div>
-            
+
             <span class="detail-title">CENA (PLN):</span>
             <input type="number" name="price" step="0.01" min="0" value="<?= htmlspecialchars($game['price']) ?>" style="width: 100%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 10px; border-radius: 3px;">
         </div>
-        
+
         <?php if ($error): ?>
             <p style="color: red; width: 100%; text-align: center; margin-bottom: 10px;"><?= htmlspecialchars($error) ?></p>
         <?php endif; ?>
@@ -245,7 +266,7 @@ function find_logo_path($name, $role) {
             <button type="submit" class="cart-button">Zapisz Zmiany</button>
         </div>
     </form>
-    
+
     <hr class="divider">
 
     <div class="reviews-section">
@@ -255,7 +276,7 @@ function find_logo_path($name, $role) {
                 <?php while($review = $reviewsResult->fetch_assoc()): ?>
                     <div class="review-item" id="review-<?= $review['id'] ?>">
                         <div class="review-user-info">
-                            <div class="avatar-placeholder"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="white" d="M6 22h13a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2zm6-17.001c1.647 0 3 1.351 3 3C15 9.647 13.647 11 12 11S9 9.647 9 7.999c0-1.649 1.353-3 3-3M6 17.25c0-2.219 2.705-4.5 6-4.5s6 2.281 6 4.5V18H6z"/></svg></div>
+                            <img src="img/avatars/<?= htmlspecialchars($review['avatar_filename'] ?? 'default_avatar.png') ?>" alt="Awatar <?= htmlspecialchars($review['username']) ?>" style="width: 50px; height: 50px; border-radius: 5px; object-fit: cover;">
                             <span class="username"><?= htmlspecialchars($review['username']); ?></span>
                         </div>
                         <div class="review-main-content">

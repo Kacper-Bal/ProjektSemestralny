@@ -195,12 +195,6 @@ body {
     justify-content: center; 
 }
 
-.review-user-link .avatar-placeholder svg { 
-    width: 20px; 
-    height: 20px; 
-    fill: #c7d5e0; 
-}
-
 .review-username {
      color: #8f98a2; 
      font-weight: bold; 
