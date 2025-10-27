@@ -124,19 +124,25 @@ elseif (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     $html = '';
     if (!empty($reviews)) {
         foreach ($reviews as $review) {
-            $randomRoll = rand(1, 7);
+            $randomRoll = rand(1, 10);
 
             switch ($randomRoll) {
                 case 1:
                     $tileClass = 'review-tile--m';
                     break;
                 case 2:
-                    $tileClass = 'review-tile--l'; 
+                    $tileClass = 'review-tile--m';
                     break;
                 case 3:
-                    $tileClass = 'review-tile--tall-s'; 
+                    $tileClass = 'review-tile--l'; 
                     break;
                 case 4:
+                    $tileClass = 'review-tile--tall-s'; 
+                    break;
+                case 5:
+                    $tileClass = 'review-tile--tall-s'; 
+                    break;
+                case 6:
                     $tileClass = 'review-tile--tall-m'; 
                     break;
                 default:

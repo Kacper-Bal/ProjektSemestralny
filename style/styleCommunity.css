@@ -1,5 +1,8 @@
 body {
-    background-color: #1b2838;
+    background-image: url("/projektsemestralny/img/others/community.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
     color: #c7d5e0;
 }
 
@@ -9,6 +12,7 @@ body {
     padding: 20px;
     background-color: #171d25;
     border-radius: 5px;
+    min-height: 100vh;
 }
 
 #community-content h1 {
@@ -142,7 +146,7 @@ body {
     display: block;
     width: 100%;
     object-fit: cover;
-    height: 200px;
+    height: auto;
     object-position: center center;
 }
 

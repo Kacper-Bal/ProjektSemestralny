@@ -1,5 +1,6 @@
 <?php
 require_once('auth.php'); 
+
 ?>
 
 <header>
@@ -14,11 +15,11 @@ require_once('auth.php');
         </label>
         
         <div id="header-left">
-            <a href="main.php"><img class="logo" style="height: 8vh" src="img\others\logo_steam.svg"></a>
+            <a href="index.php"><img class="logo" style="height: 8vh" src="img\others\logo_steam.svg"></a>
             <div id="links">
                 <div class="header-element active"><a href="store.php">SKLEP</a></div>
                 <div class="header-element"><a href="community.php">SPOŁECZNOŚĆ</a></div>
-                <div class="header-element"><a href="info.php">INFORMACJE</a></div>
+                <div class="header-element"><a href="information.php">INFORMACJE</a></div>
                 <div class="header-element"><a href="helpdesk.php">POMOC TECHNICZNA</a></div>
             </div>
         </div>
