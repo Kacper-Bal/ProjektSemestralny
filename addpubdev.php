@@ -8,6 +8,48 @@ if (!$currentUser || $currentUser['role'] != 1) {
     exit;
 }
 
+function get_average_color($filepath) {
+    $default_color = '#141E2A'; 
+    
+    if (!file_exists($filepath)) {
+        return $default_color;
+    }
+
+    try {
+        $extension = strtolower(pathinfo($filepath, PATHINFO_EXTENSION));
+        $image = null;
+
+        if ($extension === 'png') {
+            $image = @imagecreatefrompng($filepath);
+        } elseif ($extension === 'jpg' || $extension === 'jpeg') {
+            $image = @imagecreatefromjpeg($filepath);
+        } else {
+            return $default_color;
+        }
+
+        if (!$image) {
+            return $default_color;
+        }
+
+        $thumb = imagecreatetruecolor(1, 1);
+        imagecopyresampled($thumb, $image, 0, 0, 0, 0, 1, 1, imagesx($image), imagesy($image));
+
+        $rgb = imagecolorat($thumb, 0, 0);
+        $r = ($rgb >> 16) & 0xFF;
+        $g = ($rgb >> 8) & 0xFF;
+        $b = $rgb & 0xFF;
+
+        imagedestroy($image);
+        imagedestroy($thumb);
+
+        return sprintf('#%02x%02x%02x', $r, $g, $b);
+
+    } catch (Exception $e) {
+        return $default_color;
+    }
+}
+
+
 $role = $_GET['role'] ?? null;
 if (!in_array($role, ['developer', 'publisher'])) {
     header('Location: addgame.php');
@@ -40,8 +82,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!move_uploaded_file($logo['tmp_name'], $filePath)) {
                 $error = 'Nie udało się zapisać pliku.';
             } else {
+
+                $logoColor = get_average_color($filePath); 
+                
                 $nameEsc = $conn->real_escape_string($name);
-                $query = "INSERT INTO `$table` (`name`) VALUES ('$nameEsc')";
+                $colorEsc = $conn->real_escape_string($logoColor);
+
+                $query = "INSERT INTO `$table` (`name`, `logo_color`) VALUES ('$nameEsc', '$colorEsc')";
+
                 if ($conn->query($query)) {
                     $newId = $conn->insert_id;
                     $_SESSION["new_{$role}_id"] = $newId;
