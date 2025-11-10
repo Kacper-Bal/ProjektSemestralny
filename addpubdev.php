@@ -3,36 +3,30 @@ session_start();
 require_once 'conn.php';
 require_once 'auth.php';
 
-// Sprawdzenie czy użytkownik jest adminem
 if (!$currentUser || $currentUser['role'] != 1) {
     header('Location: index.php');
     exit;
 }
 
-// Sprawdzenie parametru role
 $role = $_GET['role'] ?? null;
 if (!in_array($role, ['developer', 'publisher'])) {
-    header('Location: addgames.php');
+    header('Location: addgame.php');
     exit;
 }
 
 $error = '';
 
-// Obsługa formularza
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name'] ?? '');
     $logo = $_FILES['logo'] ?? null;
 
-    // Walidacja nazwy
     if ($name === '') {
         $error = 'Nazwa jest wymagana.';
     } 
-    // Walidacja pliku
     elseif (!$logo || $logo['error'] !== UPLOAD_ERR_OK) {
         $error = 'Logo jest wymagane.';
     } else {
 
-        // Zapis pliku
         $ext = strtolower(pathinfo($logo['name'], PATHINFO_EXTENSION));
         $allowedExt = ['jpg', 'png'];
 
@@ -46,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!move_uploaded_file($logo['tmp_name'], $filePath)) {
                 $error = 'Nie udało się zapisać pliku.';
             } else {
-                // Wstawienie do bazy danych
                 $nameEsc = $conn->real_escape_string($name);
                 $query = "INSERT INTO `$table` (`name`) VALUES ('$nameEsc')";
                 if ($conn->query($query)) {
@@ -54,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION["new_{$role}_id"] = $newId;
                     $_SESSION["new_{$role}_name"] = $name;
 
-                    // Powrót do addgames.php
                     header('Location: addgame.php');
                     exit;
                 } else {
@@ -69,58 +61,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="pl">
 <head>
     <meta charset="utf-8">
-    <title>Dodaj <?php echo htmlspecialchars(ucfirst($role)); ?></title>
-    <style>
-        .logo-box {
-            width: 120px; 
-            height: 120px; 
-            border: 2px dashed #ccc;
-            background-size: contain; 
-            background-repeat: no-repeat; 
-            background-position: center;
-            display: inline-block; 
-            vertical-align: middle; 
-            margin-left: 10px;
-        }
-    </style>
+    <title><?php echo "Dodaj ".htmlspecialchars(ucfirst($role)) ."a"; ?></title>
+    <link rel="stylesheet" href="style/styleGame.css">
+    <link rel="stylesheet" href="style/styleCommon.css">
 </head>
 <body>
-<h1>Dodaj <?php echo htmlspecialchars(ucfirst($role)); ?></h1>
+<?php include('header.php'); ?>
+
+<div id="container">
+<h1><?php echo "Dodaj nowego ".htmlspecialchars(ucfirst($role)) ."a"; ?></h1>
 
 <?php if ($error) echo "<p style='color:red;'>" . htmlspecialchars($error) . "</p>"; ?>
 
 <form method="POST" enctype="multipart/form-data">
-    <label>Nazwa<br>
-        <input type="text" name="name" value="<?php echo htmlspecialchars($_POST['name'] ?? ''); ?>" required>
-    </label>
-    <br><br>
+    <h2 style="padding-top: 20px;">Nazwa: <input type="text" name="name" style="font-size: 0.8em; width: 60%; background-color: #2c313a; border: 1px solid #434953; color: white; padding: 5px;" value="<?php echo htmlspecialchars($_POST['name'] ?? ''); ?>" required></h2>
 
-    <label>Logo<br>
-        <input type="file" name="logo" id="logo_input" accept="image/png,image/jpeg" required>
+    <h2 style="padding-top: 20px;">Logo:</h2>
+    <label for="logo_input" class="uploader-container logo-uploader" id="logo_preview_container">
+        <span class="uploader-label visible">Wybierz plik</span>
+        <input type="file" name="logo" class="uploader-input" id="logo_input" data-preview-target="logo_preview_container" accept="image/png,image/jpeg" required>
     </label>
-    <div id="logo_preview" class="logo-box"></div>
-    <br>
 
-    <button type="submit">Dodaj</button>
-    <a href="addgames.php">Anuluj</a>
+
+    <div style="padding-top: 20px;" class="form-button-container">
+            <a href="addgame.php?action=cancel" class="cart-button cancel-btn-red">Anuluj</a>
+            <button type="submit" class="cart-button">Dodaj Grę</button>
+        </div>
 </form>
 
-<script>
-const input = document.getElementById('logo_input');
-const preview = document.getElementById('logo_preview');
+    </div>  
 
-input && input.addEventListener('change', function() {
-    const file = this.files[0];
-    if (!file || !file.type.startsWith('image/')) {
-        preview.style.backgroundImage = '';
-        return;
-    }
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        preview.style.backgroundImage = `url('${e.target.result}')`;
-    };
-    reader.readAsDataURL(file);
-});
-</script>
+<?php include('footer.php'); ?>
+<script src="skrypty.js"></script>
 </body>
 </html>

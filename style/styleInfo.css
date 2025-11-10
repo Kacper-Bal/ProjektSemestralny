@@ -77,3 +77,102 @@ body{
     width: 60%;
 }
 
+#csg_container{
+    background-color: #10161E;
+    width: 100%;
+}
+
+#csg_inner{
+    max-width: 1000px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+    display: flex;
+    gap: 10rem;
+    flex-direction: column;
+}
+
+.csg_item{
+    display: flex;
+    flex-direction: row;
+}
+
+.csg_content{
+    width: 40%;
+}
+
+.csg_images{
+    width: 60%;
+}
+
+.csg_content h1{
+    color: white;
+    font-size: 3rem;
+}
+
+.csg_content p{
+    color: white;
+    font-size: 1.5rem;
+}
+
+.csg_content a{
+    text-decoration: none;
+    color: #2EBFFF;
+    font-size: 1.5rem;
+}
+
+.csg_content a:after {
+    content: "➜";
+    margin-left: 5px; 
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.csg_content a:hover:after {
+    transform: translateX(10px);
+}
+  
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.csg_images {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.csg_img {
+    position: absolute;
+    width: 80%; 
+    height: auto;
+    opacity: 0;
+}
+
+.csg_item.is-visible .csg_img {
+    animation-name: fadeInSlideUp;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+.csg_item.is-visible .csg_img:nth-child(1) {
+    animation-delay: 0.4s; 
+}
+
+.csg_item.is-visible .csg_img:nth-child(2) {
+    animation-delay: 0.8s; 
+}
+
+.csg_item.is-visible .csg_img:nth-child(3) {
+    animation-delay: 1.2s;
+}
+

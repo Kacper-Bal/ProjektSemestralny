@@ -325,6 +325,10 @@ body {
     color: #76808c; 
 }
 
+ .review-user-link img { 
+    vertical-align: middle; 
+}
+
 @media (max-width: 800px) {
     .reviews-container {
         grid-template-columns: 1fr;

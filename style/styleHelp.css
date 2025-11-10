@@ -1,0 +1,106 @@
+#container{
+    background-image: url('../img/others/loginBackgroundFull.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding-top: 30px;
+    min-height: 70vh;
+}
+
+.content{
+    max-width: 1000px;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: #171a21;
+    padding: 30px;
+    border-radius: 20px;
+}
+
+.content h1{
+    color: white;
+    font-size: 60px;
+}
+
+.sections{
+    margin-top: 50px;
+}
+
+.section {
+  background-color: #141E2A;
+  color: white;
+  cursor: pointer;
+  padding: 25px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 25px;
+  transition: 0.4s;
+}
+
+.content .active, .section:hover {
+  background-color: #1C2632;
+}
+
+
+.section:after {
+  content: '\f078';
+  font-family: "Font Awesome 6 Free"; 
+  font-weight: 900; 
+  color: white;
+  float: right;
+  margin-left: 5px;
+}
+
+.content .active:after {
+  content: "\f077";
+}
+
+.panel {
+  padding: 0 20px;
+  background-color: #242E3A;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  font-size: 20px;
+  color: white;
+}
+
+.panel p{
+    margin-top: 20px;
+}
+
+.panel p:last-child {
+    margin-bottom: 20px;
+}
+
+a.link {
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+a.link:hover {
+    color: #38b6ff;
+    text-decoration: underline;
+}
+
+.panel svg{
+    width: 17px;
+}
+
+.panel img{
+    margin: 20px;
+}
+
+video{
+    width: 100%;
+    height: auto;
+}
+@media (max-width: 800px) {
+
+    .content h1{
+        font-size: 40px;
+    }
+}

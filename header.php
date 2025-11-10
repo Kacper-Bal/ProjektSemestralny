@@ -12,7 +12,6 @@ function isNavLinkActive($pageName, $currentPage) {
         return $pageName === 'store.php';
     }
 }
-
 ?>
 
 <header>

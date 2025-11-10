@@ -199,12 +199,9 @@ HTML;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Społeczność - Recenzje</title>
+    <title>Community</title>
     <link rel="stylesheet" href="style/styleCommon.css">
     <link rel="stylesheet" href="style/styleCommunity.css">
-    <style>
-        .review-user-link img { vertical-align: middle; } /* Dodatkowy styl dla lepszego wyrównania */
-    </style>
 </head>
 <body>
     <?php include('header.php'); ?>
