@@ -232,7 +232,7 @@ if ($currentUser) {
     <link rel="stylesheet" href="style/styleGame.css">
     <link rel="stylesheet" href="style/styleCommon.css">
 </head>
-<body>
+<body data-game-name="<?= htmlspecialchars($gameName) ?>">
 <?php include 'header.php'; ?>
 
     <div id="container">
@@ -433,90 +433,8 @@ if ($currentUser) {
     </div>
 
 <?php include 'footer.php'; ?>
-
-<script src="skrypty.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const reviewsList = document.querySelector('.reviews-list');
-    let isVoting = false;
-
-    if (reviewsList) {
-        reviewsList.addEventListener('click', function(event) {
-            const target = event.target.closest('.vote-arrow');
-            if (target && !isVoting) {
-                event.preventDefault();
-
-                <?php if (!$currentUser): ?>
-                    window.location.href = 'login.php';
-                    return;
-                <?php endif; ?>
-
-                isVoting = true;
-                target.classList.add('disabled');
-                const voteType = target.dataset.vote;
-                const reviewVotingDiv = target.closest('.review-voting');
-                const reviewId = reviewVotingDiv.dataset.reviewId;
-                const voteCountSpan = reviewVotingDiv.querySelector('.vote-count');
-                const upvoteArrow = reviewVotingDiv.querySelector('.upvote');
-                const downvoteArrow = reviewVotingDiv.querySelector('.downvote');
-
-                fetch('game.php?action=vote&game=<?= urlencode($gameName) ?>', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        reviewId: reviewId,
-                        voteType: voteType
-                    })
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(err => { throw new Error(err.error || 'Network response was not ok'); });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        voteCountSpan.textContent = data.newVoteCount;
-                        upvoteArrow.classList.toggle('voted', data.newUserVoteStatus === 1);
-                        downvoteArrow.classList.toggle('voted', data.newUserVoteStatus === -1);
-                    } else if (data.error === 'not_logged_in') {
-                         window.location.href = 'login.php';
-                    } else {
-                        console.error('Błąd głosowania:', data.error || 'Nieznany błąd');
-                    }
-                })
-                .catch(error => {
-                    console.error('Błąd sieci lub przetwarzania podczas głosowania:', error);
-                })
-                .finally(() => {
-                    isVoting = false;
-                    target.classList.remove('disabled');
-                     setTimeout(() => {
-                         upvoteArrow.style.pointerEvents = 'auto';
-                         downvoteArrow.style.pointerEvents = 'auto';
-                     }, 200);
-                });
-                 upvoteArrow.style.pointerEvents = 'none';
-                 downvoteArrow.style.pointerEvents = 'none';
-            }
-        });
-    }
-
-    const reviewMessageElement = document.querySelector('.review-message');
-    if (reviewMessageElement && reviewMessageElement.textContent.trim() !== '') {
-        setTimeout(() => {
-            reviewMessageElement.style.transition = 'opacity 0.5s ease-out';
-            reviewMessageElement.style.opacity = '0';
-            setTimeout(() => {
-                reviewMessageElement.remove();
-            }, 500);
-        }, 5000);
-    }
-});
-</script>
-
+<script src="js/gallery.js" defer></script>
+<script src="js/voting.js" defer></script>
+<script src="js/game.js" defer></script>
 </body>
 </html>

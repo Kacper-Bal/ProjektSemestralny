@@ -39,3 +39,5 @@ $current_year = date('Y');
         <p>&copy; <?php echo $current_year; ?> Kacper Balcerek. Wszelkie prawa zastrzeżone. Projekt realizowany w celach edukacyjnych.</p>
     </div>
 </footer>
+    <script src="js/common.js" defer></script> 
+</body>

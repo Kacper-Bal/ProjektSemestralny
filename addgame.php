@@ -250,6 +250,7 @@ function find_logo_path($name, $role) {
 
 <?php include 'footer.php'; ?>
 
-<script src="skrypty.js"></script>
+<script src="js/formHelpers.js" defer></script>
+<script src="js/slider.js" defer></script>
 </body>
 </html>

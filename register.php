@@ -114,11 +114,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
     <?php include('footer.php'); ?>
-    <script>
-        if (window.history.replaceState) {
-            window.history.replaceState(null, null, window.location.href);
-        }
-    </script>
-
+    <script src="js/authForms.js" defer></script>
 </body>
 </html>
