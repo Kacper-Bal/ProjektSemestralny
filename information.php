@@ -26,7 +26,7 @@ $resultGames = $resultGames -> fetch_row();
     <div class="about_background">
         <div class="about_container">
             <div class="about_content">
-                <img src="img/others/logo_steam.svg" style="width: 80%">
+                <img src="img/others/logo_steam.svg">
                 <p>Steam to najlepsze miejsce do grania omawiania i tworzenia gier<p>
                     <span class="numbers">
                         <span class="number">
@@ -63,7 +63,7 @@ $resultGames = $resultGames -> fetch_row();
                     <img src="img\others\infoImages\community_pt3.png" class="csg_img">
                 </div>
             </div>
-            <div class="csg_item">
+            <div class="csg_item reversed">
                 <div class="csg_images">
                     <img src="img\others\infoImages\hardware_pt1.png" class="csg_img">
                     <img src="img\others\infoImages\hardware_pt2.png" class="csg_img">
@@ -87,6 +87,7 @@ $resultGames = $resultGames -> fetch_row();
             </div>
         </div>
     </div>
+
     <div class="function_container">
         <div class="function_content">
             <div class="function_text">
