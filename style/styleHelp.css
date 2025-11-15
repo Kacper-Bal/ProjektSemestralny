@@ -11,13 +11,13 @@
     max-width: 1000px;
     margin-right: auto;
     margin-left: auto;
-    background-color: #171a21;
+    background-color: var(--color-bg-panel-dark);
     padding: 30px;
     border-radius: 20px;
 }
 
 .content h1{
-    color: white;
+    color: var(--color-text-light);
     font-size: 60px;
 }
 
@@ -26,8 +26,8 @@
 }
 
 .section {
-  background-color: #141E2A;
-  color: white;
+  background-color: var(--color-bg-container);
+  color: var(--color-text-light);
   cursor: pointer;
   padding: 25px;
   width: 100%;
@@ -39,7 +39,7 @@
 }
 
 .content .active, .section:hover {
-  background-color: #1C2632;
+    background-color: var(--color-bg-page);
 }
 
 
@@ -47,7 +47,7 @@
   content: '\f078';
   font-family: "Font Awesome 6 Free"; 
   font-weight: 900; 
-  color: white;
+  color: var(--color-text-light);
   float: right;
   margin-left: 5px;
 }
@@ -63,7 +63,7 @@
   overflow: hidden;
   transition: max-height 0.2s ease-out;
   font-size: 20px;
-  color: white;
+  color: var(--color-text-light);
 }
 
 .panel p{
@@ -75,14 +75,14 @@
 }
 
 a.link {
-    color: white;
+    color: var(--color-text-light);
     font-size: 20px;
     text-decoration: none;
     transition: color 0.2s ease-in-out;
 }
 
 a.link:hover {
-    color: #38b6ff;
+    color: var(--color-accent-link);
     text-decoration: underline;
 }
 

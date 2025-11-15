@@ -1,6 +1,32 @@
 @import url('https://fonts.cdnfonts.com/css/motiva-sans');
 
-*{
+:root {
+    --color-bg-page: #1b2838;
+    --color-bg-container: #141E2A;
+    --color-bg-panel-dark: #171a21;
+    --color-bg-input: #32353c;
+    --color-bg-input-hover: #393c43;
+    --color-bg-inset: #0e1218;
+    --color-text-light: #ffffff;
+    --color-text-main: #acb2b8;
+    --color-text-secondary: #76808c;
+    --color-text-secondary-highlight: #8f98a2;
+    --color-accent-link: #38b6ff;
+    --color-accent-highlight: #67c1f5;
+    --color-accent-highlight-bg: rgba(103, 193, 245, 0.2);
+    --color-accent-highlight-bg-hover: rgba(103, 193, 245, 0.4);
+    --color-button-blue: #4b619b;
+    --color-button-blue-hover: #5c72ad;
+    --color-button-red: #c94c4c;
+    --color-button-red-hover: #e06c6c;
+    --color-message-success-bg: #4c6b22;
+    --color-message-success-text: #a4d4a4;
+    --color-border-main: #2c313a;
+    --color-border-mid: #434953;
+    --color-border-light-transparent: rgba(255, 255, 255, 0.1);
+  }
+
+  *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -13,13 +39,13 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #171a21;
+    background: var(--color-bg-panel-dark);
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: #434953;
+    background-color: var(--color-border-mid);
     border-radius: 10px;
-    border: 3px solid #171a21;
+    border: 3px solid var(--color-bg-panel-dark);
   }
 
  ::-webkit-scrollbar-thumb:hover {
@@ -27,10 +53,10 @@
   }
 
 footer {
-    background-color: #171a21;
-    color: #76808c;
+    background-color: var(--color-bg-panel-dark);
+    color: var(--color-text-secondary);
     padding: 40px 20px 20px 20px;
-    border-top: 1px solid #2c313a;
+    border-top: 1px solid var(--color-border-main);
 }
 
 
@@ -43,7 +69,7 @@ footer {
 }
 
 .footer-column h3 {
-    color: #ffffff;
+    color: var(--color-text-light);
     font-size: 16px;
     margin-bottom: 15px;
     text-transform: uppercase;
@@ -69,11 +95,11 @@ footer {
     transition: color 0.2s ease-in-out;
     display: inline-flex;
     align-items: center;
-    color: #76808c;
+    color: var(--color-text-secondary);
 }
 
 .footer-column a:hover {
-    color: #38b6ff;
+    color: var(--color-accent-link);
 }
 
 .footer-column a svg {
@@ -84,7 +110,7 @@ footer {
 }
 
 .footer-bottom {
-    border-top: 1px solid #2c313a;;
+    border-top: 1px solid var(--color-border-main);;
     margin-top: 40px;
     padding-top: 20px;
     text-align: center;
@@ -99,7 +125,7 @@ header{
 }
 
 #header-top{
-    background-color: #171d25;
+    background-color: var(--color-bg-panel-dark);
     width: 100%;
     height: 12vh;
     display: flex;
@@ -109,7 +135,7 @@ header{
     padding: 20px;
     position: relative;
     z-index: 300;
-    border-bottom: 1px solid #2c313a;
+    border-bottom: 1px solid var(--color-border-main);
 }
 
 #header-left{
@@ -129,13 +155,13 @@ header{
 }
 
 header a{
-    color: white;
+    color: var(--color-text-light);
     text-decoration: none;
     font-size: 20px;
 }
 
 .active a{
-    color: #38b6ff;
+    color: var(--color-accent-link);
 }
 
 a:hover{
@@ -145,7 +171,7 @@ a:hover{
 .login-panel {
     display: flex;
     width: auto;
-    border: 2px solid #2c313a;
+    border: 2px solid var(--color-border-main);
     border-radius: 20px;
     overflow: hidden;
     height: 7vh;
@@ -167,11 +193,11 @@ a:hover{
 }
 
 .login-element:hover {
-    background-color: white;
+    background-color: var(--color-text-light);
 }
 
 .login-element:hover a {
-    color: #171d25;
+    color: var(--color-bg-panel-dark);
 }
 
 #header-bottom {
@@ -185,22 +211,22 @@ a:hover{
     display: flex;
     border-radius: 5px;
     overflow: hidden;
-    border: 1px solid #434953;
+    border: 1px solid var(--color-border-mid);
 }
 
 #searchForm input[type="text"] {
     border: none;
     padding: 8px 12px;
-    background-color: #171d25;
-    color: white;
+    background-color: var(--color-bg-panel-dark);
+    color: var(--color-text-light);
     outline: none;
     font-size: 20px;
 }
 
 #searchForm input[type="submit"] {
     border: none;
-    background-color: #4b619b;
-    color: white;
+    background-color: var(--color-button-blue);
+    color: var(--color-text-light);
     cursor: pointer;
     padding: 8px 15px;
     font-size: 14px;
@@ -209,7 +235,7 @@ a:hover{
 }
 
 #searchForm input[type="submit"]:hover {
-    background-color: #5c72ad;
+    background-color: var(--color-button-blue-hover);
 }
 
 
@@ -240,7 +266,7 @@ a:hover{
         position: static;
         width: 100%;
         padding: 15px 15px 15px 15px;
-        background-color: #171d25;
+        background-color: var(--color-bg-panel-dark);
         z-index: auto;
         transition: transform 0.4s ease;
     }
@@ -265,7 +291,7 @@ a:hover{
         display: block;
         height: 4px;
         width: 100%;
-        background: white;
+        background: var(--color-text-light);
         border-radius: 3px;
     }
 
@@ -277,8 +303,8 @@ a:hover{
         z-index: 200;
         display: flex;
         flex-direction: column;
-        background-color: #171d25;
-        border-top: 1px solid #2c313a;
+        background-color: var(--color-bg-panel-dark);
+        border-top: 1px solid var(--color-border-main);
         gap: 0;
         visibility: hidden;
         opacity: 0;
@@ -293,7 +319,7 @@ a:hover{
         display: flex;
         justify-content: center;
         align-items: center;
-        border-bottom: 1px solid #2c313a;
+        border-bottom: 1px solid var(--color-border-main);
     }
 
     #menu-toggle:checked ~ #header-top #header-left #links {

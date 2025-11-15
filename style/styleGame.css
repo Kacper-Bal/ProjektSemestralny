@@ -1,5 +1,5 @@
 body {
-    background-color: #1b2838
+    background-color: var(--color-bg-page)
 }
 
 #container {
@@ -8,8 +8,8 @@ body {
     max-width: 1000px;
     min-width: 800px;
     margin: 20px auto;
-    background-color: #141E2A;
-    color: white;
+    background-color: var(--color-bg-container);
+    color: var(--color-text-light);
     padding: 20px 2%;
     gap: 4%;
     position: relative;
@@ -29,17 +29,17 @@ h1 {
 h1 svg {
     width: 2rem;
     height: 2rem;
-    color: white;
+    color: var(--color-text-light);
     transition: fill 0.2s;
     display: block; 
 }
 
 h1 a:hover svg {
-    color:#38b6ff
+    color: var(--color-accent-link)
 }
 
 .back-link{
-    color: white; 
+    color: var(--color-text-light); 
     text-decoration: none; 
     margin-bottom: 20px; 
     display: block; 
@@ -47,7 +47,7 @@ h1 a:hover svg {
 }
 
 .back-link:hover{
-    color:#38b6ff
+    color: var(--color-accent-link)
 }
 
 .images {
@@ -63,7 +63,7 @@ h1 a:hover svg {
     position: relative;
     width: 100%;
     height: 350px;
-    background-color: #1B2838;
+    background-color: var(--color-bg-page);
 }
 
 .slide {
@@ -89,7 +89,7 @@ h1 a:hover svg {
     width: auto;
     padding: 16px;
     margin-top: -22px;
-    color: white;
+    color: var(--color-text-light);
     font-weight: bold;
     font-size: 20px;
     transition: 0.6s ease;
@@ -129,11 +129,11 @@ h1 a:hover svg {
 }
 
 .thumbnail.active {
-    border-color: #fff;
+    border-color: var(--color-text-light);
 }
 
 .description {
-    color: #76808c;
+    color: var(--color-text-secondary);
     text-align: justify;
     font-size: 16px;
     line-height: 1.6;
@@ -142,12 +142,12 @@ h1 a:hover svg {
 .content hr {
     border: none;
     height: 1px;
-    background-color: #2c313a;
+    background-color: var(--color-border-main);
     margin: 15px 0;
 }
 
 .release-date {
-    color: #76808c;
+    color: var(--color-text-secondary);
     font-size: 16px;
     margin-bottom: 20px;
 }
@@ -165,16 +165,16 @@ h1 a:hover svg {
 
 .detail-item a {
     text-decoration: none;
-    color: white;
+    color: var(--color-text-light);
     display: block;
 }
 
 .detail-item a:hover .company-name {
-    color: #38b6ff;
+    color: var(--color-accent-link);
 }
 
 .detail-title {
-    color: #38b6ff;
+    color: var(--color-accent-link);
     font-size: 14px;
     font-weight: bold;
     display: block;
@@ -184,20 +184,20 @@ h1 a:hover svg {
 .logo-container {
     width: 100%;
     height: 80px;
-    background-color: #171a21;
+    background-color: var(--color-bg-panel-dark);
     border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 8px;
     margin-bottom: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--color-border-light-transparent);
     transition: border-color 0.2s, box-shadow 0.2s;
     
 }
 
 .detail-item a:hover .logo-container {
-    border-color: #38b6ff;
+    border-color: var(--color-accent-link);
     box-shadow: 0 0 10px rgba(56, 182, 255, 0.4);
 }
 
@@ -224,21 +224,21 @@ h1 a:hover svg {
     width: 50px;
     height: 50px;
     padding: 5px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--color-border-light-transparent);
     border-radius: 5px;
-    background-color: #171a21;
+    background-color: var(--color-bg-panel-dark);
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .platform-item:hover {
-    border-color: #ffffff;
+    border-color: var(--color-text-light);
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
 }
 
 .platform-item svg {
     width: 100%;
     height: 100%;
-    fill: #76808c;
+    fill: var(--color-text-secondary);
 }
 
 .tags-container {
@@ -248,8 +248,8 @@ h1 a:hover svg {
 }
 
 .tag-item {
-    background-color: rgba(103, 193, 245, 0.2);
-    color: #67c1f5;
+    background-color: var(--color-accent-highlight-bg);
+    color: var(--color-accent-highlight);
     padding: 5px 10px;
     border-radius: 3px;
     text-decoration: none;
@@ -258,8 +258,8 @@ h1 a:hover svg {
 }
 
 .tag-item:hover {
-    background-color: rgba(103, 193, 245, 0.4);
-    color: #fff;
+    background-color: var(--color-accent-highlight-bg-hover);
+    color: var(--color-text-light);
     text-decoration: none;
 }
 
@@ -267,7 +267,7 @@ h1 a:hover svg {
     width: 100%;
     border: none;
     height: 3px;
-    background-color: #2c313a;
+    background-color: var(--color-border-main);
     margin: 20px 0;
 }
 
@@ -280,7 +280,7 @@ h1 a:hover svg {
 .buy-box {
     width: 70%;
     float: right;
-    background: #171a21;
+    background: var(--color-bg-panel-dark);
     padding: 20px;
     border-radius: 5px;
 }
@@ -288,7 +288,7 @@ h1 a:hover svg {
 .buy-box h2 {
     font-size: 1.5rem;
     font-weight: normal;
-    color: #fff;
+    color: var(--color-text-light);
 }
 
 .purchase-box {
@@ -297,7 +297,7 @@ h1 a:hover svg {
     left: 68%;
     transform: translateY(-50%);
     width: 30%;
-    background-color: #0e1218;
+    background-color: var(--color-bg-inset);
     border-radius: 5px;
     display: flex;
     align-items: center;
@@ -308,13 +308,13 @@ h1 a:hover svg {
     flex: 1;
     text-align: center;
     font-size: 1.1rem;
-    color: #c7d5e0;
+    color: var(--color-text-main);
 }
 
 .purchase-box .add-to-cart {
     flex: 1;
     text-align: center;
-    border-left: 1px solid #2c313a;
+    border-left: 1px solid var(--color-border-main);
     height: 100%;
     display: flex;
     align-items: center;
@@ -324,18 +324,19 @@ h1 a:hover svg {
 .cart-button {
     display: inline-block;
     padding: 8px 12px;
-    background-color: #4b619b;
-    color: white;
+    background-color: var(--color-button-blue);
+    color: var(--color-text-light);
     text-decoration: none;
     border-radius: 3px;
     font-size: 0.9rem;
     font-weight: bold;
     transition: background-color 0.2s;
+    border: none;
 }
 
 .cart-button:hover {
-    background-color: #5c72ad;
-    color: white;
+    background-color: var(--color-button-blue-hover);
+    color: var(--color-text-light);
     text-decoration: none;
 }
 
@@ -348,12 +349,12 @@ h1 a:hover svg {
 .reviews-section h2 {
     font-size: 1.5rem;
     margin-bottom: 20px;
-    color: #fff;
+    color: var(--color-text-light);
 }
 
 .review-form, .review-item {
     display: flex;
-    background-color: #171a21;
+    background-color: var(--color-bg-panel-dark);
     padding: 15px;
     border-radius: 5px;
     margin-top: 25px;
@@ -372,7 +373,7 @@ h1 a:hover svg {
 .avatar-placeholder {
     width: 50px;
     height: 50px;
-    background-color: #2c313a;
+    background-color: var(--color-border-main);
     border-radius: 5px;
     flex-shrink: 0;
     display: flex;
@@ -381,7 +382,7 @@ h1 a:hover svg {
 }
 
 .username {
-    color: #8f98a2;
+    color: var(--color-text-secondary-highlight);
     font-weight: bold;
     font-size: 1.2rem;
     white-space: nowrap;
@@ -412,7 +413,7 @@ h1 a:hover svg {
     top: 5%;
     height: 90%;
     width: 1px;
-    background-color: #2c313a;
+    background-color: var(--color-border-main);
 }
 
 .review-form .review-main-content::after {
@@ -434,7 +435,7 @@ h1 a:hover svg {
 
 .review-date {
     font-size: 0.8rem;
-    color: #76808c;
+    color: var(--color-text-secondary);
 }
 
 .edit-review-btn {
@@ -443,7 +444,7 @@ h1 a:hover svg {
     cursor: pointer;
     padding: 0;
     line-height: 0;
-    color: #76808c;
+    color: var(--color-text-secondary);
 }
 
 .edit-review-btn svg {
@@ -453,12 +454,12 @@ h1 a:hover svg {
 }
 
 .edit-review-btn:hover svg {
-    color: #fff;
+    color: var(--color-text-light);
 }
 
 .review-stars, .stars-display {
     font-size: 1.2rem;
-    color: #67c1f5;
+    color: var(--color-accent-highlight);
 }
 
 .rating-input {
@@ -471,14 +472,14 @@ h1 a:hover svg {
 }
 
 .rating-input label {
-    color: #434953;
+    color: var(--color-border-mid);
     cursor: pointer;
     font-size: 1.5rem;
     transition: color 0.2s;
 }
 
 .rating-input input:checked ~ label,.rating-input label:hover,.rating-input label:hover ~ label {
-    color: #67c1f5;
+    color: var(--color-accent-highlight);
 }
 
 .review-comment-field, .review-edit-form form {
@@ -488,10 +489,10 @@ h1 a:hover svg {
 
 .review-comment-field textarea, .edit-textarea {
     width: 100%;
-    background-color: #0e1218;
-    border: 1px solid #2c313a;
+    background-color: var(--color-bg-inset);
+    border: 1px solid var(--color-border-main);
     border-radius: 3px;
-    color: #c7d5e0;
+    color: var(--color-text-main);
     padding: 10px;
     resize: vertical;
     margin-bottom: 10px;
@@ -514,7 +515,7 @@ h1 a:hover svg {
 
 .review-comment-field button,.review-edit-form button {
     padding: 8px 15px;
-    color: white;
+    color: var(--color-text-light);
     border: none;
     border-radius: 3px;
     cursor: pointer;
@@ -522,23 +523,23 @@ h1 a:hover svg {
 }
 
 .review-comment-field button,.review-edit-form button[type="submit"] {
-    background-color: #4b619b;
+    background-color: var(--color-button-blue);
 }
 
 .review-comment-field button:hover,.review-edit-form button[type="submit"]:hover {
-    background-color: #5c72ad;
+    background-color: var(--color-button-blue-hover);
 }
 
 .review-edit-form .cancel-btn {
-    background-color: #76808c;
+    background-color: var(--color-text-secondary);
 }
 
 .review-edit-form .cancel-btn:hover {
-    background-color: #8f98a2;
+    background-color: var(--color-text-secondary-highlight);
 }
 
 .review-comment-content {
-    color: #acb2b8;
+    color: var(--color-text-main);
     line-height: 1.5;
     padding-top: 5px;
 }
@@ -552,14 +553,14 @@ h1 a:hover svg {
 }
 
 .vote-arrow {
-    color: #76808c;
+    color: var(--color-text-secondary);
     text-decoration: none;
     font-size: 1.5rem;
     transition: color 0.2s;
 }
 
 .vote-arrow:hover {
-    color: #fff;
+    color: var(--color-text-light);
     text-decoration: none;
 }
 
@@ -569,17 +570,17 @@ h1 a:hover svg {
 }
 
 .vote-arrow.voted {
-    color: #38b6ff;
+    color: var(--color-accent-link);
 }
 
 .vote-count {
-    color: #fff;
+    color: var(--color-text-light);
     font-size: 1.1rem;
     margin: 5px 0;
 }
 
 .review-message {
-    color: #67c1f5;
+    color: var(--color-accent-highlight);
     font-size: 0.9rem;
 }
 
@@ -593,12 +594,12 @@ h1 a:hover svg {
 }
 
 .user-profile-link:hover .username {
-    color: #38b6ff; 
+    color: var(--color-accent-link); 
     text-decoration: underline;
 }
 
 .uploader-container {
-    border: 2px dashed #434953;
+    border: 2px dashed var(--color-border-mid);
     cursor: pointer;
     background-size: cover;
     background-position: center;
@@ -614,7 +615,7 @@ h1 a:hover svg {
     justify-content: center;
     width: 100%;
     height: 100%;
-    color: #76808c;
+    color: var(--color-text-secondary);
     background-color: rgba(0,0,0,0.5);
     opacity: 0;
     transition: opacity 0.2s;
@@ -635,12 +636,12 @@ h1 a:hover svg {
 }
 
 .platform-item.selected, .tag-item.selected {
-    border-color: #ffffff;
+    border-color: var(--color-text-light);
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
 }
 .tag-item.selected {
-    background-color: rgba(103, 193, 245, 0.4);
-    color: #fff;
+    background-color: var(--color-accent-highlight-bg-hover);
+    color: var(--color-text-light);
 }
 .tag-item {
     cursor: pointer;
@@ -669,21 +670,21 @@ h1 a:hover svg {
 }
 
 .cancel-btn-red {
-    background-color: #c94c4c !important;
+    background-color: var(--color-button-red) !important;
     text-decoration: none !important;
-    color: white !important;
+    color: var(--color-text-light) !important;
 }
 
 .cancel-btn-red:hover {
-    background-color: #e06c6c !important;
-    color: white !important;
+    background-color: var(--color-button-red-hover) !important;
+    color: var(--color-text-light) !important;
     text-decoration: none !important;
 }
 
 .logo-uploader {
     width: 200px; 
     height: 200px; 
-    background-color: #141E2A;
+    background-color: var(--color-bg-container);
     margin-top: 20px;
 }
 
@@ -747,7 +748,7 @@ h1 a:hover svg {
         width: 100%;
         padding-bottom: 15px;
         margin-bottom: 15px;
-        border-bottom: 1px solid #2c313a;
+        border-bottom: 1px solid var(--color-border-main);
     }
 
     .review-user-info::after,.review-main-content::after {

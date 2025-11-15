@@ -13,7 +13,7 @@
 }
 
 #content{
-    background-color: #171a21;
+    background-color: var(--color-bg-panel-dark);
     min-width: 750px; 
     height: auto; 
     border-radius: 15px;
@@ -21,7 +21,7 @@
 }
 
 h1{
-    color: white;
+    color: var(--color-text-light);
     font-weight: 900;
 }
 
@@ -34,23 +34,23 @@ h1{
 }
 
 label{
-    color: #76808c;
+    color: var(--color-text-secondary);
     font-weight: 600;
 }
 
 input{
-    border: 1px solid #32353c;
-    background-color: #32353c;
+    border: 1px solid var(--color-bg-input);
+    background-color: var(--color-bg-input);
     border-radius: 3px;
     width: 90%;
     height: 5vh;
     font-size: 15px;
     padding: 10px;
-    color: white;
+    color: var(--color-text-light);
 }
 
 input:hover{
-    background-color: #393c43;
+    background-color: var(--color-bg-input-hover);
 }
 
 #button{
@@ -58,13 +58,13 @@ input:hover{
     width: 65%;
     margin-left: 3.5vw;
     margin-right: 3.5vw;
-    background-color: #4b619b;
+    background-color: var(--color-button-blue);
     font-size: 20px;
     margin-top: auto;
 }
 
 #button:hover{
-    background-color: #5c72ad;
+    background-color: var(--color-button-blue-hover);
     cursor: pointer;
 }
 
@@ -96,16 +96,16 @@ input:hover{
     display: inline-block;
     width: 20px; 
     height: 20px; 
-    background-color: #32353c;
-    border: 1px solid #32353c;
+    background-color: var(--color-bg-input);
+    border: 1px solid var(--color-bg-input);
     border-radius: 3px;
     transition: background-color 0.2s;
 }
 
 #remember_me:checked + label::before {
-    background-color: #5c72ad;
+    background-color: var(--color-button-blue-hover);
     content: '✔'; 
-    color: white;
+    color: var(--color-text-light);
     text-align: center;
     line-height: 20px; 
     font-size: 14px;
@@ -114,28 +114,28 @@ input:hover{
 .leftBox {
     width: 35%;
     padding: 4vh;
-    color: #76808c;
+    color: var(--color-text-secondary);
     text-align: center;
     font-size: 11px;
     text-transform: uppercase;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    border-left: 1px solid #32353c;
+    border-left: 1px solid var(--color-bg-input);
 }
 .leftBox svg {
     flex-grow: 1; 
     width: 100%;
     max-height: 50%; 
     object-fit: contain; 
-    color: #4a4d55; 
+    color: var(--color-border-mid); 
     margin: auto 0;
 }
 
 .btnHREF {
     text-decoration: none;
-    color: white;
-    background-color: #4b619b;
+    color: var(--color-text-light);
+    background-color: var(--color-button-blue);
     width: 70%; 
     height: 7vh; 
     display: flex;
@@ -150,7 +150,7 @@ input:hover{
 }
 
 .btnHREF:hover{
-    background-color: #5c72ad;
+    background-color: var(--color-button-blue-hover);
     cursor: pointer;
 }
 
@@ -184,7 +184,7 @@ input:hover{
 
     .leftBox {
         border-left: none;
-        border-top: 1px solid #32353c;
+        border-top: 1px solid var(--color-bg-input);
         padding-top: 2vh;
         gap: 1rem;
     }

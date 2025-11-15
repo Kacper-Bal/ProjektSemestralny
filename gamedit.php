@@ -290,7 +290,7 @@ function find_logo_path($name, $role) {
                         </div>
                         <form method="POST" onsubmit="return confirm('Czy na pewno chcesz usunąć ten komentarz?');" style="margin-left: 15px;">
                             <input type="hidden" name="review_id" value="<?= $review['id'] ?>">
-                            <button type="submit" name="delete_review" class="cart-button" style="background-color: #c94c4c;">Usuń</button>
+                            <button type="submit" name="delete_review" class="cart-button cancel-btn-red">Usuń</button>
                         </form>
                     </div>
                 <?php endwhile; ?>

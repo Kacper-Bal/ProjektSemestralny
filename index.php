@@ -23,7 +23,7 @@ require_once('auth.php');
         <a href="login.php">Logowanie</a><br><br>
     <?php endif; ?>
 
-    <h2 style="margin-top: 1000px;">Dodawanie developerów/wydawców</h2>
+    <h2>Dodawanie developerów/wydawców</h2>
     <a href="addgame.php">Dodaj grę</a><br>
     <a href="game.php?game=Dark+Souls">Wyświetl gre</a>
 
