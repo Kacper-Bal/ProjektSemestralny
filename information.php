@@ -85,6 +85,110 @@ $resultGames = $resultGames -> fetch_row();
             </div>
         </div>
     </div>
+    <div class="function_container">
+        <div class="function_content">
+            <div class="function_text">
+                <h1>Funkcje</h1>
+                <pre>
+Ciągle pracujemy nad nowymi 
+aktualizacjami i funkcjonalnościami 
+na Steam, takimi jak:
+                </pre>
+            </div>
+            <div class="function_grid">
+                <div class="function_item">
+                    <div class="function_item_icon">
+                        <img src="img\others\functionImages\icon-steamchat.svg">
+                    </div>
+                    <div class="function_item_about">
+                        <h2>Czat Steam</h2>
+                        <p>Rozmawiaj ze znajomymi i grupami za pomocą tekstu lub głosu bez opuszczania Steam. Obsługiwane są wideo, tweety, GIF-y i wiele więcej – korzystaj z nich rozważnie.</p>
+                    </div>
+                </div>
+                <div class="function_item">
+                    <div class="function_item_icon">
+                        <img src="img\others\functionImages\icon-gamehubs.svg">
+                    </div>
+                    <div class="function_item_about">
+                        <h2>Centra Gier</h2>
+                        <p>Wszystko o twojej grze w jednym miejscu. Dołącz do dyskusji, dodaj nowe treści i bądź pierwszą osobą, która dowie się o nowych aktualizacjach.</p>
+                    </div>
+                </div>
+                <div class="function_item">
+                    <div class="function_item_icon">
+                        <img src="img\others\functionImages\icon-broadcasts.svg">
+                    </div>
+                    <div class="function_item_about">
+                        <h2>Transmisje Steam</h2>
+                        <p>Transmituj swoją rozgrywkę na żywo za pomocą jednego kliknięcia i podziel się nią ze znajomymi lub resztą społeczności.</p>
+                    </div>
+                </div>
+                <div class="function_item">
+                    <div class="function_item_icon">
+                        <img src="img\others\functionImages\icon-steamworkshop.svg">
+                    </div>
+                    <div class="function_item_about">
+                        <h2>Warsztat Steam</h2>
+                        <p>Twórz, odkrywaj i pobieraj modyfikacje oraz przedmioty ozdobne stworzone przez graczy w ponad 1000 wspieranych gier.</p>
+                    </div>
+                </div>
+                <div class="function_item">
+                    <div class="function_item_icon">
+                        <img src="img\others\functionImages\icon-steammobile.svg">
+                    </div>
+                    <div class="function_item_about">
+                        <h2>Dostępne mobilnie</h2>
+                        <p>Używaj Steam w dowolnym miejscu dzięki swojemu urządzeniu z systemem iOS lub Android z aplikacją mobilną Steam.</p>
+                    </div>
+                </div>
+                <div class="function_item">
+                    <div class="function_item_icon">
+                        <img src="img\others\functionImages\icon-earlyaccess.svg">
+                    </div>
+                    <div class="function_item_about">
+                        <h2>Wczesny dostęp do gier</h2>
+                        <p>Odkrywaj, graj i zaangażuj się w gry podczas ich rozwoju. Bądź pierwszą osobą, która ujrzy nadchodzące zmiany i stań się częścią tego procesu.</p>
+                    </div>
+                </div>
+                <div class="function_item">
+                    <div class="function_item_icon">
+                        <img src="img\others\functionImages\icon-languages.svg">
+                    </div>
+                    <div class="function_item_about">
+                        <h2>Wielojęzyczność</h2>
+                        <p>Tworzenie globalnej społeczności jest dla nas bardzo ważne, dlatego nasz klient wspiera obecnie 28 języków.</p>
+                    </div>
+                </div>
+                <div class="function_item">
+                    <div class="function_item_icon">
+                        <img src="img\others\functionImages\icon-payment.svg">
+                    </div>
+                    <div class="function_item_about">
+                        <h2>Łatwe kupowanie</h2>
+                        <p>Nasz sklep wspiera ponad 100 różnych metod płatności i ponad 35 walut, oferując wam dużą elastyczność i komfort kupowania.</p>
+                    </div>
+                </div>
+                <div class="function_item">
+                    <div class="function_item_icon">
+                        <img src="img\others\functionImages\icon-controllers.svg">
+                    </div>
+                    <div class="function_item_about">
+                        <h2>Obsługa controlerów</h2>
+                        <p>Steam zachęca producentów do dodawania obsługi kontrolerów w swoich grach, w tym kontrolerów PlayStation, Xbox i Nintendo.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="function_bottom">
+                <div class="function_bottom_left">
+                    <h1>I wiele więcej...</h1>
+                    <p>Zdobywaj osiągnięcia, czytaj recenzje, uzyskuj spersonalizowane rekomendacje i wiele więcej.</p>
+                </div>
+                <div class="function_bottom_right">
+                    <a href="register.php">ZAREJESTRUJ SIE</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <?php include('footer.php'); ?>
     <script src="js/information.js" defer></script>
