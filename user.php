@@ -240,7 +240,7 @@ if ($profileUser) {
     <?php include('header.php'); ?>
 
     <?php if ($profileUser): ?>
-        <div class="profile-header-banner" style="background-color: <?php echo $headerColor; ?>;">
+        <div class="profile-header-banner" style="--header-bg: <?php echo $headerColor; ?>; background-color: <?php echo $headerColor; ?>;">
             <div class="profile-header-content">
                 <img 
                     src="img/avatars/<?php echo htmlspecialchars($profileUser['avatar_filename'] ?? 'default_avatar.png'); ?>" 
