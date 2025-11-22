@@ -1,4 +1,5 @@
 <?php
+session_start(); // KROK 1: Dodano start sesji na samym początku
 require_once 'conn.php';
 require_once 'auth.php';
 
@@ -95,14 +96,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute();
 
             $conn->commit();
-            header("Refresh:0"); 
-            $message = "Zakup udany! Gry zostały dodane do Twojej biblioteki.";
-            $messageType = "success";
+            
+            $_SESSION['flash_message'] = "Zakup udany! Gry zostały dodane do Twojej biblioteki.";
+            $_SESSION['flash_message_type'] = "success"; 
+
+            session_write_close();
+
+            header("Location: user.php?user=" . urlencode($currentUser['username']));
+            exit;
 
         } catch (Exception $e) {
             $conn->rollback();
             $message = "Błąd transakcji: " . $e->getMessage();
-            $messageType = "error";
         }
     }
 }
@@ -137,7 +142,7 @@ $cartTotal = 0;
     <h1 class="cart-title">TWÓJ KOSZYK</h1>
 
     <?php if ($message): ?>
-        <div class="alert <?= $messageType ?>">
+        <div class="alert">
             <?= htmlspecialchars($message) ?>
         </div>
     <?php endif; ?>
@@ -213,4 +218,4 @@ $cartTotal = 0;
 <?php include 'footer.php'; ?>
 
 </body>
-</html> 
+</html>

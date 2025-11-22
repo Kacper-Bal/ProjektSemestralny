@@ -3,6 +3,15 @@ session_start();
 require_once 'conn.php'; 
 require_once 'auth.php'; 
 
+$flashMessage = null;
+$flashType = '';
+if (isset($_SESSION['flash_message'])) {
+    $flashMessage = $_SESSION['flash_message'];
+    $flashType = $_SESSION['flash_message_type'] ?? 'success';
+    unset($_SESSION['flash_message']);
+    unset($_SESSION['flash_message_type']);
+}
+
 function get_average_color($filepath) {
     $default_color = '#141E2A'; 
     if (!file_exists($filepath)) return $default_color;
@@ -261,10 +270,14 @@ if ($profileUser) {
         <div id="profile-container-main">
             
             <?php if ($isCurrentUserProfile): ?>
-                
+                <?php if ($flashMessage): ?>
+                <p class="profile-message success"><?php echo htmlspecialchars($flashMessage); ?></p>
+                <?php endif; ?>
+
                 <?php if ($error): ?>
                     <p class="profile-message error"><?php echo htmlspecialchars($error); ?></p>
                 <?php endif; ?>
+
                 <?php if ($success): ?>
                     <p class="profile-message success"><?php echo htmlspecialchars($success); ?></p>
                 <?php endif; ?>

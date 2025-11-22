@@ -19,16 +19,18 @@ document.addEventListener('DOMContentLoaded', function() {
             showBtn.style.display = 'inline-flex';
         });
     }
+    const messages = document.querySelectorAll('.profile-message');
 
-    const message = document.querySelector('.profile-message');
-    if (message) {
-        setTimeout(() => {
-            message.style.transition = 'opacity 0.5s';
-            message.style.opacity = '0';
-            setTimeout(() => message.remove(), 500);
-        }, 5000);
-    }
-
+    messages.forEach(message => {
+        if (message) {
+            setTimeout(() => {
+                message.style.transition = 'opacity 0.5s ease';
+                message.style.opacity = '0';
+                setTimeout(() => message.remove(), 500);
+            }, 5000);
+        }
+    });
+    
     const rechargeForm = document.getElementById('recharge-form');
     const rechargeInput = document.getElementById('recharge-amount-input');
     const rechargeButtons = document.querySelectorAll('.recharge-btn');

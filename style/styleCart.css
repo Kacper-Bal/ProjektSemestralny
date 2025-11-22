@@ -149,10 +149,9 @@ body{
     padding: 15px;
     margin-bottom: 20px;
     border-radius: 3px;
+    background-color: var(--color-button-red);
+    color: var(--color-text-light);
 }
-
-.alert.success { background-color: rgba(76, 107, 34, 0.6); color: #d2efa9; border: 1px solid #4c6b22; }
-.alert.error { background-color: rgba(163, 22, 22, 0.6); color: #ffb3b3; border: 1px solid #a31616; }
 
 .empty-cart {
     text-align: center;
