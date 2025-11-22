@@ -13,14 +13,15 @@ if ($gameName == null) {
     exit;
 }
 
-$queryGame = "SELECT
+$stmt = $conn->prepare("SELECT
     g.id, g.name as name, g.description, pub.name as publisher, dev.name AS developer, g.price, g.date,p.discount_percent FROM games g
 LEFT JOIN developers dev ON g.developer_id=dev.id
 LEFT JOIN publishers pub ON g.publisher_id=pub.id
 LEFT JOIN promotions p ON g.id = p.game_id AND NOW() BETWEEN p.start_date AND p.end_date
-WHERE g.name='$gameName'";
-$resultGame = $conn->query($queryGame);
-$gameData = $resultGame->fetch_assoc();
+WHERE g.name=?");
+$stmt->bind_param("s", $gameName);
+$stmt->execute();
+$resultGame = $stmt->get_result();
 
 
 $originalPrice = (float)$gameData['price'];
@@ -118,8 +119,9 @@ if (isset($_SESSION['review_message'])) {
 if (isset($_GET['add_to_cart'])) {
     if ($currentUser) {
         $gameIdToAdd = (int)$_GET['add_to_cart'];
-        $insertQuery = "INSERT IGNORE INTO cart (user_id, game_id) VALUES ('$userId', '$gameIdToAdd')";
-        $conn->query($insertQuery);
+        $stmt = $conn->prepare("INSERT IGNORE INTO cart (user_id, game_id) VALUES (?, ?)");
+        $stmt->bind_param("ii", $userId, $gameIdToAdd);
+        $stmt->execute();
         header('Location: game.php?game=' . urlencode($gameName));
         exit;
     } else {
@@ -134,8 +136,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $currentUser) {
         $comment = isset($_POST['comment']) ? trim($_POST['comment']) : '';
 
         if ($rating >= 1 && $rating <= 5 && !empty($comment)) {
-            $insertQuery = "INSERT INTO reviews (user_id, game_id, rating, comment) VALUES ('$userId', '$gameId', '$rating', '$comment')";
-            if ($conn->query($insertQuery)) {
+            $stmt = $conn->prepare("INSERT INTO reviews (user_id, game_id, rating, comment) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("iiis", $userId, $gameId, $rating, $comment);
+            if ($stmt->execute()) {
                 $_SESSION['review_message'] = "Recenzja została dodana!";
                 $_SESSION['message_type'] = 'success';
                 header('Location: game.php?game=' . urlencode($gameName) . '#reviews');
@@ -158,11 +161,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $currentUser) {
         $comment = isset($_POST['comment']) ? trim($_POST['comment']) : '';
 
         if ($rating >= 1 && $rating <= 5 && !empty($comment)) {
-            $checkOwnerQuery = "SELECT id FROM reviews WHERE id = $reviewId AND user_id = '$userId'";
-            $ownerResult = $conn->query($checkOwnerQuery);
+            $stmt = $conn->prepare("SELECT id FROM reviews WHERE id = ? AND user_id = ?");
+            $stmt->bind_param("ii", $reviewId, $userId);
+            $stmt->execute();
+            $ownerResult = $stmt->get_result();
             if ($ownerResult && $ownerResult->num_rows > 0) {
-                $updateQuery = "UPDATE reviews SET rating = '$rating', comment = '$comment' WHERE id = $reviewId";
-                if ($conn->query($updateQuery)) {
+                $stmt = $conn->prepare("UPDATE reviews SET rating = ?, comment = ? WHERE id = ?");
+                $stmt->bind_param("isi", $rating, $comment, $reviewId);
+                if ($stmt->execute()) {
                     $_SESSION['review_message'] = "Recenzja została zaktualizowana.";
                     $_SESSION['message_type'] = 'success';
                 } else {
@@ -198,23 +204,27 @@ function find_logo_path($name, $role) {
 $developer_logo = find_logo_path($gameData['developer'], 'developer');
 $publisher_logo = find_logo_path($gameData['publisher'], 'publisher');
 
-$queryTag = "SELECT tags.name FROM tags LEFT JOIN game_tags ON tags.id=game_tags.tag_id WHERE game_tags.game_id='$gameId'";
-$resultTag = $conn->query($queryTag);
+$stmt = $conn->prepare("SELECT tags.name FROM tags LEFT JOIN game_tags ON tags.id=game_tags.tag_id WHERE game_tags.game_id = ?");
+$stmt->bind_param("i", $gameId);
+$stmt->execute();
+$resultTag = $stmt->get_result();
 
-$queryPlat = "SELECT platforms.name FROM platforms LEFT JOIN game_platforms ON platforms.id=game_platforms.platform_id WHERE game_platforms.game_id='$gameId'";
-$resultPlat = $conn->query($queryPlat);
+$stmt = $conn->prepare("SELECT platforms.name FROM platforms LEFT JOIN game_platforms ON platforms.id=game_platforms.platform_id WHERE game_platforms.game_id = ?");
+$stmt->bind_param("i", $gameId);
+$stmt->execute();
+$resultPlat = $stmt->get_result();
 
-$queryReviews = "SELECT r.id, r.rating, r.comment, r.created_at, r.votes, u.username, u.avatar_filename
-                 FROM reviews r
-                 LEFT JOIN users u ON r.user_id = u.id
-                 WHERE r.game_id = '$gameId'
-                 ORDER BY r.created_at DESC";
-$resultReviews = $conn->query($queryReviews);
+$stmt = $conn->prepare("SELECT r.id, r.rating, r.comment, r.created_at, r.votes, u.username, u.avatar_filename FROM reviews r LEFT JOIN users u ON r.user_id = u.id WHERE r.game_id = ? ORDER BY r.created_at DESC");
+$stmt->bind_param("i", $gameId);
+$stmt->execute();
+$resultReviews = $stmt->get_result();
 
 $userVotes = [];
 if ($currentUser) {
-    $votesQuery = "SELECT review_id, vote_type FROM review_votes WHERE user_id = $userId";
-    $votesResult = $conn->query($votesQuery);
+    $stmt = $conn->prepare("SELECT review_id, vote_type FROM review_votes WHERE user_id = ?");
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $votesResult = $stmt->get_result();
     if ($votesResult) {
         while ($row = $votesResult->fetch_assoc()) {
             $userVotes[$row['review_id']] = (int)$row['vote_type'];

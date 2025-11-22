@@ -22,10 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $hashedPassword = hash('sha256', $password . PASSWORD_SALT);
 
-        $query = "SELECT id, username, email, role FROM users 
-                  WHERE (username = '$login' OR email = '$login') 
-                  AND password = '$hashedPassword'";
-        $result = $conn->query($query);
+        $stmt = $conn->prepare("SELECT id, username, email, role FROM users 
+        WHERE (username = ? OR email = ?) AND password = ?");
+        $stmt->bind_param("sss", $login, $login, $hashedPassword);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result && $result->num_rows === 1) {
             $user = $result->fetch_assoc();
@@ -34,9 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sessionToken = bin2hex(random_bytes(16));
             $expiresAt = date('Y-m-d H:i:s', time() + 3600);
 
-            $query = "INSERT INTO sessions (user_id, session_token, expires_at)
-                      VALUES ('$userId', '$sessionToken', '$expiresAt')";
-            $conn->query($query);
+            $stmt = $conn->prepare("INSERT INTO sessions (user_id, session_token, expires_at) VALUES (?, ?, ?)");
+            $stmt->bind_param("iss", $userId, $sessionToken, $expiresAt);
+            $stmt->execute();
 
             setcookie('session_token', $sessionToken, time() + 3600, "/");
 

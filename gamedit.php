@@ -14,8 +14,10 @@ if (!$gameName) {
     exit;
 }
 
-$gameNameEsc = $conn->real_escape_string($gameName);
-$gameResult = $conn->query("SELECT * FROM games WHERE name = '$gameNameEsc'");
+$stmt = $conn->prepare("SELECT * FROM games WHERE name = ?");
+$stmt->bind_param("s", $gameName);
+$stmt->execute();
+$gameResult = $stmt->get_result();
 
 
 if ($gameResult->num_rows === 0) {
@@ -32,7 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete_review'])) {
         $review_id = (int)($_POST['review_id'] ?? 0);
         if ($review_id) {
-            $conn->query("DELETE FROM reviews WHERE id = $review_id AND game_id = $game_id");
+            $stmt = $conn->prepare("DELETE FROM reviews WHERE id = ? AND game_id = ?");
+            $stmt->bind_param("ii", $review_id, $game_id);
+            $stmt->execute();
             if ($conn->affected_rows > 0) {
                 $success = 'Komentarz został pomyślnie usunięty.';
             }
@@ -56,22 +60,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $conn->begin_transaction();
             try {
-                $newNameEsc = $conn->real_escape_string($newName);
-                $descriptionEsc = $conn->real_escape_string($description);
+                $stmt = $conn->prepare("UPDATE games SET name = ?, description = ?, date = ?, developer_id = ?, publisher_id = ?, price = ? WHERE id = ?");
+                $stmt->bind_param("sssiidi", $newName, $description, $date, $developer_id, $publisher_id, $price, $game_id);
+                $stmt->execute();
 
-                $updateQuery = "UPDATE games SET name = '$newNameEsc', description = '$descriptionEsc', date = '$date', developer_id = $developer_id, publisher_id = $publisher_id, price = '$price' WHERE id = $game_id";
-                $conn->query($updateQuery);
+                $stmt = $conn->prepare("DELETE FROM game_platforms WHERE game_id = ?");
+                $stmt->bind_param("i", $game_id);
+                $stmt->execute();
 
-                $conn->query("DELETE FROM game_platforms WHERE game_id = $game_id");
+                $stmt = $conn->prepare("INSERT INTO game_platforms (game_id, platform_id) VALUES (?, ?)");
+                $stmt->bind_param("ii", $game_id, $pId);
+
                 foreach ($selectedPlatforms as $platformId) {
                     $pId = (int)$platformId;
-                    $conn->query("INSERT INTO game_platforms (game_id, platform_id) VALUES ($game_id, $pId)");
+                    $stmt->execute();
                 }
 
-                $conn->query("DELETE FROM game_tags WHERE game_id = $game_id");
+                $stmt = $conn->prepare("DELETE FROM game_tags WHERE game_id = ?");
+                $stmt->bind_param("i", $game_id);
+                $stmt->execute();
+
+                $stmt = $conn->prepare("INSERT INTO game_tags (game_id, tag_id) VALUES (?, ?)");
+                $stmt->bind_param("ii", $game_id, $tId);
+
                 foreach ($selectedTags as $tagId) {
                     $tId = (int)$tagId;
-                    $conn->query("INSERT INTO game_tags (game_id, tag_id) VALUES ($game_id, $tId)");
+                    $stmt->execute();
                 }
 
                 $safeOldGameName = preg_replace('/[^a-z0-9_-]/', '_', strtolower($game['name']));

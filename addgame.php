@@ -73,21 +73,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $conn->begin_transaction();
                 try {
-                    $nameEsc = $conn->real_escape_string($name);
-                    $descriptionEsc = $conn->real_escape_string($description);
-
-                    $insertQuery = "INSERT INTO games (name, description, date, developer_id, publisher_id, price) VALUES ('$nameEsc', '$descriptionEsc', '$date', $developer_id, $publisher_id, '$price')";
-                    $conn->query($insertQuery);
+                    $stmt = $conn->prepare("INSERT INTO games (name, description, date, developer_id, publisher_id, price) VALUES (?, ?, ?, ?, ?, ?)");
+                    $stmt->bind_param("sssiid", $name, $description, $date, $developer_id, $publisher_id, $price);
+                    $stmt->execute();
                     $newGameId = $conn->insert_id;
 
+                    $stmtPlat = $conn->prepare("INSERT INTO game_platforms (game_id, platform_id) VALUES (?, ?)");
                     foreach ($selectedPlatforms as $platformId) {
                         $pId = (int)$platformId;
-                        $conn->query("INSERT INTO game_platforms (game_id, platform_id) VALUES ($newGameId, $pId)");
+                        $stmtPlat->bind_param("ii", $newGameId, $pId);
+                        $stmtPlat->execute();
                     }
 
+                    $stmtTag = $conn->prepare("INSERT INTO game_tags (game_id, tag_id) VALUES (?, ?)");
                     foreach ($selectedTags as $tagId) {
-                        $tId = (int)$tagId;
-                        $conn->query("INSERT INTO game_tags (game_id, tag_id) VALUES ($newGameId, $tId)");
+                        $tId = (int)$tagId; 
+                        $stmtTag->bind_param("ii", $newGameId, $tId);
+                        $stmtTag->execute();
                     }
 
                     $safeGameName = preg_replace('/[^a-z0-9_-]/', '_', strtolower($name));

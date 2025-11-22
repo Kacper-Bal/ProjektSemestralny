@@ -88,9 +88,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $nameEsc = $conn->real_escape_string($name);
                 $colorEsc = $conn->real_escape_string($logoColor);
 
-                $query = "INSERT INTO `$table` (`name`, `logo_color`) VALUES ('$nameEsc', '$colorEsc')";
+                $stmt = $conn->prepare("INSERT INTO `$table` (`name`, `logo_color`) VALUES (?, ?)");
+                $stmt->bind_param("ss", $name, $logoColor);
 
-                if ($conn->query($query)) {
+                if ($stmt->execute()) {
                     $newId = $conn->insert_id;
                     $_SESSION["new_{$role}_id"] = $newId;
                     $_SESSION["new_{$role}_name"] = $name;

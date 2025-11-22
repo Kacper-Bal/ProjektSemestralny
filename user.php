@@ -36,11 +36,10 @@ if (!$profileUsername) {
     exit;
 }
 
-$usernameEsc = $conn->real_escape_string($profileUsername);
-$query = "SELECT id, username, avatar_filename, profile_color, role 
-          FROM users 
-          WHERE username = '$usernameEsc'";
-$result = $conn->query($query);
+$stmt = $conn->prepare("SELECT id, username, avatar_filename, profile_color, role FROM users WHERE username = ?");
+$stmt->bind_param("s", $profileUsername);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result && $result->num_rows === 1) {
     $profileUser = $result->fetch_assoc();
@@ -172,16 +171,16 @@ $gameTags = [];
 if ($profileUser) {
     $userId = $profileUser['id'];
 
-    $gamesQuery = "SELECT g.id, g.name, g.date, 
-                          dev.name AS developer_name, 
-                          pub.name AS publisher_name
-                   FROM user_games ug 
-                   JOIN games g ON ug.game_id = g.id 
-                   LEFT JOIN developers dev ON g.developer_id = dev.id
-                   LEFT JOIN publishers pub ON g.publisher_id = pub.id
-                   WHERE ug.user_id = $userId 
-                   ORDER BY g.name ASC";
-    $gamesResult = $conn->query($gamesQuery);
+    $stmt = $conn->prepare("SELECT g.id, g.name, g.date, dev.name AS developer_name, pub.name AS publisher_name
+               FROM user_games ug 
+               JOIN games g ON ug.game_id = g.id 
+               LEFT JOIN developers dev ON g.developer_id = dev.id
+               LEFT JOIN publishers pub ON g.publisher_id = pub.id
+               WHERE ug.user_id = ? 
+               ORDER BY g.name ASC");
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $gamesResult = $stmt->get_result();
 
     if ($gamesResult && $gamesResult->num_rows > 0) {
         $gameIds = [];
@@ -192,24 +191,30 @@ if ($profileUser) {
         $gamesResult->data_seek(0);
 
         if (!empty($gameIds)) {
-            $idString = implode(',', $gameIds);
+            $count = count($gameIds);
+            $placeholders = implode(',', array_fill(0, $count, '?'));
+            $types = str_repeat('i', $count);
 
-            $platformsQuery = "SELECT gp.game_id, p.name 
-                               FROM game_platforms gp 
-                               JOIN platforms p ON gp.platform_id = p.id 
-                               WHERE gp.game_id IN ($idString)";
-            $platformsResult = $conn->query($platformsQuery);
+            $platformsQuery = "SELECT gp.game_id, p.name FROM game_platforms gp JOIN platforms p ON gp.platform_id = p.id WHERE gp.game_id IN ($placeholders)";
+            
+            $stmt = $conn->prepare($platformsQuery);
+            $stmt->bind_param($types, ...$gameIds);
+            $stmt->execute();
+            $platformsResult = $stmt->get_result();
+
             if ($platformsResult) {
                 while ($row = $platformsResult->fetch_assoc()) {
                     $gamePlatforms[$row['game_id']][] = $row['name'];
                 }
             }
 
-            $tagsQuery = "SELECT gt.game_id, t.name 
-                          FROM game_tags gt 
-                          JOIN tags t ON gt.tag_id = t.id 
-                          WHERE gt.game_id IN ($idString)";
-            $tagsResult = $conn->query($tagsQuery);
+            $tagsQuery = "SELECT gt.game_id, t.name FROM game_tags gt JOIN tags t ON gt.tag_id = t.id WHERE gt.game_id IN ($placeholders)";
+            
+            $stmt = $conn->prepare($tagsQuery);
+            $stmt->bind_param($types, ...$gameIds);
+            $stmt->execute();
+            $tagsResult = $stmt->get_result();
+
             if ($tagsResult) {
                 while ($row = $tagsResult->fetch_assoc()) {
                     $gameTags[$row['game_id']][] = $row['name'];

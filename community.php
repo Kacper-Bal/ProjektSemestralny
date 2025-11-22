@@ -109,14 +109,16 @@ elseif (isset($_GET['ajax']) && $_GET['ajax'] == 1) {
     }
 
     $reviews = [];
-    $query = "SELECT r.id, r.rating, r.comment, r.created_at, r.votes, u.username, u.avatar_filename, g.name AS game_name, g.id as game_id
+    $stmt = $conn->prepare("SELECT r.id, r.rating, r.comment, r.created_at, r.votes, u.username, u.avatar_filename, g.name AS game_name, g.id as game_id
               FROM reviews r
               JOIN users u ON r.user_id = u.id
               JOIN games g ON r.game_id = g.id
               $orderBy
-              LIMIT $itemsPerPage OFFSET $offset";
+              LIMIT ? OFFSET ?");
 
-    $result = $conn->query($query);
+    $stmt->bind_param("ii", $itemsPerPage, $offset);
+    $stmt->execute();
+    $result = $stmt->get_result();
     if ($result) {
         while ($row = $result->fetch_assoc()) { $reviews[] = $row; }
     }

@@ -34,8 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: register.php");
         exit;
     } else {
-        $query = "SELECT id FROM users WHERE username = '$username' OR email = '$email'";
-        $result = $conn->query($query);
+        $stmt = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
+        $stmt->bind_param("ss", $username, $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $_SESSION['register_error'] = "Nazwa użytkownika lub email już istnieje.";
@@ -44,15 +46,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $hashedPassword = hash('sha256', $password . PASSWORD_SALT);
 
-            $query = "INSERT INTO users (username, email, password) 
-                      VALUES ('$username', '$email', '$hashedPassword')";
-            if ($conn->query($query)) {
+            $stmt = $conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+            $stmt->bind_param("sss", $username, $email, $hashedPassword);
+            if ($stmt->execute()) {
                 $userId = $conn->insert_id;
                 $sessionToken = bin2hex(random_bytes(16));
                 $expiresAt = date('Y-m-d H:i:s', time() + 3600);
-                $query = "INSERT INTO sessions (user_id, session_token, expires_at) 
-                          VALUES ('$userId', '$sessionToken', '$expiresAt')";
-                $conn->query($query);
+                $stmt = $conn->prepare("INSERT INTO sessions (user_id, session_token, expires_at) VALUES (?, ?, ?)");
+                $stmt->bind_param("iss", $userId, $sessionToken, $expiresAt);
+                $stmt->execute();
                 setcookie('session_token', $sessionToken, time() + 3600, "/");
                 header("Location: index.php");
                 exit;
