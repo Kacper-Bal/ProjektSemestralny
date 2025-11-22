@@ -22,7 +22,7 @@ WHERE g.name=?");
 $stmt->bind_param("s", $gameName);
 $stmt->execute();
 $resultGame = $stmt->get_result();
-
+$gameData = $resultGame ? $resultGame->fetch_assoc() : null;
 
 $originalPrice = (float)$gameData['price'];
 $discountPercent = isset($gameData['discount_percent']) ? (int)$gameData['discount_percent'] : null;
