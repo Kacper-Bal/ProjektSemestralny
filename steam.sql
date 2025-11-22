@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Paź 27, 2025 at 06:54 PM
+-- Generation Time: Lis 22, 2025 at 12:26 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -48,32 +48,33 @@ INSERT INTO `cart` (`id`, `user_id`, `game_id`) VALUES
 
 CREATE TABLE `developers` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL
+  `name` varchar(255) NOT NULL,
+  `logo_color` varchar(7) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `developers`
 --
 
-INSERT INTO `developers` (`id`, `name`) VALUES
-(10, 'Arrowhead Game Studios'),
-(12, 'Battlestate Games'),
-(22, 'Behaviour Interactive'),
-(3, 'CD Projekt Red'),
-(21, 'Clever Endeavour Studio'),
-(6, 'Electronics Arts'),
-(4, 'FromSoftware Inc'),
-(20, 'Quantic Dream'),
-(7, 'Rockstar Games'),
-(13, 'Sandfall Interactive'),
-(5, 'Santa Monica'),
-(14, 'SMG Fiction'),
-(9, 'Starbreeze Studio'),
-(18, 'Supergiant Games'),
-(19, 'Team Cherry'),
-(11, 'Team17 Digital'),
-(17, 'Traveller\'s Tales'),
-(8, 'VOID Interactive');
+INSERT INTO `developers` (`id`, `name`, `logo_color`) VALUES
+(3, 'CD Projekt Red', '#170f0f'),
+(4, 'FromSoftware Inc', '#0c0c0c'),
+(5, 'Santa Monica', '#2c1314'),
+(6, 'Electronics Arts', '#7c2945'),
+(7, 'Rockstar Games', '#e6a019'),
+(8, 'VOID Interactive', '#141E2A'),
+(9, 'Starbreeze Studio', '#956ac4'),
+(10, 'Arrowhead Game Studios', '#c3c3c3'),
+(11, 'Team17 Digital', '#624674'),
+(12, 'Battlestate Games', '#282828'),
+(13, 'Sandfall Interactive', '#141E2A'),
+(14, 'SMG Fiction', '#e08857'),
+(17, 'Traveller\'s Tales', '#535021'),
+(18, 'Supergiant Games', '#270703'),
+(19, 'Team Cherry', '#da3c53'),
+(20, 'Quantic Dream', '#243b46'),
+(21, 'Clever Endeavour Studio', '#54718d'),
+(22, 'Behaviour Interactive', '#4c4f55');
 
 -- --------------------------------------------------------
 
@@ -414,33 +415,34 @@ INSERT INTO `promotions` (`id`, `game_id`, `discount_percent`, `start_date`, `en
 
 CREATE TABLE `publishers` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL
+  `name` varchar(255) NOT NULL,
+  `logo_color` varchar(7) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `publishers`
 --
 
-INSERT INTO `publishers` (`id`, `name`) VALUES
-(4, 'Activision'),
-(3, 'Bandai Namco Entertainment'),
-(11, 'Battlestate Games'),
-(19, 'Behaviour Interactive'),
-(1, 'CD Projekt Red'),
-(18, 'Clever Endeavour Studio'),
-(14, 'Disney Interactive'),
-(6, 'Electronic Arts'),
-(13, 'Fictions'),
-(2, 'FromSoftware Inc'),
-(12, 'Kepler Interactive'),
-(5, 'PlayStation Studios'),
-(17, 'Quantic Dream'),
-(7, 'Rockstar Games'),
-(9, 'Starbreeze Studio'),
-(15, 'Supergiant Games'),
-(16, 'Team Cherry'),
-(10, 'Team17 Digital'),
-(8, 'VOID Interactive');
+INSERT INTO `publishers` (`id`, `name`, `logo_color`) VALUES
+(1, 'CD Projekt Red', '#170f0f'),
+(2, 'FromSoftware Inc', '#0c0c0c'),
+(3, 'Bandai Namco Entertainment', '#271416'),
+(4, 'Activision', '#1e1b1a'),
+(5, 'PlayStation Studios', '#444444'),
+(6, 'Electronic Arts', '#7c2945'),
+(7, 'Rockstar Games', '#e6a019'),
+(8, 'VOID Interactive', '#141E2A'),
+(9, 'Starbreeze Studio', '#956ac4'),
+(10, 'Team17 Digital', '#624674'),
+(11, 'Battlestate Games', '#282828'),
+(12, 'Kepler Interactive', '#9b99e7'),
+(13, 'Fictions', '#101010'),
+(14, 'Disney Interactive', '#161eb4'),
+(15, 'Supergiant Games', '#270703'),
+(16, 'Team Cherry', '#da3c53'),
+(17, 'Quantic Dream', '#243b46'),
+(18, 'Clever Endeavour Studio', '#54718d'),
+(19, 'Behaviour Interactive', '#4c4f55');
 
 -- --------------------------------------------------------
 
@@ -468,7 +470,7 @@ INSERT INTO `reviews` (`id`, `user_id`, `game_id`, `rating`, `comment`, `created
 (5, 1, 3, 5, '1', '2025-10-20 17:18:17', 0),
 (6, 1, 3, 4, '2', '2025-10-20 17:18:21', 0),
 (7, 1, 3, 4, '3', '2025-10-20 17:18:24', 0),
-(8, 1, 3, 3, '4', '2025-10-20 17:18:27', 0),
+(8, 1, 3, 3, 'Jifheiorghueguh ioheruigh erhguiehrgi heirug eiurgergeug ueruf ehrerverviwvef iubwiuf wuefiu gweuif iuwefui wfu wiuefguwgefuigweufgiwegf uwfui heirufheuirhfiwuehrgiuwugiiu giuwer giuweergiu ug u ergueirug ue ruerg heior gehg eh guerhg iuerrgiu eirug huegherguiriu giure giuwrug iu hgiuerguiriugeruhguere rgioerg irg Jifheiorghueguh ioheruigh erhguiehrgi heirug eiurgergeug ueruf ehrerverviwvef iubwiuf wuefiu gweuif iuwefui wfu wiuefguwgefuigweufgiwegf uwfui heirufheuirhfiwuehrgiuwugiiu giuwer giuweergiu ug u ergueirug ue ruerg heior gehg eh guerhg iuerrgiu eirug huegherguiriu giure giuwrug iu hgiuerguiriugeruhguere rgioerg irg\r\nJifheiorghueguh ioheruigh erhguiehrgi heirug eiurgergeug ueruf ehrerverviwvef iubwiuf wuefiu gweuif iuwefui wfu wiuefguwgefuigweufgiwegf uwfui heirufheuirhfiwuehrgiuwugiiu giuwer giuweergiu ug u ergueirug ue ruerg heior gehg eh guerhg iuerrgiu eirug huegherguiriu giure giuwrug iu hgiuerguiriugeruhguere rgioerg irg', '2025-10-20 17:18:27', 0),
 (9, 1, 3, 5, '5', '2025-10-20 17:18:31', -1),
 (10, 1, 3, 3, '6', '2025-10-20 17:18:34', 0),
 (11, 1, 3, 1, '7', '2025-10-20 17:18:38', -1),
@@ -531,7 +533,11 @@ INSERT INTO `sessions` (`id`, `user_id`, `session_token`, `created_at`, `expires
 (17, 1, '998e08339a06209fac4ac78c02e34c6f', '2025-10-20 15:52:30', '2025-10-20 18:52:30'),
 (18, 1, 'ece71700e0c574490751d0467c9987ac', '2025-10-20 16:57:39', '2025-10-20 19:57:39'),
 (20, 1, 'f409a774b43a1e1b0c4d4e1706bc3082', '2025-10-27 16:10:10', '2025-10-27 18:10:10'),
-(21, 1, 'c743bc272b0fcbc20d20709a0c7625ac', '2025-10-27 17:25:39', '2025-10-27 19:25:39');
+(21, 1, 'c743bc272b0fcbc20d20709a0c7625ac', '2025-10-27 17:25:39', '2025-10-27 19:25:39'),
+(22, 1, 'ce19cb60c9b429f53fb93c667cf96e5e', '2025-11-10 14:33:58', '2025-11-10 16:33:58'),
+(24, 1, '52ec4a1b3cb4251a924e224089741788', '2025-11-10 16:52:19', '2025-11-10 18:52:19'),
+(25, 1, '765a928569e18eee988335e0db662ae7', '2025-11-10 18:25:34', '2025-11-10 20:25:34'),
+(26, 1, 'd744dfce5e5fbd5e117e0b642a0d6efd', '2025-11-11 16:42:15', '2025-11-11 18:42:15');
 
 -- --------------------------------------------------------
 
@@ -600,6 +606,7 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `role` tinyint(1) NOT NULL DEFAULT 0,
   `avatar_filename` varchar(255) DEFAULT 'default_avatar.png',
+  `profile_color` varchar(7) DEFAULT NULL,
   `balance` decimal(10,2) NOT NULL DEFAULT 0.00
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -607,9 +614,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `username`, `password`, `role`, `avatar_filename`, `balance`) VALUES
-(1, 'jann@example.com', 'jann', '543360c1ecea52aa7620ccbb32357b72634348350be51c8577da1cf3f7175342', 1, 'default_avatar.png', 0.00),
-(2, 'aledlugiuzytkownikkkk@example.com', 'aledlugiuzytkownikkkkkkk', '543360c1ecea52aa7620ccbb32357b72634348350be51c8577da1cf3f7175342', 0, 'default_avatar.png', 0.00);
+INSERT INTO `users` (`id`, `email`, `username`, `password`, `role`, `avatar_filename`, `profile_color`, `balance`) VALUES
+(1, 'jann@example.com', 'janntest', '543360c1ecea52aa7620ccbb32357b72634348350be51c8577da1cf3f7175342', 1, 'user_1_1762793265.png', '#6f5844', 140.00),
+(2, 'aledlugiuzytkownikkkk@example.com', 'aledlugiuzytkownikkkkkkk', '543360c1ecea52aa7620ccbb32357b72634348350be51c8577da1cf3f7175342', 0, 'default_avatar.png', NULL, 0.00);
 
 -- --------------------------------------------------------
 
@@ -622,6 +629,16 @@ CREATE TABLE `user_games` (
   `user_id` int(11) NOT NULL,
   `game_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_games`
+--
+
+INSERT INTO `user_games` (`id`, `user_id`, `game_id`) VALUES
+(1, 1, 3),
+(2, 1, 10),
+(3, 1, 11),
+(4, 1, 21);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -818,7 +835,7 @@ ALTER TABLE `review_votes`
 -- AUTO_INCREMENT for table `sessions`
 --
 ALTER TABLE `sessions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `tags`
@@ -848,7 +865,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_games`
 --
 ALTER TABLE `user_games`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
