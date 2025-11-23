@@ -12,6 +12,7 @@
     --color-text-secondary: #76808c;
     --color-text-secondary-highlight: #8f98a2;
     --color-accent-link: #38b6ff;
+    --color-accent-link-bg: rgba(56, 182, 255, 0.15);
     --color-accent-highlight: #67c1f5;
     --color-accent-highlight-bg: rgba(103, 193, 245, 0.2);
     --color-accent-highlight-bg-hover: rgba(103, 193, 245, 0.4);

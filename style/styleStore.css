@@ -1,0 +1,360 @@
+body {
+    background-color: var(--color-bg-page);
+}
+
+.store-container {
+    display: flex;
+    flex-direction: row;
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 0 20px;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.store-sidebar {
+    width: 25%;
+    min-width: 200px;
+    background-color: var(--color-bg-container);
+    padding: 20px;
+    border-radius: 5px;
+    position: sticky;
+    top: 15vh;
+    max-height: calc(100vh - 15vh - 20px);
+    overflow-y: auto;
+    border: 1px solid var(--color-border-transparent);
+}
+
+.store-sidebar::-webkit-scrollbar {
+    width: 12px;
+}
+
+.store-sidebar::-webkit-scrollbar-track {
+    background: var(--color-bg-panel-dark);
+}
+
+.store-sidebar::-webkit-scrollbar-thumb {
+    background-color: var(--color-border-mid);
+    border-radius: 10px;
+    border: 3px solid var(--color-bg-panel-dark);
+}
+
+.store-sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: #555c6a;
+}
+
+.filter-group {
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--color-border-main);
+    padding-bottom: 15px;
+}
+
+.filter-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.filter-group h3 {
+    color: var(--color-text-secondary-highlight);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.slider {
+    width: 100%;
+    cursor: pointer;
+    accent-color: var(--color-button-blue);
+}
+
+details summary {
+    cursor: pointer;
+    color: var(--color-text-secondary-highlight);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: color 0.2s;
+}
+
+details summary:hover {
+    color: var(--color-text-light);
+}
+
+details summary::after {
+    content: '+'; 
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+details[open] summary::after {
+    content: '-';
+}
+
+.details-content {
+    margin-top: 10px;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: var(--color-text-main);
+    user-select: none;
+    transition: color 0.2s;
+}
+
+.checkbox-container:hover {
+    color: var(--color-text-light);
+}
+
+.checkbox-container input:checked ~ .filter-text {
+    color: var(--color-text-light);
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    height: 16px;
+    width: 16px;
+    background-color: var(--color-bg-input);
+    border-radius: 3px;
+    border: 1px solid var(--color-border-mid);
+}
+
+.checkbox-container:hover input ~ .checkmark {
+    background-color: var(--color-bg-input-hover);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: var(--color-button-blue);
+    border-color: var(--color-button-blue);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-container .checkmark:after {
+    left: 5px;
+    top: 1px;
+    width: 4px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.platform-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.platform-option {
+    cursor: pointer;
+    flex: 0 0 auto;
+}
+
+.platform-option input[type="checkbox"] {
+    display: none;
+}
+
+.platform-icon-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: var(--color-bg-input);
+    border: 1px solid var(--color-border-mid);
+    border-radius: 6px;
+    color: var(--color-text-secondary); 
+    transition: all 0.3s ease-in-out;
+}
+
+.platform-icon-box svg {
+    width: 26px !important;
+    height: 26px !important;
+    fill: currentColor; 
+    pointer-events: none; 
+}
+
+.platform-option:hover .platform-icon-box {
+    border-color: var(--color-accent-link);
+    color: var(--color-accent-link);  
+    background-color: var(--color-accent-link-bg);
+}
+
+.platform-option input[type="checkbox"]:checked + .platform-icon-box {
+    border-color: var(--color-accent-link);    
+    color: var(--color-accent-link);          
+    background-color: var(--color-accent-link-bg);
+    box-shadow: 0 0 8px var(--color-accent-link-bg);
+}
+
+.store-content {
+    width: 75%;
+}
+
+.store-search-bar {
+    margin-bottom: 25px;
+    background-color: var(--color-bg-panel-dark);
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--color-border-main);
+    position: sticky;
+    top: 15vh;
+    z-index: 100;
+}
+
+.store-search-bar input[type="text"] {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: var(--color-bg-input);
+    border: 1px solid var(--color-border-mid);
+    color: var(--color-text-light);
+    font-size: 1.1rem;
+    border-radius: 3px;
+    outline: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.store-search-bar input[type="text"]:focus {
+    background-color: var(--color-bg-input-hover);
+    border-color: var(--color-accent-link);
+    box-shadow: 0 0 5px var(--color-accent-link-bg);
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding-bottom: 40px;
+}
+
+.game-card {
+    position: relative;
+    height: 300px;
+    border-radius: 5px;
+    overflow: hidden;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    border: 1px solid transparent;
+    background-color: var(--color-bg-container);
+    display: block;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+    border-color: var(--color-accent-link);
+}
+
+.game-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.game-card:hover .game-card-img {
+    transform: scale(1.05);
+}
+
+.game-info-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(20, 30, 42, 0.9); 
+    background-color: linear-gradient(to top, rgba(14, 18, 24, 0.95) 0%, rgba(20, 30, 42, 0.8) 100%);
+    padding: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    transition: background-color 0.3s;
+}
+
+.game-card:hover .game-info-overlay {
+    background-color: rgba(20, 30, 42, 0.95);
+}
+
+.game-title {
+    font-size: 1.5rem;
+    color: var(--color-text-light);
+    font-weight: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 2px 4px var(--color-border-dark-transparent);
+}
+
+.game-card:hover .game-title {
+    color: var(--color-accent-link);
+}
+
+.game-price-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 1.1rem;
+    margin-top: 5px;
+}
+
+.original-price {
+    color: var(--color-text-secondary);
+}
+
+.discount-badge {
+    background-color: var(--color-button-blue   );
+    color: var(--color-text-light);
+    padding: 3px 6px;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    margin-right: 8px;
+    font-weight: bold;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: var(--color-text-secondary);
+    font-size: 0.8rem;
+    margin-right: 8px;
+}
+
+.discounted-price {
+    color: var(--color-text-main);
+    font-weight: bold;
+}

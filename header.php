@@ -46,7 +46,7 @@ function isNavLinkActive($pageName, $currentPage) {
     </div>
 
     <?php
-    $pagesToHideSearchOn = ['login.php', 'register.php', 'addgame.php', 'addpubdev.php', 'gamedit.php'];
+    $pagesToHideSearchOn = ['login.php', 'register.php', 'addgame.php', 'addpubdev.php', 'store.php', 'gamedit.php'];
     if (!in_array($currentPage, $pagesToHideSearchOn)):
     ?>
     <div id="header-bottom">
