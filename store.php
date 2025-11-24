@@ -2,6 +2,9 @@
 require_once('conn.php');
 require_once('auth.php');
 
+$preSelectedPlatformName = isset($_GET['platform']) ? strtolower(trim($_GET['platform'])) : null;
+$preSelectedTagName = isset($_GET['tag']) ? strtolower(trim($_GET['tag'])) : null;
+
 function getGameImage($gameName) {
     $name = strtolower($gameName);
     
@@ -164,9 +167,10 @@ $maxPriceLimit = ceil($maxPriceData['max_price'] ?? 300);
             <div class="platform-grid">
                 <?php while($row = $resultPlatforms->fetch_assoc()): 
                     $platformKey = strtolower($row['name']);
+                    $isChecked = ($preSelectedPlatformName === $platformKey) ? 'checked' : '';
                 ?>
                     <label class="platform-option" title="<?php echo htmlspecialchars($row['name']); ?>">
-                        <input type="checkbox" class="filter-checkbox" name="platforms" value="<?php echo $row['id']; ?>">
+                        <input type="checkbox" class="filter-checkbox" name="platforms" value="<?php echo $row['id']; ?>" <?php echo $isChecked; ?>>
                         <div class="platform-icon-box" data-platform="<?php echo $platformKey; ?>"></div>
                     </label>
                 <?php endwhile; ?>
@@ -175,9 +179,12 @@ $maxPriceLimit = ceil($maxPriceData['max_price'] ?? 300);
 
         <div class="filter-group">
             <h3>Tagi</h3>
-            <?php while($row = $resultTags->fetch_assoc()): ?>
+            <?php while($row = $resultTags->fetch_assoc()): 
+                $tagNameLower = strtolower($row['name']);
+                $isChecked = ($preSelectedTagName === $tagNameLower) ? 'checked' : '';
+            ?>
                 <label class="checkbox-container">
-                    <input type="checkbox" class="filter-checkbox" name="tags" value="<?php echo $row['id']; ?>">
+                    <input type="checkbox" class="filter-checkbox" name="tags" value="<?php echo $row['id']; ?>" <?php echo $isChecked; ?>>
                     <span class="checkmark"></span>
                     <span class="filter-text"><?php echo htmlspecialchars($row['name']); ?></span>
                 </label>

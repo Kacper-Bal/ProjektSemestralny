@@ -6,15 +6,17 @@ document.addEventListener('DOMContentLoaded', () => {
         iconBoxes.forEach(box => {
             const key = box.getAttribute('data-platform'); 
             
-            if (platformSvgs[key]) {
+            if (key && platformSvgs[key]) {
                 box.innerHTML = platformSvgs[key];
             } else {
-                console.warn(`Brak ikony w common.js dla klucza: ${key}`);
-                box.innerText = key.substring(0, 1).toUpperCase(); 
+                if (key) {
+                    console.warn(`Brak ikony SVG dla platformy: ${key}`);
+                    box.innerText = key.substring(0, 1).toUpperCase(); 
+                }
             }
         });
     } else {
-        console.error('Błąd: Nie znaleziono obiektu platformSvgs. Upewnij się, że common.js jest załadowany.');
+        console.log('Info: Obiekt platformSvgs nie jest zdefiniowany. Ikony platform mogą się nie wyświetlać.');
     }
 
     const searchInput = document.getElementById('searchInput');
@@ -27,8 +29,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function fetchGames() {
         const formData = new FormData();
         formData.append('ajax_filter', '1'); 
-        formData.append('search', searchInput.value);
-        formData.append('price', priceRange.value);
+        
+        if (searchInput) {
+            formData.append('search', searchInput.value);
+        }
+        
+        if (priceRange) {
+            formData.append('price', priceRange.value);
+        }
         
         getCheckboxes().forEach(cb => {
             if (cb.checked) {
@@ -42,21 +50,27 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => response.text())
         .then(html => {
-            gamesGrid.innerHTML = html;
+            if (gamesGrid) {
+                gamesGrid.innerHTML = html;
+            }
         })
-        .catch(error => console.error('Błąd:', error));
+        .catch(error => console.error('Błąd podczas pobierania gier:', error));
+    }
+    let searchTimeout;
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(fetchGames, 300); 
+        });
     }
 
-    let searchTimeout;
-    searchInput.addEventListener('input', () => {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(fetchGames, 300);
-    });
-
-    priceRange.addEventListener('input', (e) => priceDisplay.textContent = e.target.value);
-    priceRange.addEventListener('change', fetchGames);
+    if (priceRange) {
+        priceRange.addEventListener('input', (e) => {
+            if (priceDisplay) priceDisplay.textContent = e.target.value;
+        });
+        priceRange.addEventListener('change', fetchGames);
+    }
 
     getCheckboxes().forEach(cb => cb.addEventListener('change', fetchGames));
-
     fetchGames();
 });

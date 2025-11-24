@@ -24,6 +24,35 @@ $stmt->execute();
 $resultGame = $stmt->get_result();
 $gameData = $resultGame ? $resultGame->fetch_assoc() : null;
 
+if (!$gameData) {
+    header('location: index.php');
+    exit;
+}
+
+$gameId = $gameData['id'];
+$userId = $currentUser['user_id'] ?? null;
+
+$isOwned = false;
+$isInCart = false;
+
+if ($userId) {
+    $checkOwn = $conn->prepare("SELECT 1 FROM user_games WHERE user_id = ? AND game_id = ?");
+    $checkOwn->bind_param("ii", $userId, $gameId);
+    $checkOwn->execute();
+    if ($checkOwn->get_result()->num_rows > 0) {
+        $isOwned = true;
+    }
+
+    if (!$isOwned) {
+        $checkCart = $conn->prepare("SELECT 1 FROM cart WHERE user_id = ? AND game_id = ?");
+        $checkCart->bind_param("ii", $userId, $gameId);
+        $checkCart->execute();
+        if ($checkCart->get_result()->num_rows > 0) {
+            $isInCart = true;
+        }
+    }
+}
+
 $originalPrice = (float)$gameData['price'];
 $discountPercent = isset($gameData['discount_percent']) ? (int)$gameData['discount_percent'] : null;
 $finalPrice = $originalPrice;
@@ -34,14 +63,6 @@ if ($discountPercent !== null && $discountPercent > 0) {
     $finalPrice = round($originalPrice - $discountAmount, 2);
     $isOnSale = true;
 }
-
-if (!$gameData) {
-    header('location: index.php');
-    exit;
-}
-
-$gameId = $gameData['id'];
-$userId = $currentUser['user_id'] ?? null;
 
 if (isset($_GET['action']) && $_GET['action'] == 'vote' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json');
@@ -102,7 +123,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'vote' && $_SERVER['REQUEST_MET
     }
     exit;
 }
-
 
 $reviewMessage = null;
 $messageType = 'error';
@@ -307,13 +327,18 @@ if ($currentUser) {
 
             <div class="platforms-container">
                  <?php while ($row = $resultPlat->fetch_assoc()): ?>
-                    <span class="platform-item" data-platform-name="<?= htmlspecialchars($row['name']) ?>" title="<?= htmlspecialchars($row['name']) ?>"></span>
+                    <a href="store.php?platform=<?= urlencode($row['name']) ?>" 
+                       class="platform-item" 
+                       data-platform-name="<?= htmlspecialchars($row['name']) ?>" 
+                       title="<?= htmlspecialchars($row['name']) ?>"
+                       style="display: inline-block; cursor: pointer;">
+                    </a>
                 <?php endwhile; ?>
             </div>
 
             <div class="tags-container">
                 <?php while ($row = $resultTag->fetch_assoc()): ?>
-                    <a href="tag.php?name=<?= urlencode($row["name"]) ?>" class="tag-item"><?= htmlspecialchars($row["name"]) ?></a>
+                    <a href="store.php?tag=<?= urlencode($row["name"]) ?>" class="tag-item"><?= htmlspecialchars($row["name"]) ?></a>
                 <?php endwhile; ?>
             </div>
         </div>
@@ -323,18 +348,26 @@ if ($currentUser) {
         <div class="buy-container">
             <div class="buy-box">
                 <h2>Kup <?= htmlspecialchars($gameData["name"]) ?></h2>
+                
                 <div class="purchase-box">
-                <div class="price">
-                            <?php if ($isOnSale): ?>
-                                <span style="background-color: #4c6b22; padding: 2px 5px; color: #a4d4a4; border-radius: 2px; font-size: 0.9em;">-<?= $discountPercent ?>%</span>
-                                <span style="text-decoration: line-through; color: #76808c; margin-left: 5px;"><?= htmlspecialchars(number_format($originalPrice, 2)) ?></span>
-                                <strong style="margin-left: 20px; color: #a4d4a4;"><?= htmlspecialchars(number_format($finalPrice, 2)) ?> PLN</strong>
-                            <?php else: ?>
-                                <?= htmlspecialchars(number_format($finalPrice, 2)) ?> PLN
-                            <?php endif; ?>
-                </div>
-                <div class="add-to-cart">
-                        <a href="game.php?game=<?= urlencode($gameName) ?>&add_to_cart=<?= $gameId ?>" class="cart-button">Do koszyka</a>
+                    <div class="price">
+                        <?php if ($isOnSale): ?>
+                            <span style="background-color: #4c6b22; padding: 2px 5px; color: #a4d4a4; border-radius: 2px; font-size: 0.9em;">-<?= $discountPercent ?>%</span>
+                            <span style="text-decoration: line-through; color: #76808c; margin-left: 5px;"><?= htmlspecialchars(number_format($originalPrice, 2)) ?></span>
+                            <strong style="margin-left: 20px; color: #a4d4a4;"><?= htmlspecialchars(number_format($finalPrice, 2)) ?> PLN</strong>
+                        <?php else: ?>
+                            <?= htmlspecialchars(number_format($finalPrice, 2)) ?> PLN
+                        <?php endif; ?>
+                    </div>
+                    
+                    <div class="add-to-cart">
+                        <?php if ($isOwned): ?>
+                            <a href="user.php?user=<?= urlencode($currentUser['username']) ?>&tab=games" class="cart-button" style="background-color: #2a475e;">Posiadane</a>
+                        <?php elseif ($isInCart): ?>
+                            <a href="cart.php" class="cart-button">W koszyku</a>
+                        <?php else: ?>
+                            <a href="game.php?game=<?= urlencode($gameName) ?>&add_to_cart=<?= $gameId ?>" class="cart-button">Do koszyka</a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

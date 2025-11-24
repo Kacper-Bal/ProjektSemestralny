@@ -6,12 +6,17 @@ function initializeVoting(containerSelector, voteUrl, onVoteError) {
 
     container.addEventListener('click', function(event) {
         const target = event.target.closest('.vote-arrow');
-        if (!target || isVoting) {
-            event.preventDefault();
+
+        if (!target) {
             return;
         }
         
         event.preventDefault();
+
+        if (isVoting) {
+            return;
+        }
+
         isVoting = true;
         target.classList.add('disabled');
 
