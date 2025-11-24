@@ -15,6 +15,17 @@ document.addEventListener('DOMContentLoaded', function() {
         initializeVoting('.reviews-list', voteUrl);
     }
 
+    const messages = document.querySelectorAll('.game-message');
+    messages.forEach(message => {
+        if (message) {
+            setTimeout(() => {
+                message.style.transition = 'opacity 0.5s ease';
+                message.style.opacity = '0';
+                setTimeout(() => message.remove(), 500);
+            }, 3000);
+        }
+    });
+
     const reviewMessageElement = document.querySelector('.review-message');
     if (reviewMessageElement && reviewMessageElement.textContent.trim() !== '') {
         setTimeout(() => {

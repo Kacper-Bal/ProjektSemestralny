@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 message.style.transition = 'opacity 0.5s ease';
                 message.style.opacity = '0';
                 setTimeout(() => message.remove(), 500);
-            }, 5000);
+            }, 3000);
         }
     });
     

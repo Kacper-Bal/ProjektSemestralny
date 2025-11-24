@@ -15,6 +15,17 @@ body {
     position: relative;
 }
 
+.game-message {
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    width: 100%;
+    background-color: var(--color-button-blue);
+    color: var(--color-text-light);
+    border: 1px solid var(--color-button-blue-hover);
+}
+
 h1 {
     width: 100%;
     font-size: 2rem;

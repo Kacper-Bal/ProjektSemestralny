@@ -6,6 +6,15 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+$flashMessage = null;
+$flashType = '';
+if (isset($_SESSION['flash_message'])) {
+    $flashMessage = $_SESSION['flash_message'];
+    $flashType = $_SESSION['flash_message_type'] ?? 'success';
+    unset($_SESSION['flash_message']);
+    unset($_SESSION['flash_message_type']);
+}
+
 $gameName = $_GET["game"] ?? null;
 
 if ($gameName == null) {
@@ -141,7 +150,10 @@ if (isset($_GET['add_to_cart'])) {
         $gameIdToAdd = (int)$_GET['add_to_cart'];
         $stmt = $conn->prepare("INSERT IGNORE INTO cart (user_id, game_id) VALUES (?, ?)");
         $stmt->bind_param("ii", $userId, $gameIdToAdd);
-        $stmt->execute();
+        if ($stmt->execute()) {
+            $_SESSION['flash_message'] = "Gra została pomyślnie dodana do koszyka!";
+            $_SESSION['flash_message_type'] = "success";
+        }
         header('Location: game.php?game=' . urlencode($gameName));
         exit;
     } else {
@@ -266,6 +278,9 @@ if ($currentUser) {
 <?php include 'header.php'; ?>
 
     <div id="container">
+        <?php if ($flashMessage): ?>
+            <p class="game-message"><?php echo htmlspecialchars($flashMessage); ?></p>
+        <?php endif; ?>
         <h1>
             <?= htmlspecialchars($gameData["name"]) ?>
             <?php if ($currentUser && $currentUser['role'] == 1): ?>
