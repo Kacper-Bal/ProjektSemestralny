@@ -367,11 +367,11 @@ if ($currentUser) {
                 <div class="purchase-box">
                     <div class="price">
                         <?php if ($isOnSale): ?>
-                            <span style="background-color: #4c6b22; padding: 2px 5px; color: #a4d4a4; border-radius: 2px; font-size: 0.9em;">-<?= $discountPercent ?>%</span>
-                            <span style="text-decoration: line-through; color: #76808c; margin-left: 5px;"><?= htmlspecialchars(number_format($originalPrice, 2)) ?></span>
-                            <strong style="margin-left: 20px; color: #a4d4a4;"><?= htmlspecialchars(number_format($finalPrice, 2)) ?> PLN</strong>
+                            <span class="price-badge">-<?= $discountPercent ?>%</span>
+                            <span class="price-old"><?= htmlspecialchars(number_format($originalPrice, 2)) ?></span>
+                            <strong class="price-final price-final--promo"><?= htmlspecialchars(number_format($finalPrice, 2)) ?> PLN</strong>
                         <?php else: ?>
-                            <?= htmlspecialchars(number_format($finalPrice, 2)) ?> PLN
+                            <span class="price-final"><?= htmlspecialchars(number_format($finalPrice, 2)) ?> PLN</span>
                         <?php endif; ?>
                     </div>
                     
@@ -415,7 +415,7 @@ if ($currentUser) {
                             <textarea name="comment" placeholder="Napisz swoją recenzję..."></textarea>
                             <div class="form-footer">
                                 <?php if ($reviewMessage): ?>
-                                    <p class="review-message" style="color: <?= $messageType === 'success' ? 'lightgreen' : 'red' ?>; margin-right: auto;"><?= htmlspecialchars($reviewMessage); ?></p>
+                                    <p class="review-message" style="color: <?= $messageType === 'success' ? '#67c1f5' : 'red' ?>; margin-right: auto;"><?= htmlspecialchars($reviewMessage); ?></p>
                                 <?php endif; ?>
                                 <button type="submit" name="submit_review">Opublikuj</button>
                             </div>

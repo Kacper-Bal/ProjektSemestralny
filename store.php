@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax_filter'])) {
     $joins = [];
     $wheres = [];
 
-    $wheres[] = "g.price <= ?";
+    $wheres[] = "(g.price * (1 - (IFNULL(p.discount_percent, 0) / 100))) <= ?";
     $params[] = $maxPrice;
     $types .= "d";
 

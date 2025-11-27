@@ -74,10 +74,11 @@ body{
 
 .discount-badge {
     background-color: var(--color-button-blue);
-    color: #a4d4a4;
-    padding: 3px 5px;
+    color: var(--color-text-light);
+    padding: 4px 8px;
     font-size: 0.8rem;
     margin: 5px;
+    border-radius: 3px;
 }
 
 .remove-btn {

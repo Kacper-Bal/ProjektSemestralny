@@ -351,6 +351,21 @@ h1 a:hover svg {
     text-decoration: none;
 }
 
+.price-badge {
+    background-color: var(--color-button-blue);
+    color: var(--color-text-light);
+    padding: 3px 5px;
+    font-size: 0.8rem;
+    margin: 5px;
+    border-radius: 3px;
+}
+
+.price-old {
+    text-decoration: line-through;
+    color: #76808c;
+    margin-left: 5px;
+}
+
 .reviews-section {
     width: 100%;
     margin-top: 20px;
