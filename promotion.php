@@ -148,165 +148,15 @@ require_once('header.php');
     <title>Promotions</title>
     <link rel="stylesheet" href="style/styleCommon.css">
     <link rel="stylesheet" href="style/styleStore.css">
-    <style>
-        .promo-editor-container {
-            display: flex;
-            gap: 20px;
-            max-width: 1400px;
-            margin: 20px auto;
-            padding: 0 20px;
-            align-items: flex-start;
-        }
-        
-        .promo-sidebar {
-            width: 30%;
-            min-width: 300px;
-            background-color: var(--color-bg-container);
-            padding: 20px;
-            border-radius: 5px;
-            position: sticky;
-            top: 100px;
-            max-height: 85vh;
-            overflow-y: auto;
-            border: 1px solid var(--color-border-transparent);
-        }
-
-        .promo-main {
-            width: 70%;
-        }
-
-        .promo-form-group {
-            margin-bottom: 15px;
-        }
-        .promo-form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: var(--color-text-secondary);
-        }
-        .promo-input {
-            width: 100%;
-            padding: 10px;
-            background-color: var(--color-bg-input);
-            border: 1px solid var(--color-border-mid);
-            color: var(--color-text-light);
-            border-radius: 3px;
-        }
-        .btn-create {
-            width: 100%;
-            padding: 12px;
-            background-color: var(--color-button-blue);
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            border-radius: 3px;
-            transition: background 0.2s;
-        }
-        .btn-create:hover {
-            background-color: var(--color-button-blue-hover);
-        }
-
-        .promo-list-item {
-            background-color: var(--color-bg-panel-dark);
-            border: 1px solid var(--color-border-mid);
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-        }
-        .promo-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            border-bottom: 1px solid var(--color-border-dark-transparent);
-            padding-bottom: 8px;
-        }
-        .promo-title {
-            font-weight: bold;
-            color: var(--color-text-light);
-            font-size: 1.1rem;
-        }
-        .promo-meta {
-            font-size: 0.85rem;
-            color: var(--color-text-secondary);
-            margin-bottom: 10px;
-        }
-        .promo-games-list {
-            list-style: none;
-            padding: 0;
-            max-height: 150px;
-            overflow-y: auto;
-        }
-        .promo-game-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 4px 0;
-            font-size: 0.9rem;
-            color: var(--color-text-main);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .btn-remove-small {
-            background: none;
-            border: none;
-            color: #c0392b;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-        .btn-remove-small:hover { text-decoration: underline; }
-
-        .btn-delete-promo {
-            background-color: #c0392b;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-
-        .selectable-game-card {
-            cursor: pointer;
-            position: relative;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .selectable-game-card.selected {
-            border: 3px solid #2ecc71; 
-            transform: scale(0.98);
-        }
-        .selectable-game-card.selected::after {
-            content: "✓";
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #2ecc71;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.2rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-        }
-        
-        .section-title {
-            color: var(--color-text-light);
-            margin-bottom: 15px;
-            border-bottom: 1px solid var(--color-border-main);
-            padding-bottom: 10px;
-        }
-    </style>
+    
 </head>
 <body>
 
-<div class="promo-editor-container">
+<div class="store-container">
     <aside class="promo-sidebar">
         
         <?php if ($message): ?>
-            <div style="padding: 10px; margin-bottom: 15px; border-radius: 3px; 
-                background-color: <?php echo $messageType == 'success' ? '#2ecc71' : '#c0392b'; ?>; color: white;">
+            <div class="profile-message <?php echo $messageType == 'success' ? 'msg-success' : 'msg-error'; ?>">
                 <?php echo htmlspecialchars($message); ?>
             </div>
         <?php endif; ?>
@@ -336,11 +186,11 @@ require_once('header.php');
             <input type="hidden" name="selected_games" id="selectedGamesInput">
             <input type="hidden" name="create_promotion" value="1">
 
-            <p style="margin-bottom: 10px; color: var(--color-text-secondary);">
-                Wybrano gier: <strong id="selectedCount" style="color: var(--color-text-light);">0</strong>
+            <p class="selection-info">
+                Wybrano gier: <strong id="selectedCount" class="selection-count">0</strong>
             </p>
 
-            <button type="submit" class="btn-create" onclick="return validateSelection()">Utwórz Promocję</button>
+            <button type="submit" class="btn-create">Utwórz Promocję</button>
         </form>
 
         <br><br>
@@ -353,7 +203,7 @@ require_once('header.php');
                 <div class="promo-list-item">
                     <div class="promo-header">
                         <span class="promo-title"><?php echo htmlspecialchars($pdata['name']); ?> (-<?php echo $pdata['discount']; ?>%)</span>
-                        <form method="POST" onsubmit="return confirm('Czy na pewno usunąć całą promocję?');" style="margin:0;">
+                        <form method="POST" onsubmit="return confirm('Czy na pewno usunąć całą promocję?');" class="inline-form">
                             <input type="hidden" name="promo_id" value="<?php echo $pid; ?>">
                             <input type="hidden" name="delete_promotion" value="1">
                             <button type="submit" class="btn-delete-promo">Usuń</button>
@@ -365,15 +215,15 @@ require_once('header.php');
                         Do: <?php echo date('d.m.Y H:i', strtotime($pdata['end'])); ?>
                     </div>
 
-                    <div style="font-size: 0.9rem; font-weight:bold; margin-bottom: 5px;">Gry w promocji:</div>
+                    <div class="promo-games-label">Gry w promocji:</div>
                     <ul class="promo-games-list">
                         <?php if (empty($pdata['games'])): ?>
-                            <li style="color: grey; font-style: italic;">Brak gier</li>
+                            <li class="promo-no-games">Brak gier</li>
                         <?php else: ?>
                             <?php foreach ($pdata['games'] as $pgame): ?>
                                 <li class="promo-game-item">
                                     <span><?php echo htmlspecialchars($pgame['game_name']); ?></span>
-                                    <form method="POST" style="margin:0;">
+                                    <form method="POST" class="inline-form">
                                         <input type="hidden" name="link_id" value="<?php echo $pgame['link_id']; ?>">
                                         <input type="hidden" name="remove_game_from_promo" value="1">
                                         <button type="submit" class="btn-remove-small">x</button>
@@ -388,7 +238,7 @@ require_once('header.php');
 
     </aside>
 
-    <main class="promo-main">
+    <main class="store-content">
         <div class="store-search-bar">
             <input type="text" id="gameSearch" placeholder="Filtruj gry do wyboru...">
         </div>
@@ -400,7 +250,6 @@ require_once('header.php');
             if ($resultGames && $resultGames->num_rows > 0) {
                 while($row = $resultGames->fetch_assoc()) {
                     $imgSrc = getGameImage($row['name']);
-                    // Używamy klasy game-card z store.css ale dodajemy klasę 'selectable-game-card' do logiki JS
                     echo '
                     <div class="game-card selectable-game-card" data-id="' . $row['id'] . '" data-name="' . strtolower(htmlspecialchars($row['name'])) . '">
                         <img src="' . $imgSrc . '" alt="' . htmlspecialchars($row['name']) . '" class="game-card-img" loading="lazy">
@@ -419,55 +268,8 @@ require_once('header.php');
 
 <?php require_once('footer.php'); ?>
 
-<script>
-    const searchInput = document.getElementById('gameSearch');
-    const cards = document.querySelectorAll('.selectable-game-card');
-    const selectedCountSpan = document.getElementById('selectedCount');
-    const hiddenInput = document.getElementById('selectedGamesInput');
-    
-    let selectedGames = new Set();
-
-    cards.forEach(card => {
-        card.addEventListener('click', function() {
-            const id = this.getAttribute('data-id');
-            
-            if (selectedGames.has(id)) {
-                selectedGames.delete(id);
-                this.classList.remove('selected');
-            } else {
-                selectedGames.add(id);
-                this.classList.add('selected');
-            }
-            updateForm();
-        });
-    });
-
-    function updateForm() {
-        const array = Array.from(selectedGames);
-        hiddenInput.value = array.join(',');
-        selectedCountSpan.textContent = array.length;
-    }
-
-    function validateSelection() {
-        if (selectedGames.size === 0) {
-            alert("Wybierz przynajmniej jedną grę z listy po prawej stronie!");
-            return false;
-        }
-        return true;
-    }
-
-    searchInput.addEventListener('keyup', function() {
-        const filter = this.value.toLowerCase();
-        cards.forEach(card => {
-            const name = card.getAttribute('data-name');
-            if (name.includes(filter)) {
-                card.style.display = "block";
-            } else {
-                card.style.display = "none";
-            }
-        });
-    });
-</script>
+<script src="js/user.js"></script>
+<script src="js/promotion.js"></script>
 
 </body>
 </html>

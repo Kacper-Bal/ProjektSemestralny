@@ -25,24 +25,6 @@ body {
     border: 1px solid var(--color-border-transparent);
 }
 
-.store-sidebar::-webkit-scrollbar {
-    width: 12px;
-}
-
-.store-sidebar::-webkit-scrollbar-track {
-    background: var(--color-bg-panel-dark);
-}
-
-.store-sidebar::-webkit-scrollbar-thumb {
-    background-color: var(--color-border-mid);
-    border-radius: 10px;
-    border: 3px solid var(--color-bg-panel-dark);
-}
-
-.store-sidebar::-webkit-scrollbar-thumb:hover {
-    background-color: #555c6a;
-}
-
 .filter-group {
     margin-bottom: 25px;
     border-bottom: 1px solid var(--color-border-main);
@@ -357,4 +339,200 @@ details[open] summary::after {
 .discounted-price {
     color: var(--color-text-main);
     font-weight: bold;
+}
+
+   .promo-sidebar {
+    width: 25%;
+    min-width: 250px;
+    background-color: var(--color-bg-container);
+    padding: 20px;
+    border-radius: 5px;
+    position: sticky;
+    top: 15vh;
+    max-height: 85vh;
+    overflow-y: auto;
+    border: 1px solid var(--color-border-transparent);
+}
+
+.promo-form-group {
+    margin-bottom: 15px;
+}
+
+.promo-form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--color-text-secondary);
+}
+
+.promo-input {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--color-bg-input);
+    border: 1px solid var(--color-border-mid);
+    color: var(--color-text-light);
+    border-radius: 3px;
+}
+
+.inline-form {
+    margin: 0;
+    display: inline-block;
+}
+
+/* --- Przyciski Promocji --- */
+.btn-create {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--color-button-blue);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 3px;
+    transition: background 0.2s;
+}
+
+.btn-create:hover {
+    background-color: var(--color-button-blue-hover);
+}
+
+.btn-delete-promo {
+    background-color: var(--color-button-red); /* Upewnij się, że masz tę zmienną w styleCommon, jeśli nie - użyj #c0392b */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.btn-remove-small {
+    background: none;
+    border: none;
+    color: var(--color-button-red);
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.btn-remove-small:hover { 
+    text-decoration: underline; 
+}
+
+/* --- Lista Promocji --- */
+.promo-list-item {
+    background-color: var(--color-bg-panel-dark);
+    border: 1px solid var(--color-border-mid);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.promo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--color-border-dark-transparent);
+    padding-bottom: 8px;
+}
+
+.promo-title {
+    font-weight: bold;
+    color: var(--color-text-light);
+    font-size: 1.1rem;
+}
+
+.promo-meta {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 10px;
+}
+
+.promo-games-label {
+    font-size: 1rem; 
+    font-weight: bold; 
+    margin-bottom: 5px;
+    color: var(--color-text-light);
+}
+
+.promo-games-list {
+    list-style: none;
+    padding: 0;
+    max-height: 150px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.promo-game-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 0.9rem;
+    color: var(--color-text-main);
+    border-bottom: 1px solid var(--color-border-light-transparent);
+}
+
+.promo-no-games {
+    color: grey; 
+    font-style: italic;
+}
+
+/* --- Wybieranie Kart (Rozszerzenie game-card) --- */
+.selectable-game-card {
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.selectable-game-card.selected {
+    border: 1px solid var(--color-accent-link); 
+}
+
+.selectable-game-card.selected::after {
+    content: "✓";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--color-accent-link);
+    color: var(--color-text-light);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+/* --- Teksty i Komunikaty --- */
+.section-title {
+    color: var(--color-text-light);
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--color-border-main);
+    padding-bottom: 10px;
+}
+
+.selection-info {
+    margin-bottom: 10px; 
+    color: var(--color-text-secondary);
+}
+
+.selection-count {
+    color: var(--color-text-light);
+}
+
+.profile-message {
+    padding: 10px; 
+    margin-bottom: 15px; 
+    border-radius: 3px; 
+    color: white;
+}
+
+.msg-success { 
+    background-color: var(--color-button-blue); 
+}
+
+.msg-error { 
+    background-color: var(--color-button-red); 
 }
