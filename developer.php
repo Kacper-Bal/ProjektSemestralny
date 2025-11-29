@@ -3,26 +3,26 @@ session_start();
 require_once 'conn.php';
 require_once 'auth.php';
 
-$publisherName = $_GET['name'] ?? null;
-$pageTitle = 'Nie znaleziono wydawcy';
-$publisher = null;
+$developerName = $_GET['name'] ?? null;
+$pageTitle = 'Nie znaleziono dewelopera';
+$developer = null;
 $headerColor = '#141E2A'; 
 
-if (!$publisherName) {
+if (!$developerName) {
     header('Location: index.php');
     exit;
 }
 
-$stmt = $conn->prepare("SELECT id, name, logo_color FROM publishers WHERE name = ?");
-$stmt->bind_param("s", $publisherName);
+$stmt = $conn->prepare("SELECT id, name, logo_color FROM developers WHERE name = ?");
+$stmt->bind_param("s", $developerName);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result && $result->num_rows === 1) {
-    $publisher = $result->fetch_assoc();
-    $pageTitle = htmlspecialchars($publisher['name']);
-    if (!empty($publisher['logo_color'])) {
-        $headerColor = htmlspecialchars($publisher['logo_color']);
+    $developer = $result->fetch_assoc();
+    $pageTitle = htmlspecialchars($developer['name']);
+    if (!empty($developer['logo_color'])) {
+        $headerColor = htmlspecialchars($developer['logo_color']);
     }
 }
 
@@ -30,15 +30,15 @@ $gamesResult = null;
 $gamePlatforms = [];
 $gameTags = [];
 
-if ($publisher) {
-    $publisherId = $publisher['id'];
+if ($developer) {
+    $developerId = $developer['id'];
 
-    $stmt = $conn->prepare("SELECT g.id, g.name, g.date, dev.name AS developer_name
+    $stmt = $conn->prepare("SELECT g.id, g.name, g.date, pub.name AS publisher_name
                FROM games g 
-               LEFT JOIN developers dev ON g.developer_id = dev.id
-               WHERE g.publisher_id = ? 
+               LEFT JOIN publishers pub ON g.publisher_id = pub.id
+               WHERE g.developer_id = ? 
                ORDER BY g.name ASC");
-    $stmt->bind_param("i", $publisherId);
+    $stmt->bind_param("i", $developerId);
     $stmt->execute();
     $gamesResult = $stmt->get_result();
 
@@ -82,15 +82,15 @@ if ($publisher) {
     }
 }
 
-$publisherImage = 'img\avatars\default_avatar.png';
-if ($publisher) {
-    $safePublisherName = preg_replace('/[^a-z0-9_]/', '_', strtolower($publisher['name']));
+$developerImage = 'img\avatars\default_avatar.png';
+if ($developer) {
+    $safeDeveloperName = preg_replace('/[^a-z0-9_]/', '_', strtolower($developer['name']));
     
     $extensions = ['jpg', 'jpeg', 'png', 'png']; 
         foreach ($extensions as $ext) {
-        $testPath = "img/publisher/{$safePublisherName}.{$ext}";
+        $testPath = "img/developer/{$safeDeveloperName}.{$ext}";
         if (file_exists($testPath)) {
-            $publisherImage = $testPath;
+            $developerImage = $testPath;
             break;
         }
     }
@@ -108,16 +108,16 @@ if ($publisher) {
 <body>
     <?php include('header.php'); ?>
 
-    <?php if ($publisher): ?>
+    <?php if ($developer): ?>
         <div class="profile-header-banner" style="--header-bg: <?php echo $headerColor; ?>; background-color: <?php echo $headerColor; ?>;">
             <div class="profile-header-content">
                 <img 
-                    src="<?php echo htmlspecialchars($publisherImage); ?>" 
-                    alt="Logo <?php echo htmlspecialchars($publisher['name']); ?>"
+                    src="<?php echo htmlspecialchars($developerImage); ?>" 
+                    alt="Logo <?php echo htmlspecialchars($developer['name']); ?>"
                     class="profile-avatar"
                 >
                 <div class="profile-info">
-                    <h1><?php echo htmlspecialchars($publisher['name']); ?></h1>
+                    <h1><?php echo htmlspecialchars($developer['name']); ?></h1>
                 </div>
             </div>
         </div>
@@ -159,9 +159,9 @@ if ($publisher) {
                                     <div class="game-tile-details">
                                         <p><strong>DATA WYDANIA:</strong> <?php echo htmlspecialchars($game['date']); ?></p>
                                         <p>
-                                            <strong>DEWELOPER:</strong> 
-                                            <a href="developer.php?name=<?php echo urlencode($game['developer_name']); ?>" class="profile-content-link">
-                                                <?php echo htmlspecialchars($game['developer_name']); ?>
+                                            <strong>WYDAWCA:</strong> 
+                                            <a href="publisher.php?name=<?php echo urlencode($game['publisher_name']); ?>" class="profile-content-link">
+                                                <?php echo htmlspecialchars($game['publisher_name']); ?>
                                             </a>
                                         </p>
                                         <div class="game-tile-footer">
@@ -185,7 +185,7 @@ if ($publisher) {
                         <?php endforeach; ?>
                     </div>
                 <?php else: ?>
-                    <p class="profile-tab-placeholder">Ten wydawca nie wydał jeszcze żadnych gier.</p>
+                    <p class="profile-tab-placeholder">Ten deweloper nie stworzył jeszcze żadnych gier.</p>
                 <?php endif; ?>
             </div>
 
@@ -194,8 +194,8 @@ if ($publisher) {
 
     <?php else: ?>
         <div id="profile-container-main">
-            <h1>Nie znaleziono wydawcy</h1>
-            <p>Wydawca o nazwie "<?php echo htmlspecialchars($publisherName); ?>" nie został znaleziony.</p>
+            <h1>Nie znaleziono dewelopera</h1>
+            <p>Deweloper o nazwie "<?php echo htmlspecialchars($publisherName); ?>" nie został znaleziony.</p>
         </div>
     <?php endif; ?>
 
