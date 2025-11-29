@@ -8,7 +8,7 @@ $preSelectedTagName = isset($_GET['tag']) ? strtolower(trim($_GET['tag'])) : nul
 function getGameImage($gameName) {
     $name = strtolower($gameName);
     
-    $filename = preg_replace('/[^a-z0-9]/', '_', $name);
+    $filename = preg_replace('/[^a-z0-9\-]/', '_', $name);
    
     $possiblePath = "img/games/{$filename}_1.jpg";
     if (file_exists($possiblePath)) {
