@@ -12,6 +12,18 @@ function isNavLinkActive($pageName, $currentPage) {
         return $pageName === 'store.php';
     }
 }
+
+$headerCartCount = 0;
+if (isset($currentUser) && $currentUser) {
+    $stmtCart = $conn->prepare("SELECT COUNT(*) as count FROM cart WHERE user_id = ?");
+    $stmtCart->bind_param("i", $currentUser['user_id']);
+    $stmtCart->execute();
+    $resCart = $stmtCart->get_result();
+    if ($rowCart = $resCart->fetch_assoc()) {
+        $headerCartCount = $rowCart['count'];
+    }
+    $stmtCart->close();
+}
 ?>
 
 <header>
@@ -58,33 +70,53 @@ function isNavLinkActive($pageName, $currentPage) {
                 <?php endif; ?>
             </div>
         </div>
+
         <div id="header-right">
-    
-    <?php if (!$currentUser): ?>
-        <a href="login.php" class="auth-btn">Log In</a>
-        <a href="register.php" class="auth-btn">Sign Up</a>
-    
-        <?php else: ?>
-        <a href="user.php?user=<?= urlencode($currentUser['username']) ?>" class="auth-btn profile-group">
-            <span class="text-part">
-                <?= htmlspecialchars($currentUser['username']) ?>
-            </span>
-            <div class="img-part">
-                <?php 
-                    $avatarFile = $currentUser['avatar_filename'] ?? 'default_avatar.png';
-                    $avatarPath = "img/avatars/" . $avatarFile;
-                ?>
-                <img src="<?= htmlspecialchars($avatarPath) ?>" alt="Avatar">
-            </div>
-        </a>
+            <?php if (!isset($currentUser) || !$currentUser): ?>
+                <div class="user-panel">
+                    <a href="login.php" class="auth-btn">Log In</a>
+                    <a href="register.php" class="auth-btn">Sign Up</a>
+                </div>
+            <?php else: ?>
+                
+                <div class="user-tools">
+                    <div class="balance-display">
+                        <?= number_format($currentUser['balance'], 2) ?> zł
+                    </div>
 
-        <a href="logout.php" class="auth-btn logout-btn">
-            Sign Out
-        </a>
+                    <a href="cart.php" class="cart-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 22px; height: 22px;">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <?php if ($headerCartCount > 0): ?>
+                            <span class="cart-count-badge"><?= $headerCartCount ?></span>
+                        <?php endif; ?>
+                    </a>
+                </div>
 
-    <?php endif; ?>
-</div>
-        
+                <div class="user-panel">
+                    <a href="user.php?user=<?= urlencode($currentUser['username']) ?>" class="profile-group">
+                        <span class="text-part">
+                            <?= htmlspecialchars($currentUser['username']) ?>
+                        </span>
+                        <div class="img-part">
+                            <?php 
+                                $avatarFile = $currentUser['avatar_filename'] ?? 'default_avatar.png';
+                                $avatarPath = "img/avatars/" . $avatarFile;
+                            ?>
+                            <img src="<?= htmlspecialchars($avatarPath) ?>" alt="Avatar">
+                        </div>
+                    </a>
+
+                    <a href="logout.php" class="auth-btn logout-btn">
+                        <svg style="width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    </a>
+                </div>
+
+            <?php endif; ?>
+        </div>
 
     </div>
 
