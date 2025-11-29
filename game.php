@@ -23,11 +23,15 @@ if ($gameName == null) {
 }
 
 $stmt = $conn->prepare("SELECT
-    g.id, g.name as name, g.description, pub.name as publisher, dev.name AS developer, g.price, g.date,p.discount_percent FROM games g
+    g.id, g.name as name, g.description, pub.name as publisher, dev.name AS developer, g.price, g.date, 
+    MAX(p.discount_percent) as discount_percent 
+FROM games g
 LEFT JOIN developers dev ON g.developer_id=dev.id
 LEFT JOIN publishers pub ON g.publisher_id=pub.id
-LEFT JOIN promotions p ON g.id = p.game_id AND NOW() BETWEEN p.start_date AND p.end_date
-WHERE g.name=?");
+LEFT JOIN promotion_games pg ON g.id = pg.game_id
+LEFT JOIN promotions p ON pg.promotion_id = p.id AND NOW() BETWEEN p.start_date AND p.end_date
+WHERE g.name=?
+GROUP BY g.id");
 $stmt->bind_param("s", $gameName);
 $stmt->execute();
 $resultGame = $stmt->get_result();

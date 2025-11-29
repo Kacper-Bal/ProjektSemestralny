@@ -33,10 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax_filter'])) {
     $publishers = $_POST['publishers'] ?? [];
     $developers = $_POST['developers'] ?? [];
 
-    $sql = "SELECT DISTINCT g.id, g.name, g.price, 
-            p.discount_percent 
+    $sql = "SELECT g.id, g.name, g.price, 
+            MAX(p.discount_percent) as discount_percent 
             FROM games g
-            LEFT JOIN promotions p ON g.id = p.game_id 
+            LEFT JOIN promotion_games pg ON g.id = pg.game_id
+            LEFT JOIN promotions p ON pg.promotion_id = p.id 
             AND NOW() BETWEEN p.start_date AND p.end_date";
 
     $params = [];
@@ -82,6 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax_filter'])) {
 
     if (!empty($joins)) { $sql .= " " . implode(" ", array_unique($joins)); }
     if (!empty($wheres)) { $sql .= " WHERE " . implode(" AND ", $wheres); }
+    $sql .= " GROUP BY g.id ";
     $sql .= " ORDER BY g.name ASC";
 
     $stmt = $conn->prepare($sql);

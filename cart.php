@@ -40,12 +40,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         try {
             $stmt = $conn->prepare("
-                SELECT g.id, g.price, p.discount_percent 
-                FROM cart c
-                JOIN games g ON c.game_id = g.id
-                LEFT JOIN promotions p ON g.id = p.game_id AND NOW() BETWEEN p.start_date AND p.end_date
-                WHERE c.user_id = ?
-            ");
+            SELECT g.id, g.price, MAX(p.discount_percent) as discount_percent 
+            FROM cart c
+            JOIN games g ON c.game_id = g.id
+            LEFT JOIN promotion_games pg ON g.id = pg.game_id
+            LEFT JOIN promotions p ON pg.promotion_id = p.id AND NOW() BETWEEN p.start_date AND p.end_date
+            WHERE c.user_id = ?
+            GROUP BY c.game_id
+        ");
             $stmt->bind_param("i", $userId);
             $stmt->execute();
             $cartItems = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
@@ -113,11 +115,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $stmt = $conn->prepare("
-    SELECT g.id, g.name, g.price, p.discount_percent, g.name AS img_name
+    SELECT g.id, g.name, g.price, MAX(p.discount_percent) as discount_percent, g.name AS img_name
     FROM cart c
     JOIN games g ON c.game_id = g.id
-    LEFT JOIN promotions p ON g.id = p.game_id AND NOW() BETWEEN p.start_date AND p.end_date
+    LEFT JOIN promotion_games pg ON g.id = pg.game_id
+    LEFT JOIN promotions p ON pg.promotion_id = p.id AND NOW() BETWEEN p.start_date AND p.end_date
     WHERE c.user_id = ?
+    GROUP BY c.game_id
 ");
 $stmt->bind_param("i", $userId);
 $stmt->execute();
