@@ -169,36 +169,85 @@ a:hover{
     text-decoration: underline;
 }
 
-.login-panel {
+#header-right {
     display: flex;
-    width: auto;
-    border: 2px solid var(--color-border-main);
-    border-radius: 20px;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+    margin-left: auto;
+    height: 50px;
+    border-radius: 5px;
     overflow: hidden;
-    height: 7vh;
+    border: 2px solid var(--color-button-blue);
+    background-color: var(--color-bg-panel-dark);
 }
 
-.login-element {
-    padding-left: 20px;
-    padding-right: 20px;
-    text-align: center;
-    transition: background-color 0.2s;
+.auth-btn {
     display: flex;
     align-items: center;
+    height: 100%;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+}
+
+.profile-group {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    background-color: var(--color-bg-panel-dark);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.profile-group .text-part {
+    flex: 1;
+    display: flex;
     justify-content: center;
+    align-items: center;
+    padding: 0 15px;
+    height: 100%;
 }
 
-.login-element a {
+.profile-group .img-part {
+    flex: 0 0 50px; 
+    width: 50px;
+    height: 100%;
+    transition: filter 0.2s; 
+}
+
+.profile-group .img-part img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
-    transition: color 0.2s;
 }
 
-.login-element:hover {
-    background-color: var(--color-text-light);
+.profile-group:hover {
+    background-color: var(--color-bg-input-hover); 
+    color: var(--color-text-light); 
+    text-decoration: none;
 }
 
-.login-element:hover a {
-    color: var(--color-bg-panel-dark);
+.profile-group:hover .img-part {
+    filter: brightness(1.2);
+}
+
+
+.auth-btn.logout-btn {
+    flex: 1; 
+    justify-content: center;
+    padding: 0 15px;
+    background-color: var(--color-button-blue);
+    color: var(--color-text-light);
+}
+
+.auth-btn.logout-btn:hover {
+    background-color: var(--color-button-blue-hover);
+}
+
+#header-right a:hover {
+    text-decoration: none;
 }
 
 #header-bottom {
@@ -252,9 +301,6 @@ a:hover{
 
     header a {
         font-size: 18px;
-    }
-    .login-element a {
-        font-size: 16px;
     }
 
     #header-left {
