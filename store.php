@@ -5,6 +5,9 @@ require_once('auth.php');
 $preSelectedPlatformName = isset($_GET['platform']) ? strtolower(trim($_GET['platform'])) : null;
 $preSelectedTagName = isset($_GET['tag']) ? strtolower(trim($_GET['tag'])) : null;
 
+// NOWE: Pobieramy frazę wyszukiwania przekazaną z nagłówka
+$preSelectedSearch = isset($_GET['search']) ? trim($_GET['search']) : '';
+
 function getGameImage($gameName) {
     $name = strtolower($gameName);
     
@@ -158,7 +161,7 @@ $maxPriceLimit = ceil($maxPriceData['max_price'] ?? 300);
 <body>
 
 <div class="store-container">
-<aside class="store-sidebar">
+    <aside class="store-sidebar">
         <div class="filter-group">
             <h3>Cena maksymalna: <span id="priceValue"><?php echo $maxPriceLimit; ?></span> zł</h3>
             <input type="range" id="priceRange" min="0" max="<?php echo $maxPriceLimit; ?>" value="<?php echo $maxPriceLimit; ?>" class="slider">
@@ -226,7 +229,7 @@ $maxPriceLimit = ceil($maxPriceData['max_price'] ?? 300);
 
     <main class="store-content">
         <div class="store-search-bar">
-            <input type="text" id="searchInput" placeholder="Szukaj gry według nazwy...">
+            <input type="text" id="searchInput" placeholder="Szukaj gry według nazwy..." value="<?php echo htmlspecialchars($preSelectedSearch); ?>">
         </div>
 
         <div id="gamesGrid" class="games-grid">

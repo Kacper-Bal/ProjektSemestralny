@@ -1,6 +1,46 @@
 <?php
 require_once('auth.php');
 
+if (isset($_POST['live_search_query'])) {
+    header('Content-Type: application/json');
+    $query = trim($_POST['live_search_query']);
+
+    if (strlen($query) < 2) {
+        echo json_encode([]);
+        exit;
+    }
+
+    $stmt = $conn->prepare("SELECT name FROM games WHERE name LIKE ? LIMIT 10");
+    $searchTerm = "%" . $query . "%";
+    $stmt->bind_param("s", $searchTerm);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $games = [];
+    while ($row = $result->fetch_assoc()) {
+        $name = $row['name'];
+        $lowerName = strtolower($name);
+        
+        $filename = preg_replace('/[^a-z0-9\-]/', '_', $lowerName);
+        $img = "img/games/{$filename}_1.jpg";
+        
+        if (!file_exists($img)) {
+            $simpleName = str_replace(' ', '_', $lowerName);
+            $img = "img/games/{$simpleName}_1.jpg";
+            if (!file_exists($img)) {
+                $img = "img/others/loginBackground.jpg";
+            }
+        }
+
+        $games[] = [
+            'name' => $name,
+            'image' => $img
+        ];
+    }
+    echo json_encode($games);
+    exit;
+}
+
 $currentPage = basename($_SERVER['PHP_SELF']);
 
 function isNavLinkActive($pageName, $currentPage) {
@@ -27,6 +67,7 @@ if (isset($currentUser) && $currentUser) {
 ?>
 
 <header>
+    
     <input id="menu-toggle" type="checkbox" />
 
     <div id="header-top">
@@ -125,11 +166,15 @@ if (isset($currentUser) && $currentUser) {
     if (!in_array($currentPage, $pagesToHideSearchOn)):
     ?>
     <div id="header-bottom">
-        <form id="searchForm" action="search.php" method="GET">
-            <input type="text" name="query" placeholder="Wyszukaj...">
-            <input type="submit" value="Szukaj">
-        </form>
+        <div class="search-container-wrapper">
+            <form id="searchForm" action="store.php" method="GET" style="margin: 0;">
+                <input type="text" name="search" id="headerSearchInput" placeholder="Szukaj..." autocomplete="off">
+                <input type="submit">
+            </form>
+            <div id="searchResults"></div>
+        </div>
     </div>
+    
     <?php endif; ?>
-
+    <script src="js/header.js"></script>
 </header>

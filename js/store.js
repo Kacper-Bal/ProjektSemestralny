@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Błąd podczas pobierania gier:', error));
     }
+
     let searchTimeout;
     if (searchInput) {
         searchInput.addEventListener('input', () => {
@@ -72,5 +73,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     getCheckboxes().forEach(cb => cb.addEventListener('change', fetchGames));
+
+    if (searchInput) {
+        if (searchInput.value.trim() !== "") {
+            const event = new Event('input', {
+                bubbles: true,
+                cancelable: true,
+            });
+            searchInput.dispatchEvent(event);
+        } else {
+             const event = new Event('input', { bubbles: true });
+             searchInput.dispatchEvent(event);
+        }
+    }
+
     fetchGames();
 });
