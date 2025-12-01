@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Lis 22, 2025 at 12:26 PM
+-- Generation Time: Dec 01, 2025 at 08:46 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -38,7 +38,7 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id`, `user_id`, `game_id`) VALUES
-(1, 1, 3);
+(19, 1, 24);
 
 -- --------------------------------------------------------
 
@@ -100,7 +100,7 @@ INSERT INTO `games` (`id`, `name`, `description`, `publisher_id`, `developer_id`
 (1, 'Wiedźmin 3: Dziki Gon', 'Nazywasz się Geralt z Rivii i jesteś wiedźminem w świecie zniszczonym wojną i pełnym krwiożerczych bestii. Twoje zadanie? Musisz odnaleźć Ciri — swoją przybraną córkę obdarzoną mocą zdolną uratować świat lub pogrążyć go w ruinie.', 1, 3, 99.99, '2025-05-18'),
 (2, 'Cyberpunk 2077', 'Cyberpunk 2077 to pełna akcji gra role-playing, której akcja toczy się w Night City, megalopolis rządzonym przez obsesyjną pogoń za władzą, sławą i przerabianiem własnego ciała.', 1, 3, 199.99, '2020-12-10'),
 (3, 'Dark Souls', 'I wtedy zapłonął ogień. Raz jeszcze przeżyj emocjonujące przygody w gorąco przyjętej w swoim gatunku grze, od której wszystko się zaczęło. Wróć do przepięknego, odświeżonego Lordran – teraz w wysokiej rozdzielczości i 60 FPS.', 3, 4, 149.99, '2011-09-22'),
-(4, 'Dark Souls II', 'DARK SOULS™ II, stworzone przez FROM SOFTWARE, to długo oczekiwana kontynuacja wielkiego hitu z roku 2011, Dark Souls™. Ta wyjątkowa, klasyczna fabularna gra akcji zachwyciła wielu graczy na całym świecie dzięki niesamowitym wyzwaniom i radości wynikającej z ich pokonywania.', 3, 4, 149.99, '2014-04-25'),
+(4, 'Dark Souls 2', 'DARK SOULS™ II, stworzone przez FROM SOFTWARE, to długo oczekiwana kontynuacja wielkiego hitu z roku 2011, Dark Souls™. Ta wyjątkowa, klasyczna fabularna gra akcji zachwyciła wielu graczy na całym świecie dzięki niesamowitym wyzwaniom i radości wynikającej z ich pokonywania.', 3, 4, 149.99, '2014-04-25'),
 (5, 'Dark Souls 3', 'DARK SOULS™ III znów przesuwa granice gatunku - oto najnowsza i najbardziej ambitna odsłona docenionej przez krytyków serii. Przygotuj się do walki i przywitaj mrok!', 3, 4, 199.99, '2016-04-11'),
 (6, 'Sekiro: Shadows Die Twice', 'W Sekiro™: Shadows Die Twice wcielasz się w rolę \"jednorękiego wilka\" - zhańbionego, okaleczonego wojownika, który cudem uniknął śmierci. Zobowiązany chronić młodego panicza, potomka prastarego rodu, staje się on celem wielu bezlitosnych wrogów, w tym członków klanu Ashina. Gdy panicz zostaje schwytany, nic nie powstrzyma Sekiro™ przed wyruszeniem w niebezpieczną podróż w poszukiwaniu honoru - nawet śmierć.', 4, 4, 249.99, '2019-03-21'),
 (7, 'God of War', 'Minęło wiele lat od czasu, gdy Kratos wywarł swą zemstę na bogach Olimpu. Teraz mieszka pośród skandynawskich bóstw i potworów. W tym okrutnym świecie, który nie zna przebaczenia, będzie musiał walczyć o przetrwanie… i przygotować do tej walki swojego syna.', 5, 5, 219.00, '2018-04-20'),
@@ -394,7 +394,7 @@ INSERT INTO `platforms` (`id`, `name`) VALUES
 
 CREATE TABLE `promotions` (
   `id` int(11) NOT NULL,
-  `game_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
   `discount_percent` tinyint(3) UNSIGNED NOT NULL CHECK (`discount_percent` between 1 and 100),
   `start_date` datetime NOT NULL,
   `end_date` datetime NOT NULL
@@ -404,8 +404,53 @@ CREATE TABLE `promotions` (
 -- Dumping data for table `promotions`
 --
 
-INSERT INTO `promotions` (`id`, `game_id`, `discount_percent`, `start_date`, `end_date`) VALUES
-(1, 3, 20, '2025-10-01 18:14:30', '2025-10-31 18:14:30');
+INSERT INTO `promotions` (`id`, `name`, `discount_percent`, `start_date`, `end_date`) VALUES
+(3, 'Wyprzedaż zimowa', 30, '2025-11-28 16:21:00', '2025-12-07 16:21:00'),
+(4, 'Wyprzedaz bo tak', 40, '2025-11-21 20:13:00', '2025-12-07 20:13:00');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `promotion_games`
+--
+
+CREATE TABLE `promotion_games` (
+  `id` int(11) NOT NULL,
+  `promotion_id` int(11) NOT NULL,
+  `game_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `promotion_games`
+--
+
+INSERT INTO `promotion_games` (`id`, `promotion_id`, `game_id`) VALUES
+(31, 3, 30),
+(32, 3, 10),
+(33, 3, 4),
+(34, 3, 3),
+(35, 3, 2),
+(36, 3, 20),
+(37, 3, 28),
+(38, 3, 31),
+(40, 3, 9),
+(41, 3, 19),
+(42, 3, 13),
+(43, 3, 24),
+(44, 3, 26),
+(45, 3, 21),
+(47, 3, 15),
+(48, 4, 2),
+(49, 4, 4),
+(50, 4, 3),
+(51, 4, 28),
+(52, 4, 31),
+(53, 4, 5),
+(54, 4, 24),
+(55, 4, 13),
+(56, 4, 17),
+(57, 4, 18),
+(58, 4, 25);
 
 -- --------------------------------------------------------
 
@@ -537,7 +582,17 @@ INSERT INTO `sessions` (`id`, `user_id`, `session_token`, `created_at`, `expires
 (22, 1, 'ce19cb60c9b429f53fb93c667cf96e5e', '2025-11-10 14:33:58', '2025-11-10 16:33:58'),
 (24, 1, '52ec4a1b3cb4251a924e224089741788', '2025-11-10 16:52:19', '2025-11-10 18:52:19'),
 (25, 1, '765a928569e18eee988335e0db662ae7', '2025-11-10 18:25:34', '2025-11-10 20:25:34'),
-(26, 1, 'd744dfce5e5fbd5e117e0b642a0d6efd', '2025-11-11 16:42:15', '2025-11-11 18:42:15');
+(26, 1, 'd744dfce5e5fbd5e117e0b642a0d6efd', '2025-11-11 16:42:15', '2025-11-11 18:42:15'),
+(28, 1, '5af34de19228a234a6c1ff75eba6d3d0', '2025-11-22 11:34:19', '2025-11-22 13:34:19'),
+(29, 1, '47fcfc8f5223f46ced8fe485f2d96b6f', '2025-11-22 14:36:41', '2025-11-22 16:36:41'),
+(31, 1, '7b5109991f3c4bada23979cdd89b4acb', '2025-11-23 19:06:39', '2025-11-23 21:06:39'),
+(32, 1, '2b9533af2b62054ca3be8536917c0f40', '2025-11-24 16:49:19', '2025-11-24 18:49:19'),
+(33, 1, '687afae61cf7bcc86b8d8ceaed49bd3f', '2025-11-29 15:12:11', '2025-11-29 17:12:11'),
+(37, 1, '38fd88bbb84f8b896c51ff1e696d9644', '2025-11-29 17:17:10', '2025-11-29 19:17:10'),
+(38, 1, '5887a22e40ce408c3b60aad74879db68', '2025-11-29 18:33:40', '2025-11-29 20:33:40'),
+(39, 1, 'f2e638b62c9c30dc92f8606bb0900e0b', '2025-11-29 19:35:49', '2025-11-29 21:35:49'),
+(40, 1, '7cf32b0b610eea0d66093902a9494184', '2025-11-30 19:12:42', '2025-11-30 21:12:42'),
+(41, 1, '719e9f9b7b333ba1315b0c585d0531cf', '2025-12-01 13:43:18', '2025-12-01 15:43:18');
 
 -- --------------------------------------------------------
 
@@ -579,6 +634,17 @@ CREATE TABLE `transactions` (
   `total_amount` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`id`, `user_id`, `transaction_date`, `total_amount`) VALUES
+(1, 1, '2025-11-22 11:45:15', 259.98),
+(2, 1, '2025-11-22 14:36:53', 309.98),
+(3, 1, '2025-11-22 14:39:48', 199.99),
+(4, 1, '2025-11-22 14:45:40', 169.00),
+(5, 1, '2025-11-23 19:08:31', 250.99);
+
 -- --------------------------------------------------------
 
 --
@@ -592,6 +658,20 @@ CREATE TABLE `transaction_items` (
   `purchase_price` decimal(10,2) NOT NULL,
   `discount_percent_applied` tinyint(3) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `transaction_items`
+--
+
+INSERT INTO `transaction_items` (`id`, `transaction_id`, `game_id`, `purchase_price`, `discount_percent_applied`) VALUES
+(1, 1, 3, 149.99, 0),
+(2, 1, 18, 109.99, 0),
+(3, 2, 2, 159.99, 20),
+(4, 2, 4, 149.99, 0),
+(5, 3, 5, 199.99, 0),
+(6, 4, 17, 169.00, 0),
+(7, 5, 20, 179.00, 0),
+(8, 5, 31, 71.99, 0);
 
 -- --------------------------------------------------------
 
@@ -615,7 +695,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `username`, `password`, `role`, `avatar_filename`, `profile_color`, `balance`) VALUES
-(1, 'jann@example.com', 'janntest', '543360c1ecea52aa7620ccbb32357b72634348350be51c8577da1cf3f7175342', 1, 'user_1_1762793265.png', '#6f5844', 140.00),
+(1, 'jann@example.com', 'janntest', '543360c1ecea52aa7620ccbb32357b72634348350be51c8577da1cf3f7175342', 1, 'user_1_1764437154.png', '#6f5844', 2070.06),
 (2, 'aledlugiuzytkownikkkk@example.com', 'aledlugiuzytkownikkkkkkk', '543360c1ecea52aa7620ccbb32357b72634348350be51c8577da1cf3f7175342', 0, 'default_avatar.png', NULL, 0.00);
 
 -- --------------------------------------------------------
@@ -635,10 +715,17 @@ CREATE TABLE `user_games` (
 --
 
 INSERT INTO `user_games` (`id`, `user_id`, `game_id`) VALUES
+(7, 1, 2),
 (1, 1, 3),
+(8, 1, 4),
+(9, 1, 5),
 (2, 1, 10),
 (3, 1, 11),
-(4, 1, 21);
+(10, 1, 17),
+(6, 1, 18),
+(11, 1, 20),
+(4, 1, 21),
+(12, 1, 31);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -694,9 +781,15 @@ ALTER TABLE `platforms`
 -- Indeksy dla tabeli `promotions`
 --
 ALTER TABLE `promotions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeksy dla tabeli `promotion_games`
+--
+ALTER TABLE `promotion_games`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_game_id` (`game_id`),
-  ADD KEY `idx_active_promo` (`game_id`,`start_date`,`end_date`);
+  ADD KEY `promotion_id` (`promotion_id`),
+  ADD KEY `game_id` (`game_id`);
 
 --
 -- Indeksy dla tabeli `publishers`
@@ -775,7 +868,7 @@ ALTER TABLE `user_games`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `developers`
@@ -811,7 +904,13 @@ ALTER TABLE `platforms`
 -- AUTO_INCREMENT for table `promotions`
 --
 ALTER TABLE `promotions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `promotion_games`
+--
+ALTER TABLE `promotion_games`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `publishers`
@@ -835,7 +934,7 @@ ALTER TABLE `review_votes`
 -- AUTO_INCREMENT for table `sessions`
 --
 ALTER TABLE `sessions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `tags`
@@ -847,13 +946,13 @@ ALTER TABLE `tags`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `transaction_items`
 --
 ALTER TABLE `transaction_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -865,7 +964,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_games`
 --
 ALTER TABLE `user_games`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables
@@ -900,10 +999,11 @@ ALTER TABLE `game_tags`
   ADD CONSTRAINT `game_tags_ibfk_2` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `promotions`
+-- Constraints for table `promotion_games`
 --
-ALTER TABLE `promotions`
-  ADD CONSTRAINT `promotions_ibfk_1` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`) ON DELETE CASCADE;
+ALTER TABLE `promotion_games`
+  ADD CONSTRAINT `promotion_games_ibfk_1` FOREIGN KEY (`promotion_id`) REFERENCES `promotions` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `promotion_games_ibfk_2` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `reviews`

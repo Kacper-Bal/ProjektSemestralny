@@ -138,6 +138,8 @@ $cartTotal = 0;
     <title>Twój Koszyk</title>
     <link rel="stylesheet" href="style/styleCommon.css">
     <link rel="stylesheet" href="style/styleCart.css">
+    <link rel="icon" type="image/png" href="img/others/logo_steam_icon.png">
+
 </head>
 <body>
 <?php include 'header.php'; ?>

@@ -65,7 +65,6 @@ if (isset($currentUser) && $currentUser) {
     $stmtCart->close();
 }
 ?>
-
 <header>
     
     <input id="menu-toggle" type="checkbox" />
@@ -169,7 +168,7 @@ if (isset($currentUser) && $currentUser) {
         <div class="search-container-wrapper">
             <form id="searchForm" action="store.php" method="GET" style="margin: 0;">
                 <input type="text" name="search" id="headerSearchInput" placeholder="Szukaj..." autocomplete="off">
-                <input type="submit">
+                <input type="submit" value="Szukaj">
             </form>
             <div id="searchResults"></div>
         </div>

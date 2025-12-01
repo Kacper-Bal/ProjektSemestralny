@@ -65,6 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Sign In</title>
     <link rel="stylesheet" href="style/styleLogin.css">
     <link rel="stylesheet" href="style/styleCommon.css">
+    <link rel="icon" type="image/png" href="img/others/logo_steam_icon.png">
+
 </head>
 <body>
     <?php include('header.php'); ?>

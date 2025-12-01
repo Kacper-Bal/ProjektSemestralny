@@ -113,6 +113,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title><?php echo "Dodaj ".htmlspecialchars(ucfirst($role)) ."a"; ?></title>
     <link rel="stylesheet" href="style/styleGame.css">
     <link rel="stylesheet" href="style/styleCommon.css">
+    <link rel="icon" type="image/png" href="img/others/logo_steam_icon.png">
+
 </head>
 <body>
 <?php include('header.php'); ?>

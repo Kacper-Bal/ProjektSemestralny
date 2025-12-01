@@ -157,6 +157,8 @@ $maxPriceLimit = ceil($maxPriceData['max_price'] ?? 300);
     <title>Sklep</title>
     <link rel="stylesheet" href="style/styleCommon.css">
     <link rel="stylesheet" href="style/styleStore.css">
+    <link rel="icon" type="image/png" href="img/others/logo_steam_icon.png">
+
 </head>
 <body>
 

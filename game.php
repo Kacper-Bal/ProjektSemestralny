@@ -277,6 +277,8 @@ if ($currentUser) {
     <title><?= htmlspecialchars($gameData["name"]) ?></title>
     <link rel="stylesheet" href="style/styleGame.css">
     <link rel="stylesheet" href="style/styleCommon.css">
+    <link rel="icon" type="image/png" href="img/others/logo_steam_icon.png">
+
 </head>
 <body data-game-name="<?= htmlspecialchars($gameName) ?>">
 <?php include 'header.php'; ?>

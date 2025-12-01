@@ -489,7 +489,7 @@ a:hover {
     }
 
     .balance-display{
-        display: block;
+        display: block  ;
     }
 
     #hamburger-menu {
@@ -543,7 +543,7 @@ a:hover {
     #links .header-element:nth-child(6) {
         width: 50%;
         border-top: 1px solid var(--color-border-main);
-    }
+        padding: 10px;}
     
     #links .header-element:nth-child(5) {
         border-right: 1px solid var(--color-border-main);
@@ -578,7 +578,7 @@ a:hover {
     }
 
     #menu-toggle:checked ~ #header-bottom {
-        transform: translateY(280px);
+        transform: translateY(250px);
     }
 }
 

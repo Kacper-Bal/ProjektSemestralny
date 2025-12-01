@@ -161,6 +161,8 @@ function find_logo_path($name, $role) {
     <title>Edytuj grę: <?= htmlspecialchars($game['name']) ?></title>
     <link rel="stylesheet" href="style/styleGame.css">
     <link rel="stylesheet" href="style/styleCommon.css">
+    <link rel="icon" type="image/png" href="img/others/logo_steam_icon.png">
+
 </head>
 <body>
 <?php include 'header.php'; ?>
