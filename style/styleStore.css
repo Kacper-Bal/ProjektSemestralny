@@ -378,7 +378,6 @@ details[open] summary::after {
     display: inline-block;
 }
 
-/* --- Przyciski Promocji --- */
 .btn-create {
     width: 100%;
     padding: 12px;
@@ -396,7 +395,7 @@ details[open] summary::after {
 }
 
 .btn-delete-promo {
-    background-color: var(--color-button-red); /* Upewnij się, że masz tę zmienną w styleCommon, jeśli nie - użyj #c0392b */
+    background-color: var(--color-button-red); 
     color: white;
     border: none;
     padding: 5px 10px;
@@ -417,7 +416,6 @@ details[open] summary::after {
     text-decoration: underline; 
 }
 
-/* --- Lista Promocji --- */
 .promo-list-item {
     background-color: var(--color-bg-panel-dark);
     border: 1px solid var(--color-border-mid);
@@ -476,7 +474,6 @@ details[open] summary::after {
     font-style: italic;
 }
 
-/* --- Wybieranie Kart (Rozszerzenie game-card) --- */
 .selectable-game-card {
     cursor: pointer;
     position: relative;
@@ -505,7 +502,6 @@ details[open] summary::after {
     box-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
 
-/* --- Teksty i Komunikaty --- */
 .section-title {
     color: var(--color-text-light);
     margin-bottom: 15px;

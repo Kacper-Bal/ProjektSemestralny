@@ -5,7 +5,6 @@ require_once('auth.php');
 $preSelectedPlatformName = isset($_GET['platform']) ? strtolower(trim($_GET['platform'])) : null;
 $preSelectedTagName = isset($_GET['tag']) ? strtolower(trim($_GET['tag'])) : null;
 
-// NOWE: Pobieramy frazę wyszukiwania przekazaną z nagłówka
 $preSelectedSearch = isset($_GET['search']) ? trim($_GET['search']) : '';
 
 function getGameImage($gameName) {
